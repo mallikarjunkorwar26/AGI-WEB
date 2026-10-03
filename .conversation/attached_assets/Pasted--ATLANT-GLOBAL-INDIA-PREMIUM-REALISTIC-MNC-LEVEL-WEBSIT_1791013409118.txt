@@ -1,0 +1,1265 @@
+# ATLANT GLOBAL INDIA — PREMIUM, REALISTIC & MNC-LEVEL WEBSITE
+
+Design and build a completely new website/web application for:
+
+**ATLANT GLOBAL INDIA (INC)**
+
+Operating under:
+
+**THE PROFESSIONAL COURIERS**
+
+Existing website:
+
+https://www.atlantglobalindia.in/
+
+The existing website must be used as the primary source for the company's actual:
+
+* History
+* Services
+* Infrastructure
+* Branches
+* Statistics
+* Leadership
+* Testimonials
+* FAQs
+* Franchise information
+* Contact information
+* Business capabilities
+
+The new website must preserve the real company information but completely redesign the user experience and visual presentation.
+
+---
+
+# CORE DESIGN DIRECTION
+
+The website must look like a:
+
+**PREMIUM INTERNATIONAL LOGISTICS COMPANY**
+
+with the professionalism and credibility expected from an MNC.
+
+However, the design must remain:
+
+**REALISTIC**
+
+**SIMPLE**
+
+**ATTRACTIVE**
+
+**CLEAN**
+
+**PROFESSIONAL**
+
+**TRUSTWORTHY**
+
+**MODERN**
+
+Do NOT make it look futuristic or like a technology demo.
+
+Do NOT use excessive animation.
+
+Do NOT use complicated 3D graphics.
+
+Do NOT use artificial-looking animated logistics scenes.
+
+Do NOT make the website look like a gaming interface.
+
+Do NOT overload the page with visual effects.
+
+The website should feel like a real company with real people, real vehicles, real branches, real warehouses and real logistics operations.
+
+---
+
+# VISUAL INSPIRATION
+
+The overall visual quality should feel comparable to a major international logistics/corporate company.
+
+Take inspiration from the professionalism of companies such as:
+
+* DHL
+* FedEx
+* UPS
+* Maersk
+* DB Schenker
+* Kuehne+Nagel
+
+But DO NOT copy their branding, layouts, colours, logos or designs.
+
+The goal is:
+
+**MNC QUALITY + ATLANT GLOBAL INDIA IDENTITY**
+
+---
+
+# VISUAL PHILOSOPHY
+
+Use:
+
+* Real photography
+* Professional corporate photography
+* Real courier vehicles
+* Real warehouse photographs
+* Real employees
+* Real branches
+* Real shipment handling
+* Real office environment
+* Real infrastructure
+* Clean icons
+* Strong typography
+* White space
+* Structured grids
+* High-quality images
+* Subtle shadows
+* Clean cards
+* Professional buttons
+
+Avoid:
+
+* Cartoon illustrations
+* Fake 3D trucks
+* Excessive gradients
+* Neon colours
+* Excessive glassmorphism
+* Futuristic dashboards everywhere
+* Excessive rounded cards
+* Flashing elements
+* Large animated objects
+* Excessive parallax
+* Automatic video backgrounds
+* Overly complicated animations
+
+---
+
+# ANIMATION RULE
+
+Animation must be MINIMAL.
+
+Use only subtle UI interactions such as:
+
+* Button hover
+* Card hover
+* Very subtle fade-in
+* Smooth page transitions
+* Simple accordion
+* Image hover
+* Small number counter animation if appropriate
+
+No large animated graphics.
+
+No continuously moving backgrounds.
+
+No excessive scrolling effects.
+
+No animated vehicles.
+
+No animated maps.
+
+No animated shipment routes.
+
+The website must still look excellent if ALL animations are disabled.
+
+This is extremely important.
+
+---
+
+# COLOUR SYSTEM
+
+Use Atlant Global India's existing branding as the foundation.
+
+Create a refined corporate colour system around:
+
+### Primary
+
+Deep Corporate Blue
+
+### Secondary
+
+Professional Blue
+
+### Accent
+
+Use the existing Atlant Global India brand accent colour.
+
+### Background
+
+White
+
+Very Light Grey
+
+### Text
+
+Dark Charcoal
+
+The design must have strong contrast and accessibility.
+
+Do not use too many colours.
+
+---
+
+# TYPOGRAPHY
+
+Use a premium modern corporate font.
+
+Recommended:
+
+**Inter**
+
+or
+
+**Manrope**
+
+or
+
+**Plus Jakarta Sans**
+
+Use:
+
+Large strong headings
+
+Medium-weight subheadings
+
+Clean body text
+
+Clear labels
+
+Strong CTA typography
+
+Avoid decorative fonts.
+
+---
+
+# HEADER
+
+Create a clean premium header.
+
+Logo:
+
+**Atlant Global India**
+
+Navigation:
+
+**Home**
+
+**Services**
+
+**Tracking**
+
+**Business Solutions**
+
+**About Us**
+
+**Resources**
+
+**Careers**
+
+**Franchise**
+
+Right side:
+
+**Get a Quote**
+
+**Contact**
+
+The header should be:
+
+* White
+* Clean
+* Sticky
+* Minimal
+* Professional
+
+When scrolling, it can become slightly smaller with a subtle shadow.
+
+No dramatic transformations.
+
+---
+
+# HOMEPAGE
+
+The homepage must be visually impressive without relying on animation.
+
+---
+
+# HERO SECTION
+
+Use a high-quality REAL photograph.
+
+Possible photograph:
+
+A professional courier vehicle at a modern warehouse.
+
+Or:
+
+A delivery executive handling a shipment.
+
+Or:
+
+A real warehouse/loading operation.
+
+Or:
+
+A professional logistics facility in Bengaluru.
+
+The photograph should look authentic and professionally photographed.
+
+Do NOT use unrealistic AI-looking logistics images.
+
+Use a subtle dark/white overlay only where necessary for readability.
+
+Headline:
+
+# MOVE MORE.
+
+# DELIVER FURTHER.
+
+Supporting text:
+
+**Your one-stop solution for courier and cargo requirements.**
+
+Additional text:
+
+**Reliable courier, cargo and logistics solutions for businesses and individuals across India and international destinations.**
+
+Buttons:
+
+**Get a Quote**
+
+**Track Shipment**
+
+Secondary:
+
+**Explore Services**
+
+---
+
+# HERO TRUST INFORMATION
+
+Below the hero text, show a simple professional trust line:
+
+**30+ Years of Experience**
+
+**65+ Branches**
+
+**5,000+ Clients**
+
+**10,536+ Serviceable Pincodes**
+
+Only use verified/current statistics.
+
+Do not make these statistics overly animated.
+
+---
+
+# QUICK ACTIONS
+
+Below hero, create four simple premium cards:
+
+### TRACK SHIPMENT
+
+Enter your consignment number.
+
+**Track Now**
+
+### GET A QUOTE
+
+Tell us what you need to ship.
+
+**Get Quote**
+
+### BOOK A PICKUP
+
+Request a pickup.
+
+**Book Pickup**
+
+### BUSINESS SOLUTIONS
+
+Solutions for corporate customers.
+
+**Explore**
+
+Keep the cards clean.
+
+No excessive animation.
+
+---
+
+# COMPANY INTRODUCTION
+
+Create a premium split-screen section.
+
+Left:
+
+Real photograph of Atlant Global India infrastructure.
+
+Right:
+
+# EXPERIENCE THAT MOVES BUSINESS.
+
+Content:
+
+Atlant Global India (Inc) was established on July 2, 1990 by Mr. Suresh Surendranath and operates under The Professional Couriers.
+
+The company serves Bengaluru South and East through a network of 65 branches and operates a distribution hub at Kudlu Gate, Hosur Road.
+
+The company provides courier, cargo and logistics solutions for individuals and businesses across domestic and international destinations.
+
+CTA:
+
+**Discover Our Story**
+
+---
+
+# SCALE SECTION
+
+Use a simple professional statistics layout.
+
+No giant animated numbers.
+
+Display:
+
+**30+**
+Years of Experience
+
+**65+**
+Branches
+
+**5,000+**
+Clients
+
+**40,000+**
+Daily Shipments
+
+**10,536+**
+Serviceable Pincodes
+
+**750+ Tonnes**
+Consignments
+
+Use clean typography.
+
+---
+
+# SERVICES
+
+Headline:
+
+# OUR LOGISTICS SERVICES
+
+Use realistic photographs for each service.
+
+---
+
+## DOMESTIC COURIER
+
+Reliable courier and cargo services across India.
+
+Image:
+
+Real courier shipment / delivery photograph.
+
+CTA:
+
+**Explore Service**
+
+---
+
+## PRO PREMIUM
+
+Time-sensitive delivery solutions.
+
+Highlight:
+
+* AM-PM delivery
+* Visa applications
+* Legal documents
+* Perishables where applicable
+* Important documents
+
+CTA:
+
+**Explore Pro Premium**
+
+---
+
+## PRIORITY CLASS
+
+Express B2B courier and cargo services.
+
+Highlight:
+
+* Business shipments
+* Express delivery
+* Cargo
+* High-value shipment handling
+
+CTA:
+
+**Explore Priority Class**
+
+---
+
+## INTERNATIONAL COURIER
+
+International courier and cargo connectivity through The Professional Couriers network and applicable international partners.
+
+CTA:
+
+**Explore International**
+
+---
+
+## WAREHOUSING
+
+Secure storage, handling and distribution support from the Kudlu Gate facility.
+
+CTA:
+
+**Explore Warehousing**
+
+---
+
+# SERVICE DESIGN
+
+Each service should use:
+
+Real photo
+
+Short description
+
+3–5 key features
+
+CTA
+
+Do not put large paragraphs inside cards.
+
+---
+
+# WHY ATLANT GLOBAL INDIA
+
+Headline:
+
+# BUILT ON EXPERIENCE.
+
+# DRIVEN BY SERVICE.
+
+Create six clean sections:
+
+### EXPERIENCE
+
+Established in 1990.
+
+### NETWORK
+
+65 branches serving Bengaluru South & East.
+
+### INFRASTRUCTURE
+
+Kudlu Gate distribution hub.
+
+### FLEET
+
+Containerized GPS-enabled vehicles.
+
+### VISIBILITY
+
+MIS and shipment status updates.
+
+### SECURITY
+
+CCTV-enabled operational facilities.
+
+Use actual company information.
+
+---
+
+# BUSINESS SOLUTIONS
+
+Create a premium corporate section.
+
+Headline:
+
+# LOGISTICS FOR BUSINESS.
+
+Supporting:
+
+**Solutions designed to support regular, bulk and time-sensitive business shipments.**
+
+Show:
+
+Corporate Courier
+
+B2B Shipments
+
+Bulk Shipments
+
+E-commerce
+
+Reverse Logistics
+
+Priority Shipments
+
+MIS
+
+Dedicated Business Support
+
+CTA:
+
+**Talk to Our Business Team**
+
+Use realistic business/customer photography.
+
+---
+
+# TECHNOLOGY
+
+Keep this section simple.
+
+Headline:
+
+# TECHNOLOGY THAT SUPPORTS EVERY DELIVERY.
+
+Use clean icons and small illustrations.
+
+Features:
+
+**MIS**
+
+Live shipment status updates.
+
+**GPS-ENABLED FLEET**
+
+Vehicle tracking capability.
+
+**CCTV**
+
+Operational security.
+
+**SHIPMENT VISIBILITY**
+
+Track shipment progress.
+
+Do not make this section look like a futuristic software dashboard.
+
+---
+
+# TRACKING
+
+Create a very clean tracking page.
+
+Headline:
+
+# TRACK YOUR SHIPMENT
+
+Input:
+
+**Enter CNOTE / AWB Number**
+
+Button:
+
+**Track Shipment**
+
+Below:
+
+A simple shipment progress indicator:
+
+Booked → Picked Up → In Transit → Out for Delivery → Delivered
+
+Use clean status icons.
+
+If API integration is available, connect to the actual tracking system.
+
+Otherwise provide a professional link to the official tracking service.
+
+Do NOT create fake shipment statuses.
+
+---
+
+# HOW IT WORKS
+
+Simple four-column design.
+
+### 01
+
+BOOK
+
+Submit your shipment requirement.
+
+### 02
+
+PICKUP
+
+Our team collects your shipment.
+
+### 03
+
+MOVE
+
+Your shipment travels through the network.
+
+### 04
+
+DELIVER
+
+Your shipment reaches its destination.
+
+Use simple line icons.
+
+No animation required.
+
+---
+
+# INFRASTRUCTURE
+
+This should be one of the strongest visual sections.
+
+Headline:
+
+# BUILT FOR SCALE.
+
+Use REAL photographs.
+
+Show:
+
+Kudlu Gate Hub
+
+Warehouse
+
+Fleet
+
+Branch
+
+Operations
+
+Team
+
+Shipment Handling
+
+Use a premium photography layout.
+
+Example:
+
+Large main image
+
+Two smaller supporting images
+
+Short factual descriptions
+
+Do not use stock photos if actual company photos are available.
+
+---
+
+# COMPANY NETWORK
+
+Create a clean India map.
+
+Do not animate the map.
+
+Use static geographic visualization showing:
+
+Bengaluru
+
+Operational region
+
+Pan-India connectivity
+
+International connectivity
+
+Add a short explanation:
+
+**Through The Professional Couriers network, Atlant Global India supports domestic and international courier and cargo requirements.**
+
+Do not make unsupported claims about direct branch ownership outside the company's operating area.
+
+---
+
+# LEADERSHIP
+
+Use the existing CEO information.
+
+Display:
+
+**Mr. Suresh Surendranath Nair**
+
+CEO
+
+Use the approved company biography.
+
+Use a professional real portrait if available.
+
+Do not use an AI-generated portrait.
+
+---
+
+# CUSTOMER TESTIMONIALS
+
+Use real existing testimonials from the current website.
+
+Design:
+
+Large quote
+
+Customer/company
+
+Service
+
+Small profile/logo if permission is available
+
+Keep the carousel subtle.
+
+No automatic fast movement.
+
+---
+
+# BRANCH LOCATOR
+
+Headline:
+
+# FIND YOUR NEAREST BRANCH
+
+Search:
+
+City
+
+Area
+
+PIN Code
+
+Display:
+
+Branch Name
+
+Address
+
+Phone
+
+Opening Hours
+
+Directions
+
+Services
+
+Use a clean map.
+
+Do not make the map overly animated.
+
+---
+
+# QUOTE PAGE
+
+Headline:
+
+# GET A QUOTE
+
+Form:
+
+Name
+
+Company
+
+Mobile
+
+Email
+
+Pickup Location
+
+Delivery Location
+
+Shipment Type
+
+Weight
+
+Dimensions
+
+Monthly Shipment Volume
+
+Requirement
+
+CTA:
+
+**Request a Quote**
+
+Make the form look like an enterprise enquiry form.
+
+---
+
+# FAQ
+
+Use the actual FAQ information from the existing website.
+
+Categories:
+
+Shipping
+
+Pickup
+
+Tracking
+
+Payment
+
+Packaging
+
+Delivery
+
+Restricted Items
+
+Volumetric Weight
+
+Claims
+
+Use clean accordion sections.
+
+---
+
+# VOLUMETRIC WEIGHT CALCULATOR
+
+Create a simple calculator.
+
+Inputs:
+
+Length
+
+Width
+
+Height
+
+Formula:
+
+Length × Width × Height / 5000
+
+Display:
+
+**Volumetric Weight**
+
+Keep it simple and functional.
+
+---
+
+# FRANCHISE
+
+Headline:
+
+# GROW WITH ATLANT GLOBAL INDIA
+
+Use the actual franchise information from the current website.
+
+Show:
+
+Network
+
+Experience
+
+Operational Support
+
+Technology
+
+Business Opportunity
+
+Application Form
+
+CTA:
+
+**Become a Franchise Partner**
+
+Use realistic business imagery.
+
+---
+
+# CAREERS
+
+Headline:
+
+# BUILD YOUR CAREER WITH US
+
+Show:
+
+Open Positions
+
+Departments
+
+Locations
+
+Experience
+
+Job Type
+
+Apply Now
+
+Use real team photography.
+
+---
+
+# BLOGS
+
+Create a clean corporate content hub.
+
+Categories:
+
+Courier
+
+Cargo
+
+Logistics
+
+Business Shipping
+
+International Shipping
+
+Packaging
+
+E-commerce
+
+Supply Chain
+
+Use large editorial cards.
+
+---
+
+# GALLERY
+
+Use real company photographs.
+
+Categories:
+
+Office
+
+Warehouse
+
+Fleet
+
+Branches
+
+Team
+
+Operations
+
+Events
+
+Awards
+
+Make this look like an annual-report / corporate photography gallery.
+
+---
+
+# CONTACT
+
+Create:
+
+Corporate Office
+
+Operations Office
+
+Phone
+
+Email
+
+Working Hours
+
+WhatsApp
+
+Branch Locator
+
+Google Maps
+
+Use the existing verified contact information.
+
+---
+
+# FOOTER
+
+Create a premium MNC-style footer.
+
+### Services
+
+Domestic
+
+Pro Premium
+
+Priority Class
+
+International
+
+Warehousing
+
+### Business
+
+Corporate
+
+B2B
+
+E-commerce
+
+Bulk Shipments
+
+### Company
+
+About
+
+Leadership
+
+Infrastructure
+
+Careers
+
+Franchise
+
+### Resources
+
+Tracking
+
+FAQs
+
+Blogs
+
+Gallery
+
+Shipping Guide
+
+### Contact
+
+Corporate Office
+
+Operations Office
+
+Phone
+
+Email
+
+Branch Locator
+
+Social Media
+
+Bottom:
+
+Privacy Policy
+
+Terms & Conditions
+
+Cookie Policy
+
+Sitemap
+
+---
+
+# PHOTOGRAPHY GUIDELINES
+
+Photography is extremely important.
+
+Prioritize:
+
+1. REAL ATLANT GLOBAL INDIA PHOTOGRAPHS
+2. REAL COMPANY VEHICLES
+3. REAL COMPANY WAREHOUSE
+4. REAL BRANCHES
+5. REAL EMPLOYEES
+6. REAL OPERATIONS
+7. High-quality professional logistics stock photography only where real photographs are unavailable
+
+Do not use:
+
+* Unrealistic AI-generated people
+* Fake company vehicles
+* Fake logos
+* Fake warehouses
+* Unrealistic futuristic logistics scenes
+
+The website should feel REAL.
+
+---
+
+# ANIMATION GUIDELINES
+
+Keep animations extremely minimal.
+
+Allowed:
+
+* Hover
+* Small fade
+* Accordion
+* Button transition
+* Subtle image transition
+* Smooth scrolling
+
+Avoid:
+
+* 3D animations
+* Animated vehicles
+* Animated maps
+* Moving route lines
+* Particle effects
+* Flying packages
+* Continuous background animation
+* Excessive parallax
+* Large motion effects
+
+The website must remain attractive even with animation completely disabled.
+
+---
+
+# RESPONSIVE DESIGN
+
+Desktop:
+
+Premium MNC corporate layout.
+
+Tablet:
+
+Clean responsive layout.
+
+Mobile:
+
+App-like usability without becoming an actual app.
+
+Mobile bottom actions:
+
+**Track**
+
+**Quote**
+
+**WhatsApp**
+
+**Call**
+
+Keep the interface simple.
+
+---
+
+# FINAL QUALITY STANDARD
+
+The website should create this impression:
+
+### FIRST IMPRESSION
+
+**Established. Professional. Trustworthy.**
+
+### SECOND IMPRESSION
+
+**Strong infrastructure and network.**
+
+### THIRD IMPRESSION
+
+**Professional logistics capabilities.**
+
+### FINAL ACTION
+
+**I can trust them with my shipment/business.**
+
+The final website must feel:
+
+**PREMIUM WITHOUT BEING FLASHY**
+
+**MODERN WITHOUT BEING FUTURISTIC**
+
+**ATTRACTIVE WITHOUT BEING OVERDESIGNED**
+
+**MNC-LEVEL WITHOUT LOSING ATLANT GLOBAL INDIA'S IDENTITY**
+
+**REALISTIC WITHOUT LOOKING BORING**
+
+The design should rely on:
+
+**REAL PHOTOGRAPHY + STRONG TYPOGRAPHY + CLEAN LAYOUT + GOOD CONTENT + TRUST SIGNALS + SIMPLE UX**
+
+rather than animations and visual effects.
+
+The website must represent the real Atlant Global India company and its actual capabilities while presenting them with the quality and professionalism expected from a major logistics organization.

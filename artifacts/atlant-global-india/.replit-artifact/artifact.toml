@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Atlant Global India"
+description = "A premium corporate website for Atlant Global India, sharing verified courier and cargo services, branch information, shipment tracking access and business enquiries."
+version = "1.0.0"
+id = "artifacts/atlant-global-india"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19167
+
+[services.development]
+run = "pnpm --filter @workspace/atlant-global-india run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/atlant-global-india", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/atlant-global-india/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19167"
+BASE_PATH = "/"
