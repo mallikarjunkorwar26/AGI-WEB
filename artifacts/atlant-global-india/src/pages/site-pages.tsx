@@ -601,7 +601,7 @@ export function TrackingPage() {
                   autoComplete="off"
                   value={consignment}
                   onChange={(event) => setConsignment(event.target.value)}
-                  placeholder="e.g. BLR4550068765"
+                  placeholder="Enter the AWB Number"
                   aria-describedby={trackingError ? 'tracking-feedback' : undefined}
                   data-testid="input-tracking-number"
                 />
