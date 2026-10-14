@@ -1660,7 +1660,7 @@ export function AboutPage() {
         <div className="container">
           <div className="section-label">Leadership</div><h2>Led with experience.</h2>
           <div className="leadership">
-            <img className="portrait-image" src="/images/CEO-compressed-1-e1562394173820-180x220.jpg" alt="Mr. Suresh Surendranath Nair, Chief Executive Officer" loading="lazy" />
+            <img className="portrait-image" src={`${import.meta.env.BASE_URL}images/CEO-compressed-1-e1562394173820-180x220.jpg`} alt="Mr. Suresh Surendranath Nair, Chief Executive Officer" loading="lazy" />
             <div>
               <h3>Mr. Suresh Surendranath Nair</h3>
               <div className="role">Chief Executive Officer</div>

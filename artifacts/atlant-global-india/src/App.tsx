@@ -195,7 +195,7 @@ function SiteHeader() {
       <header className="header">
         <nav className="nav" aria-label="Main navigation">
           <Link className="brand" href="/" onClick={closeMenu} aria-label="Atlant Global India home">
-            <img className="brand-logo" src="/images/AGI%20PNG%20Black.png" alt="Atlant Global India logo" />
+            <img className="brand-logo" src={`${import.meta.env.BASE_URL}images/AGI%20PNG%20Black.png`} alt="Atlant Global India logo" />
           </Link>
           <button
             className="menu-toggle"
@@ -236,7 +236,7 @@ function SiteFooter() {
           <div className="footer-top">
             <div className="footer-brand">
               <Link href="/" aria-label="Atlant Global India home" className="footer-brand-link">
-                <img className="footer-brand-logo" src="/images/AGI%20PNG%20White.png" alt="Atlant Global India logo" />
+                <img className="footer-brand-logo" src={`${import.meta.env.BASE_URL}images/AGI%20PNG%20White.png`} alt="Atlant Global India logo" />
               </Link>
               <p>Courier, cargo and warehousing services in Bengaluru South and East, with access to a wider network.</p>
             </div>
