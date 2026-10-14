@@ -373,7 +373,7 @@ h1,h2,h3,p { margin-top:0; }
 .customer-marquee-heading h2 { margin:7px 0 0; color:#183b61; font:700 clamp(19px,2.2vw,25px)/1.2 var(--app-font-serif); letter-spacing:-.03em; }
 .customer-marquee { overflow:hidden; mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent); }
 .customer-marquee-track { display:flex; width:max-content; animation:customer-marquee-scroll 27s linear infinite; }
-.customer-logo-group { display:flex; flex:0 0 auto; align-items:center; justify-content:space-around; gap:clamp(64px,10vw,144px); padding:0 clamp(40px,7vw,96px); }
+.customer-logo-group { display:flex; flex:0 0 auto; align-items:center; justify-content:space-around; gap:clamp(84px,11vw,152px); padding:0 clamp(40px,7vw,96px); }
 .customer-logo-group img { display:block; width:auto; max-width:185px; height:72px; object-fit:contain; }
 .customer-marquee:hover .customer-marquee-track { animation-play-state:paused; }
 @keyframes customer-marquee-scroll { to { transform:translateX(-50%); } }
