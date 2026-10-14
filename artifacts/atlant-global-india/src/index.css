@@ -1089,7 +1089,8 @@ h1,h2,h3,p { margin-top:0; }
  .mobile-actions { display:grid; grid-template-columns:repeat(4,1fr); position:fixed; bottom:0; left:0; right:0; z-index:40; background:#fff; border-top:1px solid #ded8cf; padding:8px 4px calc(8px + env(safe-area-inset-bottom)); }
  .mobile-actions a { text-decoration:none; color:#183b61; display:flex; flex-direction:column; align-items:center; gap:4px; font-size:9px; font-weight:700; }
  .site-wrap { padding-bottom:57px; }
- .agi-assist-launcher { right:14px; bottom:calc(76px + env(safe-area-inset-bottom)); padding:13px 16px; }
+ .agi-assist-launcher { right:14px; bottom:calc(76px + env(safe-area-inset-bottom)); width:46px; height:46px; justify-content:center; padding:0; border-width:1px; }
+ .agi-assist-launcher span { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
  .agi-chat-panel { right:14px; bottom:calc(136px + env(safe-area-inset-bottom)); width:min(380px,calc(100vw - 28px)); height:min(480px,calc(100dvh - 170px - env(safe-area-inset-bottom))); }
 }
 @media(max-width:520px) {
