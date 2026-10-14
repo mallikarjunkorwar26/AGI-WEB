@@ -12,6 +12,7 @@ import {
   MessageCircle,
 } from 'lucide-react';
 import { Link, Route, Router as WouterRouter, Switch, useLocation } from 'wouter';
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6';
 import {
   AboutPage,
   BusinessPage,
@@ -240,6 +241,12 @@ function SiteFooter() {
                 <img className="footer-brand-logo" src={`${import.meta.env.BASE_URL}images/AGI%20PNG%20White.png`} alt="Atlant Global India logo" />
               </Link>
               <p>Courier, cargo and warehousing services in Bengaluru South and East, with access to a wider network.</p>
+              <nav className="footer-social" aria-label="Follow Atlant Global India">
+                <a href="https://www.instagram.com/atlantglobalindia/" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><FaInstagram /></a>
+                <a href="https://www.facebook.com/atlantglobalindia/" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><FaFacebookF /></a>
+                <a href="https://in.linkedin.com/company/atlantglobalindia" target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn"><FaLinkedinIn /></a>
+                <a href="https://x.com/AtlantInc" target="_blank" rel="noreferrer" aria-label="X" title="X"><FaXTwitter /></a>
+              </nav>
             </div>
             <div className="footer-col">
               <h4>Services</h4>

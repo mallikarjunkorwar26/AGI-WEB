@@ -529,6 +529,10 @@ h1,h2,h3,p { margin-top:0; }
 .footer-brand-logo { display:block; width:170px; height:auto; object-fit:contain; margin-bottom:10px; }
 .footer-brand p { max-width:240px; color:#c2ced7; font-size:11px; line-height:1.7; }
 .footer-brand-link { display:inline-flex; }
+.footer-social { display:flex; align-items:center; gap:9px; margin-top:16px; }
+.footer-social a { display:grid; width:34px; height:34px; place-items:center; border:1px solid rgba(255,255,255,.2); border-radius:50%; color:#d4dde3; transition:color .18s ease,background .18s ease,border-color .18s ease,transform .18s ease; }
+.footer-social a:hover,.footer-social a:focus-visible { transform:translateY(-2px); border-color:#e5b19c; background:rgba(229,177,156,.12); color:#fff; outline:none; }
+.footer-social svg { width:15px; height:15px; }
 .footer-col h4 { margin:2px 0 17px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#e7ae8b; }
 .footer-col a { display:block; width:max-content; max-width:100%; color:#d4dde3; text-decoration:none; font-size:11px; margin-bottom:11px; }
 .footer-col a:hover { color:#fff; }
