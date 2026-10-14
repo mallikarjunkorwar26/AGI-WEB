@@ -39,14 +39,14 @@ const simpleRateLimiter = (req: Request, res: Response, next: NextFunction) => {
     current.set(key, { count: 1, resetAt: now + windowMs });
     res.setHeader("RateLimit-Limit", String(limit));
     res.setHeader("RateLimit-Remaining", String(limit - 1));
-    res.setHeader("RateLimit-Reset", String(Math.ceil((now + windowMs) / 1000)));
+    res.setHeader("RateLimit-Reset", String(Math.ceil(windowMs / 1000)));
     return next();
   }
 
   if (previous.count >= limit) {
     res.setHeader("RateLimit-Limit", String(limit));
     res.setHeader("RateLimit-Remaining", "0");
-    res.setHeader("RateLimit-Reset", String(Math.ceil(previous.resetAt / 1000)));
+    res.setHeader("RateLimit-Reset", String(Math.max(0, Math.ceil((previous.resetAt - now) / 1000))));
     res.setHeader("Retry-After", String(Math.max(1, Math.ceil((previous.resetAt - now) / 1000))));
     return res.status(429).json({ ok: false, message: "Too many requests. Please try again shortly." });
   }
@@ -54,7 +54,7 @@ const simpleRateLimiter = (req: Request, res: Response, next: NextFunction) => {
   previous.count += 1;
   res.setHeader("RateLimit-Limit", String(limit));
   res.setHeader("RateLimit-Remaining", String(limit - previous.count));
-  res.setHeader("RateLimit-Reset", String(Math.ceil(previous.resetAt / 1000)));
+  res.setHeader("RateLimit-Reset", String(Math.max(0, Math.ceil((previous.resetAt - now) / 1000))));
   return next();
 };
 
