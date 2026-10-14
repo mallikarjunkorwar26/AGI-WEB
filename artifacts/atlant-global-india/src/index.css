@@ -951,6 +951,7 @@ h1,h2,h3,p { margin-top:0; }
 @keyframes tracking-enter { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 @media(max-width:760px) {
   .tracking-page-hero { padding:48px 0 68px; }
+  .tracking-status-panel { scroll-margin-top:96px; }
   .tracking-details-card { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .tracking-detail:nth-child(3) { border-left:0; border-top:1px solid #edf0f3; }
   .tracking-detail:nth-child(4) { border-top:1px solid #edf0f3; }

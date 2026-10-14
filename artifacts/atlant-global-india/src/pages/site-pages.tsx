@@ -1,4 +1,4 @@
-import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link } from 'wouter';
 import {
   ArrowRight,
@@ -475,8 +475,20 @@ export function TrackingPage() {
   const [consignment, setConsignment] = useState('');
   const [loading, setLoading] = useState(false);
   const [trackingResult, setTrackingResult] = useState<{ trackingNumber: string; transactions: TrackingTransaction[]; isDemo: boolean } | null>(null);
+  const trackingStatusRef = useRef<HTMLElement | null>(null);
   const [trackingError, setTrackingError] = useState('');
   const [trackingNotice, setTrackingNotice] = useState('');
+
+  useEffect(() => {
+    if (!trackingResult || !window.matchMedia('(max-width: 760px)').matches) return;
+
+    const activeElement = document.activeElement;
+    if (activeElement instanceof HTMLInputElement && activeElement.id === 'track-number') activeElement.blur();
+    const scrollTimer = window.setTimeout(() => {
+      trackingStatusRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
+    return () => window.clearTimeout(scrollTimer);
+  }, [trackingResult]);
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -646,7 +658,7 @@ export function TrackingPage() {
                   Demo result — sample shipment events for preview only; this is not live carrier tracking.
                 </div>
               )}
-              <article className="tracking-status-panel">
+              <article className="tracking-status-panel" ref={trackingStatusRef}>
                 <div className="tracking-status-topline">
                   <div className="tracking-status-icon"><Truck size={22} aria-hidden="true" /></div>
                   <div className="tracking-status-copy">
