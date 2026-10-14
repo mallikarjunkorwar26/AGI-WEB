@@ -360,11 +360,19 @@ export function HomePage() {
               <img src={`${import.meta.env.BASE_URL}images/Essl.jpg`} alt="ESSL" />
               <img src={`${import.meta.env.BASE_URL}images/Pharmed.png`} alt="Pharmed" />
               <img src={`${import.meta.env.BASE_URL}images/varsity_education_management_logo.jpg`} alt="Varsity Education Management" />
+              <img src={`${import.meta.env.BASE_URL}images/Canon.png`} alt="Canon" />
+              <img src={`${import.meta.env.BASE_URL}images/FIncare.png`} alt="Fincare Small Finance Bank" />
+              <img src={`${import.meta.env.BASE_URL}images/Havells_Logo.svg.webp`} alt="Havells" />
+              <img src={`${import.meta.env.BASE_URL}images/hdfc-bank-ltd-phone-banking--new-delhi-delhi-banks-1a8wyfwsty.avif`} alt="HDFC Bank" />
             </div>
             <div className="customer-logo-group" aria-hidden="true">
               <img src={`${import.meta.env.BASE_URL}images/Essl.jpg`} alt="" />
               <img src={`${import.meta.env.BASE_URL}images/Pharmed.png`} alt="" />
               <img src={`${import.meta.env.BASE_URL}images/varsity_education_management_logo.jpg`} alt="" />
+              <img src={`${import.meta.env.BASE_URL}images/Canon.png`} alt="" />
+              <img src={`${import.meta.env.BASE_URL}images/FIncare.png`} alt="" />
+              <img src={`${import.meta.env.BASE_URL}images/Havells_Logo.svg.webp`} alt="" />
+              <img src={`${import.meta.env.BASE_URL}images/hdfc-bank-ltd-phone-banking--new-delhi-delhi-banks-1a8wyfwsty.avif`} alt="" />
             </div>
           </div>
         </div>
