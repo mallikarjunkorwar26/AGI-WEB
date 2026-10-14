@@ -321,6 +321,14 @@ export function HomePage() {
   return (
     <>
       <section className="hero">
+        <img
+          className="hero-photo"
+          src={`${import.meta.env.BASE_URL}images/T3A0179-1024x683.jpg`}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          decoding="async"
+        />
         <div className="hero-content">
           <div className="eyebrow">Local knowledge. Wider reach.</div>
           <h1>Move more.<br />Deliver further.</h1>
