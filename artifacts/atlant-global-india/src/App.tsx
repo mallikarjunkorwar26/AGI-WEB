@@ -9,6 +9,7 @@ import {
   FileText,
   PackageCheck,
   Headset,
+  MessageCircle,
 } from 'lucide-react';
 import { Link, Route, Router as WouterRouter, Switch, useLocation } from 'wouter';
 import {
@@ -320,6 +321,10 @@ function RouterApp() {
           <SiteRoutes />
         </ErrorBoundary>
         <SiteFooter />
+        <div className="agi-assist-launcher" role="img" aria-label="AGI Assist, coming soon">
+          <MessageCircle size={19} aria-hidden="true" />
+          <span>AGI Assist</span>
+        </div>
       </div>
     </WouterRouter>
   );
