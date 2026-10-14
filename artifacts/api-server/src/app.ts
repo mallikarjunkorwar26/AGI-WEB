@@ -1,4 +1,5 @@
 import express, { type Express, type NextFunction, type Request, type Response } from "express";
+import path from "node:path";
 import cors from "cors";
 import pinoHttp from "pino-http";
 import router from "./routes";
@@ -70,6 +71,15 @@ app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 app.use(["/api/contact", "/api/quotes", "/api/newsletter", "/api/tracking"], simpleRateLimiter);
 app.use("/api", router);
+app.use("/api", (_req, res) => res.status(404).json({ ok: false, message: "API route not found." }));
+
+const frontendDirectory = path.resolve(import.meta.dirname, "../../atlant-global-india/dist/public");
+app.use(express.static(frontendDirectory, { index: false }));
+app.get(/.*/, (_req, res, next) => {
+  res.sendFile(path.join(frontendDirectory, "index.html"), (error) => {
+    if (error) next(error);
+  });
+});
 
 app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
   const message = err && typeof err === "object" && "message" in err && typeof (err as { message?: unknown }).message === "string"
