@@ -24,6 +24,46 @@ const EMAIL = 'connect@atlantglobalindia.com';
 const PHONE = '+917411708958';
 type TrackingTransaction = Record<string, unknown>;
 
+const demoAwbPrefix = 'AGI-DEMO-';
+const demoAwbNumbers = Array.from({ length: 10 }, (_, index) => `${demoAwbPrefix}${String(index + 1).padStart(3, '0')}`);
+const demoRoutes = [
+  [['Bengaluru', 'Booking Completed'], ['Hosur', 'In Transit'], ['Chennai', 'Delivered']],
+  [['Bengaluru', 'Booking Completed'], ['Hosur', 'In Transit']],
+  [['Chennai', 'Booking Completed'], ['Bengaluru', 'In Transit'], ['Bengaluru', 'Out for Delivery']],
+  [['Bengaluru', 'Booking Completed']],
+  [['Mysuru', 'Booking Completed'], ['Bengaluru', 'In Transit'], ['Hyderabad', 'Delivered']],
+  [['Bengaluru', 'Booking Completed'], ['Mumbai', 'In Transit']],
+  [['Hyderabad', 'Booking Completed'], ['Chennai', 'In Transit'], ['Chennai', 'Out for Delivery']],
+  [['Bengaluru', 'Booking Completed'], ['Mysuru', 'In Transit'], ['Mysuru', 'Delivered']],
+  [['Chennai', 'Booking Completed'], ['Bengaluru', 'In Transit']],
+  [['Bengaluru', 'Booking Completed']],
+] as const;
+
+function demoDate(daysAgo: number): string {
+  return new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+    .format(new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000));
+}
+
+const demoTrackingData: Record<string, TrackingTransaction[]> = Object.fromEntries(
+  demoRoutes.map((route, routeIndex) => {
+    const awb = demoAwbNumbers[routeIndex];
+    const transactions = route.map(([city, activity], eventIndex) => ({
+      Date: demoDate(route.length - eventIndex - 1),
+      Time: `${String(9 + eventIndex * 3).padStart(2, '0')}:30`,
+      City: city,
+      Activity: activity,
+      Forwardingno: awb,
+      Pod_no: awb,
+      Remarks: 'Illustrative demo tracking update',
+      Pieces: '1',
+      Weight: '1.0 kg',
+      Receiver: activity === 'Delivered' ? 'Demo Recipient' : '',
+      Type: 'Demo',
+    }));
+    return [awb, transactions];
+  }),
+);
+
 const trackingStages = [
   { label: 'Booking Completed', icon: PackageCheck, matches: (activity: string) => /booking|booked/i.test(activity) },
   { label: 'In Transit', icon: Truck, matches: (activity: string) => /transit|despatch|dispatch|outbound|arriv|received|hub/i.test(activity) },
@@ -398,7 +438,7 @@ export function ServicesPage() {
 export function TrackingPage() {
   const [consignment, setConsignment] = useState('');
   const [loading, setLoading] = useState(false);
-  const [trackingResult, setTrackingResult] = useState<{ trackingNumber: string; transactions: TrackingTransaction[] } | null>(null);
+  const [trackingResult, setTrackingResult] = useState<{ trackingNumber: string; transactions: TrackingTransaction[]; isDemo: boolean } | null>(null);
   const [trackingError, setTrackingError] = useState('');
   const [trackingNotice, setTrackingNotice] = useState('');
 
@@ -417,6 +457,16 @@ export function TrackingPage() {
     setTrackingResult(null);
     setTrackingError('');
     setTrackingNotice('');
+
+    const normalizedNumber = cleaned.toUpperCase();
+    const demoTransactions = demoTrackingData[normalizedNumber];
+    if (demoTransactions) {
+      setLoading(true);
+      await new Promise((resolve) => window.setTimeout(resolve, 350));
+      setTrackingResult({ trackingNumber: normalizedNumber, transactions: demoTransactions, isDemo: true });
+      setLoading(false);
+      return;
+    }
 
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 15_000);
@@ -453,6 +503,7 @@ export function TrackingPage() {
       setTrackingResult({
         trackingNumber: mostRecentField(transactions, 'Pod_no') || cleaned,
         transactions,
+        isDemo: false,
       });
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
@@ -512,6 +563,25 @@ export function TrackingPage() {
               </button>
             </div>
             <p>Enter the POD or consignment number from your booking receipt.</p>
+            <details className="tracking-demo-list">
+              <summary>Try a demo AWB <span>10 sample numbers</span></summary>
+              <div className="tracking-demo-numbers">
+                {demoAwbNumbers.map((number) => (
+                  <button
+                    type="button"
+                    key={number}
+                    onClick={() => {
+                      setConsignment(number);
+                      setTrackingResult(null);
+                      setTrackingError('');
+                      setTrackingNotice('');
+                    }}
+                  >
+                    {number}
+                  </button>
+                ))}
+              </div>
+            </details>
           </form>
 
           {loading && (
@@ -535,6 +605,11 @@ export function TrackingPage() {
 
           {trackingResult && (
             <section className="tracking-result" aria-label="Shipment tracking result">
+              {trackingResult.isDemo && (
+                <div className="tracking-demo-banner" role="note">
+                  Demo result — sample shipment events for preview only; this is not live carrier tracking.
+                </div>
+              )}
               <article className="tracking-status-panel">
                 <div className="tracking-status-topline">
                   <div className="tracking-status-icon"><Truck size={22} aria-hidden="true" /></div>

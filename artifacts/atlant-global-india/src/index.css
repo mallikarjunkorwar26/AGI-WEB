@@ -858,7 +858,15 @@ h1,h2,h3,p { margin-top:0; }
 .tracking-submit-button:hover:not(:disabled) { transform:translateY(-1px); background:#234e79; box-shadow:0 8px 18px rgba(24,59,97,.18); }
 .tracking-submit-button:disabled { cursor:wait; opacity:.8; }
 .tracking-search-card > p { margin:11px 0 0; color:#7b8995; font-size:12px; line-height:1.5; }
+.tracking-demo-list { margin-top:14px; border-top:1px solid #edf0f3; padding-top:12px; }
+.tracking-demo-list summary { display:flex; align-items:center; justify-content:space-between; gap:12px; color:#183b61; font-size:12px; font-weight:700; cursor:pointer; list-style:none; }
+.tracking-demo-list summary::-webkit-details-marker { display:none; }
+.tracking-demo-list summary span { color:#82909c; font-size:11px; font-weight:500; }
+.tracking-demo-numbers { display:grid; grid-template-columns:repeat(auto-fit,minmax(125px,1fr)); gap:8px; margin-top:12px; }
+.tracking-demo-numbers button { min-height:36px; border:1px solid #dce5ec; border-radius:9px; background:#f8fafc; color:#315675; font:600 11px var(--app-font-sans); cursor:pointer; transition:background .2s,border-color .2s; }
+.tracking-demo-numbers button:hover { border-color:#9eb3c5; background:#eef3f8; }
 .tracking-result { display:flex; flex-direction:column; gap:16px; margin:28px auto 0; animation:tracking-enter .35s ease both; }
+.tracking-demo-banner { border:1px solid #ead8b0; border-radius:12px; background:#fff9e9; color:#71521f; padding:12px 16px; font-size:12px; line-height:1.5; }
 .tracking-status-panel,.tracking-journey-card { padding:24px; }
 .tracking-status-topline { display:flex; align-items:center; gap:14px; }
 .tracking-status-icon { display:grid; width:48px; height:48px; flex:0 0 auto; place-items:center; border-radius:14px; background:#eef3f8; color:#183b61; }
