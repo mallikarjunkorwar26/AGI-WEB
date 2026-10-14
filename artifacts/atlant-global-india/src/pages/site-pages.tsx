@@ -133,7 +133,7 @@ function trackingErrorForStatus(status: number): string {
     case 404:
       return 'We couldn’t find tracking information for that consignment number.';
     case 429:
-      return 'Our tracking service is busy right now. Please wait a moment and try again.';
+      return 'You’ve reached the tracking request limit. Please wait up to one minute, then try again.';
     case 500:
       return 'We’re experiencing a technical issue. Please try again shortly.';
     case 502:

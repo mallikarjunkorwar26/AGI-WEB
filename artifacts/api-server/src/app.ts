@@ -8,24 +8,53 @@ import { logger } from "./lib/logger";
 const app: Express = express();
 
 const simpleRateLimiter = (req: Request, res: Response, next: NextFunction) => {
+  if (req.method !== "POST") return next();
+
   const windowMs = 60_000;
-  const limit = 30;
-  const key = `${req.ip ?? "unknown"}:${req.path}`;
+  const route = req.originalUrl.split("?")[0].replace(/\/+$/, "") || "/";
+  const limit = route === "/api/tracking" ? 10 : 30;
+  const key = `${req.ip ?? req.socket.remoteAddress ?? "unknown"}:${route}`;
   const now = Date.now();
-  const current = (globalThis as typeof globalThis & { __agiRateLimit?: Map<string, { count: number; resetAt: number }> }).__agiRateLimit ?? new Map();
-  (globalThis as typeof globalThis & { __agiRateLimit?: Map<string, { count: number; resetAt: number }> }).__agiRateLimit = current;
+  const rateState = globalThis as typeof globalThis & {
+    __agiRateLimit?: Map<string, { count: number; resetAt: number }>;
+    __agiRateLimitSweepCount?: number;
+  };
+  const current = rateState.__agiRateLimit ?? new Map<string, { count: number; resetAt: number }>();
+  rateState.__agiRateLimit = current;
+  rateState.__agiRateLimitSweepCount = (rateState.__agiRateLimitSweepCount ?? 0) + 1;
+
+  if (rateState.__agiRateLimitSweepCount % 128 === 0) {
+    for (const [entryKey, entry] of current) {
+      if (entry.resetAt <= now) current.delete(entryKey);
+    }
+  }
+  while (current.size >= 10_000 && !current.has(key)) {
+    const oldestKey = current.keys().next().value;
+    if (oldestKey === undefined) break;
+    current.delete(oldestKey);
+  }
 
   const previous = current.get(key);
-  if (!previous || previous.resetAt < now) {
+  if (!previous || previous.resetAt <= now) {
     current.set(key, { count: 1, resetAt: now + windowMs });
+    res.setHeader("RateLimit-Limit", String(limit));
+    res.setHeader("RateLimit-Remaining", String(limit - 1));
+    res.setHeader("RateLimit-Reset", String(Math.ceil((now + windowMs) / 1000)));
     return next();
   }
 
   if (previous.count >= limit) {
+    res.setHeader("RateLimit-Limit", String(limit));
+    res.setHeader("RateLimit-Remaining", "0");
+    res.setHeader("RateLimit-Reset", String(Math.ceil(previous.resetAt / 1000)));
+    res.setHeader("Retry-After", String(Math.max(1, Math.ceil((previous.resetAt - now) / 1000))));
     return res.status(429).json({ ok: false, message: "Too many requests. Please try again shortly." });
   }
 
   previous.count += 1;
+  res.setHeader("RateLimit-Limit", String(limit));
+  res.setHeader("RateLimit-Remaining", String(limit - previous.count));
+  res.setHeader("RateLimit-Reset", String(Math.ceil(previous.resetAt / 1000)));
   return next();
 };
 
