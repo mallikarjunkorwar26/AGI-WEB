@@ -14,7 +14,6 @@ import {
 import { Link, Route, Router as WouterRouter, Switch, useLocation } from 'wouter';
 import {
   AboutPage,
-  AssistPage,
   BusinessPage,
   CareersPage,
   ContactPage,
@@ -44,10 +43,6 @@ const pageMeta: Record<string, { title: string; description: string }> = {
     title: 'Shipment Tracking | Atlant Global India',
     description:
       'Enter your AWB or CNOTE number on this page to review the latest shipment status without leaving the Atlant Global India website.',
-  },
-  '/assist': {
-    title: 'AGI Assist | Atlant Global India',
-    description: 'Meet AGI Assist. Chat support is coming soon; track a shipment or contact the Atlant Global India team in the meantime.',
   },
   '/opportunities': {
     title: 'Opportunities at Atlant Global India | Careers & Business',
@@ -300,7 +295,6 @@ function SiteRoutes() {
           <Route path="/" component={HomePage} />
           <Route path="/services" component={ServicesPage} />
           <Route path="/tracking" component={TrackingPage} />
-          <Route path="/assist" component={AssistPage} />
           <Route path="/opportunities" component={OpportunitiesPage} />
           <Route path="/business" component={BusinessPage} />
           <Route path="/about" component={AboutPage} />
@@ -316,6 +310,7 @@ function SiteRoutes() {
 
 function RouterApp() {
   const [location] = useLocation();
+  const [assistOpen, setAssistOpen] = useState(false);
 
   return (
     <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
@@ -328,10 +323,24 @@ function RouterApp() {
         </ErrorBoundary>
         <SiteFooter />
       </div>
-      <Link className="agi-assist-launcher" href="/assist" aria-label="Open AGI Assist chat page">
-        <MessageCircle size={20} aria-hidden="true" />
+      {assistOpen && (
+        <section className="agi-chat-panel" aria-label="AGI Assist chat" aria-live="polite">
+          <header className="agi-chat-header">
+            <span className="agi-chat-avatar"><MessageCircle size={20} /></span>
+            <span className="agi-chat-title"><strong>AGI Assist</strong><small>Chat support coming soon</small></span>
+            <button className="agi-chat-close" type="button" onClick={() => setAssistOpen(false)} aria-label="Close AGI Assist"><X size={18} /></button>
+          </header>
+          <div className="agi-chat-messages">
+            <div className="agi-chat-message">Hi! I’m AGI Assist. I’ll be here to help with your courier questions soon.</div>
+            <Link className="btn btn-primary agi-chat-track-link" href="/tracking" onClick={() => setAssistOpen(false)}>Track a shipment <ArrowRight size={14} /></Link>
+          </div>
+          <div className="agi-chat-footer">Messaging will be available soon.</div>
+        </section>
+      )}
+      <button className="agi-assist-launcher" type="button" onClick={() => setAssistOpen((open) => !open)} aria-expanded={assistOpen} aria-label={assistOpen ? 'Close AGI Assist' : 'Open AGI Assist'}>
+        {assistOpen ? <X size={20} aria-hidden="true" /> : <MessageCircle size={20} aria-hidden="true" />}
         <span>AGI Assist</span>
-      </Link>
+      </button>
     </WouterRouter>
   );
 }
