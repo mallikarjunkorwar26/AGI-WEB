@@ -1,23 +1,19 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, ArrowRight } from 'lucide-react';
+import { Link } from 'wouter';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md mx-4">
-        <CardContent className="pt-6">
-          <div className="flex mb-4 gap-2">
-            <AlertCircle className="h-8 w-8 text-red-500" />
-            <h1 className="text-2xl font-bold text-gray-900">
-              404 Page Not Found
-            </h1>
-          </div>
-
-          <p className="mt-4 text-sm text-gray-600">
-            Did you forget to add the page to the router?
-          </p>
-        </CardContent>
-      </Card>
-    </div>
+    <section className="site-error-page">
+      <div className="site-error-card">
+        <span className="site-error-icon"><AlertCircle size={25} aria-hidden="true" /></span>
+        <span className="site-error-code">404 · Page not found</span>
+        <h1>Oops! The page you're looking for could not be found.</h1>
+        <p>The link may be out of date, or the page may have moved.</p>
+        <div className="site-error-actions">
+          <Link className="btn btn-primary" href="/">Go to Homepage <ArrowRight size={14} /></Link>
+          <button className="btn btn-outline" type="button" onClick={() => window.history.back()}>Go Back</button>
+        </div>
+      </div>
+    </section>
   );
 }

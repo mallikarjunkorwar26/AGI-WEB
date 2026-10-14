@@ -1,65 +1,140 @@
-import { useMemo, useState, type FormEvent } from 'react';
+import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link } from 'wouter';
 import {
   ArrowRight,
   ArrowUpRight,
   Building2,
   Check,
+  CheckCircle2,
   ChevronDown,
   Clock3,
+  Circle,
   FileText,
   Globe2,
   Headset,
   MapPin,
   PackageCheck,
   Phone,
+  Search,
   Truck,
   Warehouse,
 } from 'lucide-react';
 
-const OFFICIAL_TRACKING = 'https://www.tpcindia.com/multiple-tracking.aspx';
 const EMAIL = 'connect@atlantglobalindia.com';
 const PHONE = '+917411708958';
-const STOCK_NOTE = 'Representative stock photography via Pexels; not Atlant Global India-owned imagery.';
+type TrackingTransaction = Record<string, unknown>;
+
+const trackingStages = [
+  { label: 'Booking Completed', icon: PackageCheck, matches: (activity: string) => /booking|booked/i.test(activity) },
+  { label: 'In Transit', icon: Truck, matches: (activity: string) => /transit|despatch|dispatch|outbound|arriv|received|hub/i.test(activity) },
+  { label: 'Out for Delivery', icon: MapPin, matches: (activity: string) => /out\s*for\s*delivery/i.test(activity) },
+  { label: 'Delivered', icon: CheckCircle2, matches: (activity: string) => /delivered/i.test(activity) },
+];
+
+const trackingHistoryFields = [
+  'Date',
+  'Time',
+  'City',
+  'Activity',
+  'Forwardingno',
+  'Pod_no',
+  'Remarks',
+  'Pieces',
+  'Weight',
+  'Receiver',
+  'Receiver Phno',
+  'Stamp',
+  'Refno',
+  'Idproof',
+  'Type',
+];
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function trackingTransactionsFrom(value: unknown): TrackingTransaction[] {
+  if (Array.isArray(value)) {
+    return value.filter(isRecord);
+  }
+
+  if (!isRecord(value)) {
+    return [];
+  }
+
+  if (Array.isArray(value.transactions)) {
+    return value.transactions.filter(isRecord);
+  }
+
+  if (Array.isArray(value.data)) {
+    return value.data.filter(isRecord);
+  }
+
+  return typeof value.Activity === 'string' ? [value] : [];
+}
+
+function trackingField(transaction: TrackingTransaction | undefined, field: string): string {
+  const value = transaction?.[field];
+  return typeof value === 'string' || typeof value === 'number' ? String(value).trim() : '';
+}
+
+function mostRecentField(transactions: TrackingTransaction[], field: string): string {
+  for (let index = transactions.length - 1; index >= 0; index -= 1) {
+    const value = trackingField(transactions[index], field);
+    if (value) return value;
+  }
+  return '';
+}
+
+function trackingErrorForStatus(status: number): string {
+  switch (status) {
+    case 400:
+      return 'That consignment number doesn’t look valid. Please check it and try again.';
+    case 404:
+      return 'We couldn’t find tracking information for that consignment number.';
+    case 429:
+      return 'Our tracking service is busy right now. Please wait a moment and try again.';
+    case 500:
+      return 'We’re experiencing a technical issue. Please try again shortly.';
+    case 502:
+      return 'Our service is temporarily unavailable. Please try again in a few moments.';
+    case 503:
+      return 'Our server is currently busy or temporarily unavailable. We’re working to restore the service.';
+    case 504:
+      return 'The request took too long to complete. Please try again.';
+    default:
+      return 'We couldn’t retrieve tracking information right now. Please try again shortly.';
+  }
+}
 
 const services = [
   {
     title: 'Domestic',
     text: 'Courier and cargo services for shipments moving across India.',
-    image: 'https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=1000',
-    alt: 'Warehouse team handling cartons in a logistics facility',
     icon: PackageCheck,
     features: ['Courier', 'Cargo', 'Domestic destinations'],
   },
   {
     title: 'Pro Premium',
     text: 'A time-sensitive service option for important documents and consignments.',
-    image: 'https://images.pexels.com/photos/6169056/pexels-photo-6169056.jpeg?auto=compress&cs=tinysrgb&w=1000',
-    alt: 'Courier professional preparing a parcel',
     icon: FileText,
     features: ['AM–PM delivery', 'Visa applications', 'Legal and important documents'],
   },
   {
     title: 'Priority Class',
     text: 'Express courier and cargo services for business requirements.',
-    image: 'https://images.pexels.com/photos/4246120/pexels-photo-4246120.jpeg?auto=compress&cs=tinysrgb&w=1000',
-    alt: 'Parcels being sorted for onward shipment',
     icon: Truck,
     features: ['Business shipments', 'Express delivery', 'Cargo'],
   },
   {
     title: 'International',
     text: 'International courier and cargo connectivity through The Professional Couriers network and applicable partners.',
-    image: 'https://images.pexels.com/photos/1427541/pexels-photo-1427541.jpeg?auto=compress&cs=tinysrgb&w=1000',
-    alt: 'Freight containers at a commercial port',
     icon: Globe2,
     features: ['Courier', 'Cargo', 'International destinations'],
   },
   {
     title: 'Warehousing',
     text: 'Storage, handling and distribution support at the Kudlu Gate facility.',
-    image: 'https://images.pexels.com/photos/4481259/pexels-photo-4481259.jpeg?auto=compress&cs=tinysrgb&w=1000',
-    alt: 'Warehouse aisle with stored goods and logistics equipment',
     icon: Warehouse,
     features: ['Kudlu Gate hub', 'Storage', 'Handling and distribution'],
   },
@@ -76,7 +151,7 @@ const faqs = [
   },
   {
     q: 'How do I check a consignment?',
-    a: 'Use The Professional Couriers official tracking service. This website does not display shipment status or create tracking updates.',
+    a: 'Enter the AWB or CNOTE number on the tracking page to view the latest shipment status directly on this website.',
   },
   {
     q: 'What services are available?',
@@ -106,25 +181,60 @@ function PageHeading({
 
 function QuoteForm() {
   const [submitted, setSubmitted] = useState(false);
-  const submitQuote = (event: FormEvent<HTMLFormElement>) => {
+  const [submittedViaEmail, setSubmittedViaEmail] = useState(false);
+  const submitQuote = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const subject = encodeURIComponent(`Shipping enquiry — ${data.get('name')}`);
+    const payload = {
+      customerName: String(data.get('name') ?? ''),
+      company: String(data.get('company') ?? ''),
+      email: String(data.get('email') ?? ''),
+      phone: String(data.get('mobile') ?? ''),
+      service: String(data.get('type') ?? ''),
+      requirements: [
+        `Pickup: ${data.get('pickup') ?? 'Not provided'}`,
+        `Delivery: ${data.get('delivery') ?? 'Not provided'}`,
+        `Weight: ${data.get('weight') ?? 'Not provided'}`,
+        `Dimensions: ${data.get('dimensions') ?? 'Not provided'}`,
+        `Monthly volume: ${data.get('volume') ?? 'Not provided'}`,
+        `Requirement: ${data.get('requirement') ?? 'Not provided'}`,
+      ].join(' | '),
+      location: String(data.get('pickup') ?? ''),
+      source: 'website-quote-form',
+    };
+
+    try {
+      const response = await fetch('/api/quotes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        return;
+      }
+    } catch (error) {
+      console.warn('Quote submission API unavailable, falling back to email client', error);
+    }
+
+    const subject = encodeURIComponent(`Shipping enquiry — ${payload.customerName}`);
     const body = encodeURIComponent(
       [
-        `Name: ${data.get('name')}`,
-        `Company: ${data.get('company') || 'Not provided'}`,
-        `Mobile: ${data.get('mobile')}`,
-        `Email: ${data.get('email')}`,
-        `Pickup: ${data.get('pickup')}`,
-        `Delivery: ${data.get('delivery')}`,
-        `Shipment type: ${data.get('type')}`,
+        `Name: ${payload.customerName}`,
+        `Company: ${payload.company || 'Not provided'}`,
+        `Mobile: ${payload.phone}`,
+        `Email: ${payload.email}`,
+        `Pickup: ${data.get('pickup') ?? 'Not provided'}`,
+        `Delivery: ${data.get('delivery') ?? 'Not provided'}`,
+        `Shipment type: ${payload.service}`,
         `Weight: ${data.get('weight') || 'Not provided'}`,
         `Dimensions: ${data.get('dimensions') || 'Not provided'}`,
         `Monthly volume: ${data.get('volume') || 'Not provided'}`,
         `Requirement: ${data.get('requirement') || 'Not provided'}`,
       ].join('\n'),
     );
+    setSubmittedViaEmail(true);
     setSubmitted(true);
     window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
   };
@@ -153,14 +263,14 @@ function QuoteForm() {
       </div>
       <button className="btn btn-primary" type="submit" data-testid="button-request-quote">Request a quote <ArrowRight size={14} /></button>
       <p className="form-disclaimer">
-        No backend is connected. This form opens your default email app with the
-        details you entered addressed to {EMAIL}. Review and send the email to
-        submit your enquiry.
+        Your enquiry is submitted through a secure website API when the backend is available.
+        If the API is temporarily unavailable, this form falls back to your email application for delivery to {EMAIL}.
       </p>
       {submitted && (
-        <div className="success-message" role="status">
-          Your email app should open with your enquiry. If it did not, email{' '}
-          <a href={`mailto:${EMAIL}`}>{EMAIL}</a> directly.
+        <div className={submittedViaEmail ? 'error-message' : 'success-message'} role="status">
+          {submittedViaEmail
+            ? <>Your email application has opened with the enquiry details. Please send the message to complete submission. You can also email <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</>
+            : 'Your enquiry has been submitted successfully.'}
         </div>
       )}
     </form>
@@ -171,11 +281,6 @@ export function HomePage() {
   return (
     <>
       <section className="hero">
-        <img
-          className="hero-photo"
-          src="https://images.pexels.com/photos/6169056/pexels-photo-6169056.jpeg?auto=compress&cs=tinysrgb&w=2000"
-          alt="Courier professional handling a parcel in a logistics workspace"
-        />
         <div className="hero-content">
           <div className="eyebrow">Local knowledge. Wider reach.</div>
           <h1>Move more.<br />Deliver further.</h1>
@@ -207,7 +312,7 @@ export function HomePage() {
       <section className="section">
         <div className="container intro-grid">
           <div className="intro-photo-wrap">
-            <img className="intro-photo" src="https://images.pexels.com/photos/4481259/pexels-photo-4481259.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Warehouse aisle with goods and logistics equipment" loading="lazy" />
+            <div className="intro-photo intro-operations-visual" role="img" aria-label="Atlant Global India logistics operations"><Warehouse size={62} strokeWidth={1.2} /><span>Operations hub</span><strong>Kudlu Gate · Bengaluru</strong></div>
             <div className="photo-caption">Bengaluru operations, connected to a wider network.</div>
           </div>
           <div className="intro-copy">
@@ -257,7 +362,7 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
   const Icon = service.icon;
   return (
     <article className="service-card">
-      <img className="service-photo" src={service.image} alt={service.alt} loading="lazy" />
+      <div className="service-photo service-visual" aria-hidden="true"><Icon size={38} strokeWidth={1.4} /></div>
       <div className="service-body">
         <h3><Icon size={17} aria-hidden="true" /> {service.title}</h3>
         <p>{service.text}</p>
@@ -277,14 +382,13 @@ export function ServicesPage() {
           <div className="service-grid">
             {services.map((service) => <ServiceCard key={service.title} service={service} />)}
           </div>
-          <p className="service-notice">{STOCK_NOTE}</p>
         </div>
       </section>
       <section className="section dark-section">
         <div className="container service-support">
           <div><div className="section-label">Need help choosing?</div><h2>Tell us where it’s going.</h2><p className="section-lead">Share your pickup, delivery and shipment details. The team can help you discuss the available service options.</p></div>
           <div className="service-callout"><Check size={20} /><p>Pickup is available through nearby branches. Atlant Global India serves Bengaluru South and East.</p><Link className="btn btn-outline" href="/contact">Find contact details <ArrowRight size={14} /></Link></div>
-          <div className="service-callout"><PackageCheck size={20} /><p>For a consignment already in transit, use The Professional Couriers official tracking page.</p><Link className="btn btn-outline" href="/tracking">Track a shipment <ArrowRight size={14} /></Link></div>
+          <div className="service-callout"><PackageCheck size={20} /><p>For a consignment already in transit, use our tracking page to see the latest status without leaving the website.</p><Link className="btn btn-outline" href="/tracking">Track a shipment <ArrowRight size={14} /></Link></div>
         </div>
       </section>
     </>
@@ -293,37 +397,931 @@ export function ServicesPage() {
 
 export function TrackingPage() {
   const [consignment, setConsignment] = useState('');
-  const [message, setMessage] = useState('');
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const [loading, setLoading] = useState(false);
+  const [trackingResult, setTrackingResult] = useState<{ trackingNumber: string; transactions: TrackingTransaction[] } | null>(null);
+  const [trackingError, setTrackingError] = useState('');
+  const [trackingNotice, setTrackingNotice] = useState('');
+
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!consignment.trim()) {
-      setMessage('Enter your CNOTE / AWB number to continue.');
+    const cleaned = consignment.trim();
+
+    if (!cleaned) {
+      setTrackingResult(null);
+      setTrackingNotice('');
+      setTrackingError('Enter your consignment number to start tracking.');
       return;
     }
-    setMessage('The official tracking page is open in a new tab. Keep your CNOTE / AWB number ready to enter there.');
-    window.open(OFFICIAL_TRACKING, '_blank', 'noopener,noreferrer');
+
+    setLoading(true);
+    setTrackingResult(null);
+    setTrackingError('');
+    setTrackingNotice('');
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 15_000);
+
+    try {
+      const response = await fetch('/api/tracking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ trackingNumber: cleaned, source: 'website' }),
+        signal: controller.signal,
+      });
+      const responseText = await response.text();
+      if (!response.ok) {
+        setTrackingError(trackingErrorForStatus(response.status));
+        return;
+      }
+
+      let payload: unknown;
+      try {
+        payload = JSON.parse(responseText);
+      } catch {
+        setTrackingError('The tracking service returned an unreadable response. Please try again later.');
+        return;
+      }
+
+      const transactions = trackingTransactionsFrom(payload);
+      if (transactions.length === 0) {
+        setTrackingNotice(
+          `We couldn’t find tracking events for ${cleaned} yet. Please check the number or try again later.`,
+        );
+        return;
+      }
+
+      setTrackingResult({
+        trackingNumber: mostRecentField(transactions, 'Pod_no') || cleaned,
+        transactions,
+      });
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        setTrackingError(trackingErrorForStatus(504));
+      } else {
+        setTrackingError('We couldn’t connect to the tracking service. Please check your connection and try again.');
+      }
+    } finally {
+      window.clearTimeout(timeout);
+      setLoading(false);
+    }
   };
+
+  const transactions = trackingResult?.transactions ?? [];
+  const latestTransaction = transactions[transactions.length - 1];
+  const latestActivity = trackingField(latestTransaction, 'Activity') || 'Tracking update';
+  const currentStageIndex = (() => {
+    for (let index = transactions.length - 1; index >= 0; index -= 1) {
+      const stageIndex = trackingStages.findIndex((stage) =>
+        stage.matches(trackingField(transactions[index], 'Activity')),
+      );
+      if (stageIndex >= 0) return stageIndex;
+    }
+    return -1;
+  })();
+  const bookingTransaction = transactions.find((transaction) =>
+    /booking|booked/i.test(trackingField(transaction, 'Activity')),
+  );
+
+  return (
+    <div className="tracking-page">
+      <section className="tracking-page-hero">
+        <div className="container tracking-page-container">
+          <div className="tracking-page-heading">
+            <span className="tracking-page-eyebrow">Shipment visibility</span>
+            <h1>Track Your Shipment</h1>
+            <p>Your shipment journey, just a click away.</p>
+          </div>
+
+          <form className="tracking-search-card" onSubmit={submit}>
+            <label htmlFor="track-number">Consignment number</label>
+            <div className="tracking-search-controls">
+              <div className="tracking-search-input">
+                <Search size={20} aria-hidden="true" />
+                <input
+                  id="track-number"
+                  autoComplete="off"
+                  value={consignment}
+                  onChange={(event) => setConsignment(event.target.value)}
+                  placeholder="e.g. BLR4550068765"
+                  aria-describedby={trackingError ? 'tracking-feedback' : undefined}
+                  data-testid="input-tracking-number"
+                />
+              </div>
+              <button className="tracking-submit-button" type="submit" disabled={loading} data-testid="button-track">
+                {loading ? <><span className="tracking-spinner" aria-hidden="true" />Searching</> : <>Track Now <ArrowRight size={17} aria-hidden="true" /></>}
+              </button>
+            </div>
+            <p>Enter the POD or consignment number from your booking receipt.</p>
+          </form>
+
+          {loading && (
+            <div className="tracking-feedback tracking-loading" role="status" aria-live="polite">
+              <span className="tracking-spinner" aria-hidden="true" />
+              <span>Finding your latest shipment updates…</span>
+            </div>
+          )}
+          {trackingError && (
+            <div className="tracking-feedback tracking-feedback-error" id="tracking-feedback" role="alert">
+              <Circle size={18} aria-hidden="true" />
+              <span>{trackingError}</span>
+            </div>
+          )}
+          {trackingNotice && (
+            <div className="tracking-feedback tracking-feedback-notice" role="status">
+              <PackageCheck size={19} aria-hidden="true" />
+              <span>{trackingNotice}</span>
+            </div>
+          )}
+
+          {trackingResult && (
+            <section className="tracking-result" aria-label="Shipment tracking result">
+              <article className="tracking-status-panel">
+                <div className="tracking-status-topline">
+                  <div className="tracking-status-icon"><Truck size={22} aria-hidden="true" /></div>
+                  <div className="tracking-status-copy">
+                    <span>Current shipment status</span>
+                    <h2>{latestActivity}</h2>
+                  </div>
+                  <span className="tracking-status-badge"><span />{latestActivity}</span>
+                </div>
+                <div className="tracking-latest-event">
+                  <MapPin size={17} aria-hidden="true" />
+                  <span>{trackingField(latestTransaction, 'City') || 'Location not provided'}</span>
+                  {trackingField(latestTransaction, 'Date') && <span>{trackingField(latestTransaction, 'Date')}</span>}
+                  {trackingField(latestTransaction, 'Time') && <span>{trackingField(latestTransaction, 'Time')}</span>}
+                </div>
+              </article>
+
+              <section className="tracking-journey-card" aria-labelledby="tracking-journey-title">
+                <div className="tracking-section-heading">
+                  <div>
+                    <span>Progress</span>
+                    <h2 id="tracking-journey-title">Shipment journey</h2>
+                  </div>
+                  <span>{trackingResult.trackingNumber}</span>
+                </div>
+                <ol className="tracking-timeline">
+                  {trackingStages.map((stage, index) => {
+                    const StageIcon = stage.icon;
+                    let stageEvent: TrackingTransaction | undefined;
+                    for (let eventIndex = transactions.length - 1; eventIndex >= 0; eventIndex -= 1) {
+                      if (stage.matches(trackingField(transactions[eventIndex], 'Activity'))) {
+                        stageEvent = transactions[eventIndex];
+                        break;
+                      }
+                    }
+                    const completed = currentStageIndex >= index;
+                    const current = currentStageIndex === index;
+
+                    return (
+                      <li className={`tracking-stage${completed ? ' is-complete' : ''}${current ? ' is-current' : ''}`} key={stage.label}>
+                        <span className="tracking-stage-icon"><StageIcon size={18} aria-hidden="true" /></span>
+                        <div className="tracking-stage-content">
+                          <h3>{stage.label}</h3>
+                          {stageEvent ? (
+                            <p>
+                              {trackingField(stageEvent, 'Date') && <span>{trackingField(stageEvent, 'Date')}</span>}
+                              {trackingField(stageEvent, 'Time') && <span>{trackingField(stageEvent, 'Time')}</span>}
+                              {trackingField(stageEvent, 'City') && <span><MapPin size={13} aria-hidden="true" />{trackingField(stageEvent, 'City')}</span>}
+                            </p>
+                          ) : <small>{completed ? 'Completed' : 'Awaiting update'}</small>}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </section>
+
+              <section className="tracking-details-card" aria-label="Shipment details">
+                <div className="tracking-detail">
+                  <span>POD Number</span>
+                  <strong>{mostRecentField(transactions, 'Pod_no') || trackingResult.trackingNumber}</strong>
+                </div>
+                <div className="tracking-detail">
+                  <span>Receiver Name</span>
+                  <strong>{mostRecentField(transactions, 'Receiver') || 'Not provided'}</strong>
+                </div>
+                <div className="tracking-detail">
+                  <span>Booking Date</span>
+                  <strong>{trackingField(bookingTransaction, 'Date') || trackingField(transactions[0], 'Date') || 'Not provided'}</strong>
+                </div>
+                <div className="tracking-detail">
+                  <span>Pieces</span>
+                  <strong>{mostRecentField(transactions, 'Pieces') || 'Not provided'}</strong>
+                </div>
+              </section>
+
+              <details className="tracking-history">
+                <summary><span>View Tracking History</span><ChevronDown size={18} aria-hidden="true" /></summary>
+                <div className="tracking-history-list">
+                  {transactions.slice().reverse().map((transaction, index) => (
+                    <article className="tracking-history-event" key={`${trackingField(transaction, 'Forwardingno')}-${trackingField(transaction, 'Date')}-${index}`}>
+                      <div className="tracking-history-event-heading">
+                        <h3>{trackingField(transaction, 'Activity') || 'Shipment update'}</h3>
+                        <span>{[trackingField(transaction, 'Date'), trackingField(transaction, 'Time')].filter(Boolean).join(' · ') || 'Time not provided'}</span>
+                      </div>
+                      <p><MapPin size={14} aria-hidden="true" />{trackingField(transaction, 'City') || 'Location not provided'}</p>
+                      <dl>
+                        {trackingHistoryFields.filter((field) => !['Date', 'Time', 'City', 'Activity'].includes(field) && trackingField(transaction, field)).map((field) => (
+                          <div key={field}><dt>{field}</dt><dd>{trackingField(transaction, field)}</dd></div>
+                        ))}
+                      </dl>
+                    </article>
+                  ))}
+                </div>
+              </details>
+            </section>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+const careerJobs = [
+  {
+    id: 'telesales-executive',
+    title: 'Telesales Executive',
+    department: 'Sales & Business Development',
+    location: 'BTM Corporate Office',
+    experience: '1–3 Years',
+    type: 'Full Time',
+    postedDate: '12 Sep 2026',
+    deadline: 'Open until filled',
+    summary: 'Contact existing and inactive customers regularly, follow up on digital leads, maintain service records, and help convert sales opportunities through clear communication and consistent customer follow-up.',
+    responsibilities: [
+      'Contact existing customers regularly to collect service feedback and understand business requirements.',
+      'Reach out to stopped or inactive customers to revive business and encourage repeat engagement.',
+      'Handle digital marketing campaign enquiries and lead follow-ups in a timely manner.',
+      'Maintain accurate customer call logs, feedback records, and lead tracking data.',
+      'Coordinate with internal teams to resolve customer queries and service requests efficiently.',
+      'Monitor branch CCTV systems and report operational or security concerns promptly.',
+      'Identify additional customer needs and business opportunities through regular interaction.',
+      'Prepare daily and weekly call reports, follow-up logs, and lead status updates.',
+    ],
+    qualifications: [
+      'Minimum 2 years of experience in telesales, telecalling, customer service or a similar field.',
+      'Good verbal communication and customer interaction skills.',
+      'Comfort with outbound calls, lead follow-up and service-driven sales conversations.',
+      'Proficiency in MS Office applications and basic reporting discipline.',
+    ],
+    skills: [
+      'Customer communication',
+      'Lead follow-up',
+      'Relationship management',
+      'Sales coordination',
+      'Reporting discipline',
+    ],
+    preferredSkills: [
+      'Experience in logistics, courier or field sales environments',
+      'CRM or lead tracking system exposure',
+      'Ability to work in a target-driven environment',
+    ],
+    offer: [
+      'Performance-based incentives and recognition',
+      'Structured sales coaching and customer interaction development',
+      'Growth opportunities in internal sales and business roles',
+    ],
+  },
+  {
+    id: 'business-development-manager',
+    title: 'Business Development Manager',
+    department: 'Operations / Branch Management',
+    location: 'Bommasandra, Mahadevapura',
+    experience: '5+ Years',
+    type: 'Full Time',
+    postedDate: '18 Sep 2026',
+    deadline: 'Open until filled',
+    summary: 'Drive new business by generating leads, coordinating with branch teams, securing client acquisition, and improving branch revenue through customer retention and strategic sales conversion.',
+    responsibilities: [
+      'Generate leads through cold calling and field work.',
+      'Identify profitable business opportunities and customer expansion areas.',
+      'Coordinate with delivery executives, branches, and territory heads for verified leads.',
+      'Schedule customer meetings, support quotation approvals, and follow up on conversion.',
+      'Share consignments and customer information with the customer care team on time.',
+      'Escalate customer issues and coordinate with management on tailored client needs.',
+      'Drive monthly performance reviews and strengthen client retention.',
+      'Upsell and cross-sell services to existing and potential clients.',
+      'Manage RFQ documents and maintain daily and monthly reports.',
+      'Support revenue generation for assigned branches and sectors.',
+    ],
+    qualifications: [
+      '5+ years of experience in courier, express cargo or logistics operations.',
+      'Graduate-level qualification preferred.',
+      'Strong customer communication, coordination and relationship-building capability.',
+      'Comfortable working with field calls, branch teams and business conversion goals.',
+    ],
+    skills: [
+      'Business development',
+      'Lead generation',
+      'Client acquisition',
+      'Branch coordination',
+      'Reporting',
+    ],
+    preferredSkills: [
+      'Prior experience in Bengaluru operations',
+      'Strong understanding of branch-level logistics workflows',
+      'Ability to manage corporate and SME client relationships',
+    ],
+    offer: [
+      'Business travel and team collaboration opportunities',
+      'Leadership growth in regional commercial roles',
+      'Exposure to high-value client and network operations',
+    ],
+  },
+  {
+    id: 'receptionist',
+    title: 'Receptionist',
+    department: 'Administration / Front Office',
+    location: 'Agara, Sarakki',
+    experience: '0–2 Years',
+    type: 'Full Time',
+    postedDate: '20 Sep 2026',
+    deadline: 'Open until filled',
+    summary: 'Welcome customers, answer queries, manage front-office operations, and ensure a smooth customer experience at the branch while supporting branch administrative activities.',
+    responsibilities: [
+      'Answer customer queries and share information about company services.',
+      'Handle customer complaints and concerns in a professional manner.',
+      'Support branch system work including data entry and documentation.',
+      'Assist with filing, record upkeep and administrative coordination.',
+      'Provide a positive experience to walk-in customers and callers.',
+      'Coordinate with internal teams to support branch operations.',
+    ],
+    qualifications: [
+      'Good communication and presentation skills.',
+      'Familiarity with office systems and basic computer usage.',
+      'Professional and customer-friendly attitude.',
+      'Basic knowledge of courier services is preferred.',
+    ],
+    skills: [
+      'Customer support',
+      'Office coordination',
+      'Documentation',
+      'Branch front office',
+      'Service orientation',
+    ],
+    preferredSkills: [
+      'Front office or customer support experience',
+      'Comfortable operating a branch reception desk',
+      'Experience with internal service coordination',
+    ],
+    offer: [
+      'Supportive branch environment and structured onboarding',
+      'Exposure to customer-facing logistics operations',
+      'Opportunity to grow in administrative and operations roles',
+    ],
+  },
+  {
+    id: 'branch-manager',
+    title: 'Branch Manager',
+    department: 'Operations / Branch Management',
+    location: 'Hoskote, Nagnathpura',
+    experience: '3–5 Years',
+    type: 'Full Time',
+    postedDate: '25 Sep 2026',
+    deadline: 'Open until filled',
+    summary: 'Lead branch operations, maintain service standards, manage staff discipline, improve customer experience, and drive branch-level performance and revenue growth.',
+    responsibilities: [
+      'Maintain branch reporting discipline and operational timelines.',
+      'Monitor attendance and reporting of delivery executives and reception staff.',
+      'Assign delivery routes and ensure all shipments are delivered and picked up on time.',
+      'Ensure branch receipt of parcels and documents as per SLA from the operations hub.',
+      'Review staff performance and ensure daily task completion.',
+      'Inspect delivery routes and verify adherence to service levels.',
+      'Check holding shipments, return consignments and update records accurately.',
+      'Manage customer relationships and resolve branch-related complaints.',
+      'Ensure collections and pending accounts are routed for follow-up appropriately.',
+      'Assign pickup schedules and monitor daily execution.',
+      'Coordinate with sales teams on customer leads and branch growth opportunities.',
+    ],
+    qualifications: [
+      'Strong leadership and operational control skills.',
+      'Relevant industry experience in branch operations or service management preferred.',
+      'Ability to supervise delivery teams, front-office staff and customer operations.',
+      'Fluency in English, Kannada and Hindi is preferred.',
+    ],
+    skills: [
+      'Branch operations',
+      'Leadership',
+      'Customer escalation handling',
+      'Collections follow-up',
+      'Operational discipline',
+    ],
+    preferredSkills: [
+      'Prior branch management or supervisory experience',
+      'Strong understanding of SLA and service operations',
+      'Experience managing team performance and customer escalations',
+    ],
+    offer: [
+      'Leadership exposure in regional branch operations',
+      'Performance-driven growth and team management opportunities',
+      'Opportunity to lead operational excellence initiatives',
+    ],
+  },
+] as const;
+
+export function CareersPage() {
+  const [search, setSearch] = useState('');
+  const [locationFilter, setLocationFilter] = useState('All');
+  const [departmentFilter, setDepartmentFilter] = useState('All');
+  const [experienceFilter, setExperienceFilter] = useState('All');
+  const [typeFilter, setTypeFilter] = useState('All');
+  const [selectedJob, setSelectedJob] = useState<string>(careerJobs[0].id);
+  const [applicationStep, setApplicationStep] = useState(1);
+  const [careerSubmitted, setCareerSubmitted] = useState(false);
+  const [careerSubmittedViaEmail, setCareerSubmittedViaEmail] = useState(false);
+  const [resumeSubmitted, setResumeSubmitted] = useState(false);
+  const [resumeSubmittedViaEmail, setResumeSubmittedViaEmail] = useState(false);
+  const [application, setApplication] = useState({
+    fullName: '',
+    email: '',
+    mobile: '',
+    location: '',
+    position: String(careerJobs[0].title),
+    currentCompany: '',
+    experience: '',
+    skills: '',
+    linkedin: '',
+    portfolio: '',
+    resume: '',
+    coverNote: '',
+  });
+  const [resume, setResume] = useState({
+    fullName: '',
+    email: '',
+    mobile: '',
+    location: '',
+    skills: '',
+    message: '',
+  });
+
+  const filteredJobs = useMemo(() => {
+    return careerJobs.filter((job) => {
+      const query = search.trim().toLowerCase();
+      const matchesSearch = !query || [job.title, job.department, job.location, job.summary, job.skills.join(' '), job.qualifications.join(' ')].join(' ').toLowerCase().includes(query);
+      const matchesLocation = locationFilter === 'All' || job.location === locationFilter;
+      const matchesDepartment = departmentFilter === 'All' || job.department === departmentFilter;
+      const matchesExperience = experienceFilter === 'All' || job.experience === experienceFilter;
+      const matchesType = typeFilter === 'All' || job.type === typeFilter;
+      return matchesSearch && matchesLocation && matchesDepartment && matchesExperience && matchesType;
+    });
+  }, [search, locationFilter, departmentFilter, experienceFilter, typeFilter]);
+
+  const currentJob = filteredJobs.find((job) => job.id === selectedJob) ?? careerJobs.find((job) => job.id === selectedJob) ?? careerJobs[0];
+  const locationOptions = ['All', ...new Set(careerJobs.map((job) => job.location))];
+  const departmentOptions = ['All', ...new Set(careerJobs.map((job) => job.department))];
+  const experienceOptions = ['All', ...new Set(careerJobs.map((job) => job.experience))];
+  const typeOptions = ['All', ...new Set(careerJobs.map((job) => job.type))];
+
+  const clearFilters = () => {
+    setSearch('');
+    setLocationFilter('All');
+    setDepartmentFilter('All');
+    setExperienceFilter('All');
+    setTypeFilter('All');
+  };
+
+  const handleApplicationChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name } = event.target;
+    const value = event.target instanceof HTMLInputElement && event.target.type === 'file' ? event.target.files?.[0]?.name ?? '' : event.target.value;
+    setApplication((current) => ({ ...current, [name]: value }));
+  };
+
+  const handleResumeChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    setResume((current) => ({ ...current, [name]: value }));
+  };
+
+  const submitCareerApplication = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const payload = {
+      name: application.fullName,
+      company: application.currentCompany || '',
+      email: application.email,
+      phone: application.mobile,
+      serviceInterest: application.position,
+      subject: `Job Application - ${application.position}`,
+      message: [
+        `Current Location: ${application.location}`,
+        `Experience: ${application.experience}`,
+        `Skills: ${application.skills}`,
+        `LinkedIn: ${application.linkedin || 'Not provided'}`,
+        `Portfolio: ${application.portfolio || 'Not provided'}`,
+        `Resume: ${application.resume || 'Not provided'}`,
+      ].join('\n'),
+      source: 'careers-page',
+    };
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setCareerSubmitted(true);
+        return;
+      }
+    } catch (error) {
+      console.warn('Careers API unavailable, falling back to mailto', error);
+    }
+
+    const body = [
+      `Position Applying For: ${application.position}`,
+      `Full Name: ${application.fullName}`,
+      `Email: ${application.email}`,
+      `Mobile: ${application.mobile}`,
+      `Current Location: ${application.location}`,
+      `Current Company: ${application.currentCompany || 'Not provided'}`,
+      `Experience: ${application.experience}`,
+      `Skills: ${application.skills}`,
+      `LinkedIn: ${application.linkedin || 'Not provided'}`,
+      `Portfolio: ${application.portfolio || 'Not provided'}`,
+      `Resume: ${application.resume || 'Not provided'}`,
+      `Cover Note: ${application.coverNote || 'Not provided'}`,
+    ].join('\n');
+    setCareerSubmittedViaEmail(true);
+    setCareerSubmitted(true);
+    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(`Job Application - ${application.position}`)}&body=${encodeURIComponent(body)}`;
+  };
+
+  const submitTalentNetwork = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const payload = {
+      name: resume.fullName,
+      email: resume.email,
+      phone: resume.mobile,
+      serviceInterest: 'General Resume Submission',
+      subject: 'General Resume Submission',
+      message: [
+        `Current Location: ${resume.location}`,
+        `Core Skills: ${resume.skills}`,
+        `Message: ${resume.message || 'Not provided'}`,
+      ].join('\n'),
+      source: 'talent-network',
+    };
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setResumeSubmitted(true);
+        return;
+      }
+    } catch (error) {
+      console.warn('Talent network API unavailable, falling back to mailto', error);
+    }
+
+    const body = [
+      `Full Name: ${resume.fullName}`,
+      `Email: ${resume.email}`,
+      `Mobile: ${resume.mobile}`,
+      `Current Location: ${resume.location}`,
+      `Core Skills: ${resume.skills}`,
+      `Message: ${resume.message || 'Not provided'}`,
+    ].join('\n');
+    setResumeSubmittedViaEmail(true);
+    setResumeSubmitted(true);
+    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent('General Resume Submission')}&body=${encodeURIComponent(body)}`;
+  };
+
   return (
     <>
-      <PageHeading eyebrow="Shipment visibility" title="Track your shipment." intro="Atlant Global India tracking redirects to The Professional Couriers. Continue to its official multiple-consignment tracking page; no shipment status is simulated here." />
-      <section className="section section-sm">
+      <PageHeading
+        eyebrow="Careers"
+        title="Careers at Atlant Global India"
+        intro="Explore opportunities to grow your career with Atlant Global India and The Professional Couriers."
+      />
+
+      <section className="section section-sm career-search-section">
         <div className="container">
-          <div className="tracking-panel">
-            <div className="tracking-left">
-              <div className="section-label">CNOTE / AWB lookup</div>
-              <h2>Continue to official tracking.</h2>
-              <p className="section-lead">Have your consignment number ready for The Professional Couriers tracking service.</p>
-              <form className="track-form" onSubmit={submit}>
-                <label className="sr-only" htmlFor="track-number">CNOTE / AWB number</label>
-                <input id="track-number" value={consignment} onChange={(event) => setConsignment(event.target.value)} placeholder="Enter CNOTE / AWB number" data-testid="input-tracking-number" />
-                <button className="btn btn-primary" type="submit" data-testid="button-track">Open tracker <ArrowRight size={14} /></button>
-              </form>
-              {message && <div className="success-message" role="status">{message}</div>}
-              <p className="track-note">This site does not access shipment data or report booked, picked up, in-transit or delivered statuses. Tracking is handled by the official service.</p>
-              <a className="btn btn-outline" href={OFFICIAL_TRACKING} target="_blank" rel="noreferrer">Go to TPC tracking page <ArrowUpRight size={14} /></a>
+          <div className="career-search-panel">
+            <div className="career-intro-bar">
+              <div>
+                <div className="section-label">Find your opportunity</div>
+                <h2>Find the right role for you.</h2>
+              </div>
+              <div className="career-cta-row">
+                <a href="#job-listings" className="btn btn-primary">View Open Positions</a>
+                <a href="#resume-form" className="btn btn-outline">Submit Your Resume</a>
+              </div>
             </div>
-            <aside className="track-side"><PackageCheck size={26} color="#bd573c" /><h3>Updates through MIS</h3><p>Atlant Global India states that shipment status updates are supported through its MIS. For an update or assistance, contact the team.</p><Link href="/contact">Contact Atlant Global India <ArrowRight size={13} /></Link></aside>
+
+            <div className="career-search-controls active">
+              <div className="career-search-field search-wide">
+                <label htmlFor="career-search">Search by keyword</label>
+                <input id="career-search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Job title, keyword or skill" />
+              </div>
+
+              <div className="career-filter-row">
+                <div className="career-search-field">
+                  <label htmlFor="career-location">Location</label>
+                  <select id="career-location" value={locationFilter} onChange={(event) => setLocationFilter(event.target.value)}>
+                    {locationOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                  </select>
+                </div>
+
+                <div className="career-search-field">
+                  <label htmlFor="career-department">Category</label>
+                  <select id="career-department" value={departmentFilter} onChange={(event) => setDepartmentFilter(event.target.value)}>
+                    {departmentOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                  </select>
+                </div>
+
+                <div className="career-search-field">
+                  <label htmlFor="career-experience">Experience</label>
+                  <select id="career-experience" value={experienceFilter} onChange={(event) => setExperienceFilter(event.target.value)}>
+                    {experienceOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                  </select>
+                </div>
+
+                <div className="career-search-field">
+                  <label htmlFor="career-type">Job Type</label>
+                  <select id="career-type" value={typeFilter} onChange={(event) => setTypeFilter(event.target.value)}>
+                    {typeOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                  </select>
+                </div>
+
+                <div className="career-search-field search-actions">
+                  <span className="search-label">Action</span>
+                  <div className="search-button-row">
+                    <button type="button" className="btn btn-primary" onClick={() => document.getElementById('job-listings')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>Search Jobs</button>
+                    <button type="button" className="btn btn-outline" onClick={clearFilters}>Clear Filters</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
+
+      <section id="job-listings" className="section section-sm career-list-section">
+        <div className="container career-layout">
+          <div className="career-list-column">
+            <div className="section-heading-row">
+              <div>
+                <div className="section-label">Current openings</div>
+                <h2>Current Job Openings</h2>
+              </div>
+              <span className="job-count-chip">{filteredJobs.length} open</span>
+            </div>
+
+            {filteredJobs.length === 0 ? (
+              <div className="no-jobs-box" role="status">
+                <div className="section-label">No roles available</div>
+                <h3>No Matching Opportunities Found</h3>
+                <p>We couldn't find a role matching your selected filters.</p>
+                <button type="button" className="btn btn-primary" onClick={clearFilters}>Clear Filters</button>
+              </div>
+            ) : (
+              <div className="career-list">
+                {filteredJobs.map((job) => (
+                  <article key={job.id} className={`career-role-card ${selectedJob === job.id ? 'active' : ''}`}>
+                    <div className="career-role-header">
+                      <div>
+                        <h3>{job.title}</h3>
+                        <span>{job.department}</span>
+                      </div>
+                      <button type="button" className="text-link" onClick={() => setSelectedJob(job.id)}>View Position <ArrowUpRight size={13} /></button>
+                    </div>
+                    <div className="career-role-meta">
+                      <span>{job.location}</span>
+                      <span>{job.experience}</span>
+                      <span>{job.type}</span>
+                    </div>
+                    <p>{job.summary}</p>
+                    <div className="career-role-footer">
+                      <div className="meta-col"><strong>Posted</strong><span>{job.postedDate}</span></div>
+                      <div className="meta-col"><strong>Deadline</strong><span>{job.deadline}</span></div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <aside id="career-detail-panel" className="career-detail-panel">
+            <div className="section-label">Role details</div>
+            <h3>{currentJob.title}</h3>
+            <div className="career-detail-meta-grid">
+              <div><span>Department</span><strong>{currentJob.department}</strong></div>
+              <div><span>Location</span><strong>{currentJob.location}</strong></div>
+              <div><span>Experience</span><strong>{currentJob.experience}</strong></div>
+              <div><span>Employment Type</span><strong>{currentJob.type}</strong></div>
+              <div><span>Posted</span><strong>{currentJob.postedDate}</strong></div>
+              <div><span>Deadline</span><strong>{currentJob.deadline}</strong></div>
+            </div>
+
+            <div className="job-detail-block">
+              <h4>About the Role</h4>
+              <p>{currentJob.summary}</p>
+            </div>
+
+            <div className="job-detail-block">
+              <h4>Key Responsibilities</h4>
+              <ul>{currentJob.responsibilities.map((item) => <li key={item}>{item}</li>)}</ul>
+            </div>
+
+            <div className="job-detail-block">
+              <h4>Qualifications</h4>
+              <ul>{currentJob.qualifications.map((item) => <li key={item}>{item}</li>)}</ul>
+            </div>
+
+            <div className="job-detail-block">
+              <h4>Core Skills</h4>
+              <ul>{currentJob.skills.map((item) => <li key={item}>{item}</li>)}</ul>
+            </div>
+
+            <div className="job-detail-block">
+              <h4>Preferred Skills</h4>
+              <ul>{currentJob.preferredSkills.map((item) => <li key={item}>{item}</li>)}</ul>
+            </div>
+
+            <div className="career-side-apply">
+              <div className="section-label">Interested in this position?</div>
+              <button type="button" className="btn btn-primary" onClick={() => {
+                setApplication((current) => ({ ...current, position: currentJob.title }));
+                document.getElementById('career-application-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}>Apply Now</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="career-application-form" className="section section-sm career-application-section">
+        <div className="container application-panel">
+          <div className="section-label">Apply now</div>
+          <h2>Submit Your Application</h2>
+
+          {careerSubmitted ? (
+            <div className="application-confirmation">
+              <h3>{careerSubmittedViaEmail ? 'Complete Your Application' : 'Application Successfully Submitted'}</h3>
+              <p>{careerSubmittedViaEmail
+                ? <>Your email application has opened with the details. Please send it to complete your application. You can also email <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</>
+                : 'Thank you for your interest in joining Atlant Global India. Your application has been received successfully.'}</p>
+            </div>
+          ) : (
+            <form className="career-multi-step-form" onSubmit={submitCareerApplication}>
+              {applicationStep === 1 && (
+                <div className="career-step-form">
+                  <h3>Step 1 — Personal Details</h3>
+                  <div className="career-multi-grid">
+                    <div className="field"><label>Full Name</label><input name="fullName" value={application.fullName} onChange={handleApplicationChange} required /></div>
+                    <div className="field"><label>Email</label><input name="email" type="email" value={application.email} onChange={handleApplicationChange} required /></div>
+                    <div className="field"><label>Mobile</label><input name="mobile" type="tel" value={application.mobile} onChange={handleApplicationChange} required /></div>
+                    <div className="field full"><label>Current Location</label><input name="location" value={application.location} onChange={handleApplicationChange} required /></div>
+                  </div>
+                </div>
+              )}
+
+              {applicationStep === 2 && (
+                <div className="career-step-form">
+                  <h3>Step 2 — Professional Details</h3>
+                  <div className="career-multi-grid">
+                    <div className="field"><label>Position</label><select name="position" value={application.position} onChange={handleApplicationChange}>
+                      {careerJobs.map((job) => <option key={job.id} value={job.title}>{job.title}</option>)}
+                    </select></div>
+                    <div className="field"><label>Current Company</label><input name="currentCompany" value={application.currentCompany} onChange={handleApplicationChange} /></div>
+                    <div className="field"><label>Experience</label><input name="experience" value={application.experience} onChange={handleApplicationChange} required /></div>
+                    <div className="field full"><label>Relevant Skills</label><input name="skills" value={application.skills} onChange={handleApplicationChange} required /></div>
+                    <div className="field"><label>LinkedIn</label><input name="linkedin" value={application.linkedin} onChange={handleApplicationChange} /></div>
+                    <div className="field"><label>Portfolio / Website</label><input name="portfolio" value={application.portfolio} onChange={handleApplicationChange} /></div>
+                  </div>
+                </div>
+              )}
+
+              {applicationStep === 3 && (
+                <div className="career-step-form">
+                  <h3>Step 3 — Resume</h3>
+                  <div className="upload-wrap">
+                    <label className="upload-input">
+                      <span>Upload resume</span>
+                      <input type="file" name="resume" accept=".pdf,.doc,.docx" onChange={handleApplicationChange} />
+                    </label>
+                    <p>Accepted formats: PDF / DOC / DOCX</p>
+                  </div>
+                </div>
+              )}
+
+              {applicationStep === 4 && (
+                <div className="career-step-form">
+                  <h3>Step 4 — Review &amp; Submit</h3>
+                  <div className="review-box">
+                    <p><strong>Name:</strong> {application.fullName}</p>
+                    <p><strong>Email:</strong> {application.email}</p>
+                    <p><strong>Mobile:</strong> {application.mobile}</p>
+                    <p><strong>Position:</strong> {application.position}</p>
+                    <p><strong>Experience:</strong> {application.experience}</p>
+                    <p><strong>Skills:</strong> {application.skills}</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="career-multi-actions">
+                {applicationStep > 1 && <button type="button" className="btn btn-outline" onClick={() => setApplicationStep((step) => Math.max(1, step - 1))}>Previous</button>}
+                {applicationStep < 4 && <button type="button" className="btn btn-primary" onClick={() => setApplicationStep((step) => Math.min(4, step + 1))}>Next</button>}
+                {applicationStep === 4 && <button type="submit" className="btn btn-primary">Submit Application</button>}
+              </div>
+            </form>
+          )}
+        </div>
+      </section>
+
+      <section id="resume-form" className="section section-sm talent-network-section">
+        <div className="container talent-network-box">
+          <div>
+            <div className="section-label">Open application</div>
+            <h2>Don't see the right opportunity?</h2>
+            <p>Share your profile with us and we can consider it for relevant future openings.</p>
+          </div>
+
+          {resumeSubmitted ? (
+            <div className={resumeSubmittedViaEmail ? 'error-message' : 'success-message'}>
+              {resumeSubmittedViaEmail
+                ? <>Your email application has opened with your profile details. Please send it to complete submission. You can also email <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</>
+                : 'Your profile has been submitted for future opportunity consideration.'}
+            </div>
+          ) : (
+            <form className="talent-network-form" onSubmit={submitTalentNetwork}>
+              <div className="career-multi-grid">
+                <div className="field"><label>Full Name</label><input name="fullName" value={resume.fullName} onChange={handleResumeChange} required /></div>
+                <div className="field"><label>Email</label><input name="email" type="email" value={resume.email} onChange={handleResumeChange} required /></div>
+                <div className="field"><label>Mobile</label><input name="mobile" type="tel" value={resume.mobile} onChange={handleResumeChange} required /></div>
+                <div className="field full"><label>Current Location</label><input name="location" value={resume.location} onChange={handleResumeChange} /></div>
+                <div className="field full"><label>Core Skills</label><input name="skills" value={resume.skills} onChange={handleResumeChange} /></div>
+                <div className="field full"><label>Tell us about yourself</label><textarea name="message" value={resume.message} onChange={handleResumeChange} rows={4} /></div>
+              </div>
+              <button type="submit" className="btn btn-primary">Submit Your Resume</button>
+            </form>
+          )}
+        </div>
+      </section>
+
+      <section className="section section-sm career-cross-nav">
+        <div className="container cross-nav-box">
+          <div>
+            <div className="section-label">Looking for a business opportunity instead?</div>
+            <h2>Explore franchise and channel partner opportunities</h2>
+          </div>
+          <Link href="/business" className="btn btn-primary">Become a Business Partner</Link>
+        </div>
+      </section>
+    </>
+  );
+}
+
+const partnerLeadStatuses = ['New', 'Contacted', 'Under Review', 'Discussion', 'Approved', 'Not Proceeding'];
+
+export function OpportunitiesPage() {
+  return (
+    <>
+      <PageHeading
+        eyebrow="Opportunities"
+        title="Opportunities at Atlant Global India"
+        intro="Explore opportunities to build your career or grow your business with Atlant Global India."
+      />
+
+      <section className="section section-sm opportunities-page">
+        <div className="container opportunities-grid">
+          <Link href="/careers" className="opportunity-card opportunity-card-career">
+            <div className="opportunity-card-inner">
+              <span className="opportunity-tag">Career Opportunities</span>
+              <h2>Build Your Career With Us</h2>
+              <p>Explore current job opportunities and discover your next professional challenge with Atlant Global India.</p>
+              <div className="opportunity-cta-row">
+                <span>Explore Careers</span>
+                <ArrowRight size={15} />
+              </div>
+              <div className="opportunity-meta-row">
+                <span>Jobs</span>
+                <span>Professional Growth</span>
+                <span>Open Positions</span>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/business" className="opportunity-card opportunity-card-business">
+            <div className="opportunity-card-inner">
+              <span className="opportunity-tag">Business Opportunities</span>
+              <h2>Build Your Courier &amp; Logistics Business</h2>
+              <p>Explore Franchise and Channel Partner opportunities and build your presence in the courier and logistics industry with Atlant Global India.</p>
+              <div className="opportunity-cta-row">
+                <span>Become a Business Partner</span>
+                <ArrowRight size={15} />
+              </div>
+              <div className="opportunity-meta-row">
+                <span>Franchise</span>
+                <span>Channel Partner</span>
+                <span>Business Opportunity</span>
+              </div>
+            </div>
+          </Link>
         </div>
       </section>
     </>
@@ -331,39 +1329,293 @@ export function TrackingPage() {
 }
 
 export function BusinessPage() {
-  return (
-    <>
-      <PageHeading eyebrow="Business shipping" title="Logistics for business." intro="Discuss regular, bulk and time-sensitive courier or cargo requirements with Atlant Global India. Share the shipment pattern and destinations relevant to your business." />
-      <section className="section section-sm">
-        <div className="container business-layout">
-          <div>
-            <div className="section-label">Operational capabilities</div>
-            <h2>Support for the movement behind your work.</h2>
-            <p className="section-lead">Atlant Global India serves Bengaluru South and East through 65 branches, with a Kudlu Gate distribution hub and a wider network through The Professional Couriers.</p>
-            <div className="business-tags"><span>Corporate courier</span><span>B2B shipments</span><span>Bulk consignments</span><span>Priority shipments</span><span>International</span><span>Warehousing</span></div>
-            <div className="capability-list">
-              <div className="capability"><Check size={17} /><div><strong>MIS updates</strong><span>Shipment status updates through the company's MIS.</span></div></div>
-              <div className="capability"><Check size={17} /><div><strong>GPS-tracked fleet</strong><span>Own containerized fleet with GPS tracking.</span></div></div>
-              <div className="capability"><Check size={17} /><div><strong>Operational security</strong><span>CCTV at warehouse and branches.</span></div></div>
-              <div className="capability"><Check size={17} /><div><strong>Talk through your needs</strong><span>Share your shipping pattern in an enquiry.</span></div></div>
+  const [currentStep, setCurrentStep] = useState(1);
+  const [submitted, setSubmitted] = useState(false);
+  const [reference, setReference] = useState('');
+  const [submissionError, setSubmissionError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    fullName: '',
+    mobile: '',
+    email: '',
+    businessName: '',
+    businessType: '',
+    yearsInBusiness: '',
+    state: '',
+    city: '',
+    area: '',
+    operatingLocation: '',
+    interest: 'Franchise / Branch Opportunity',
+    gstRegistered: 'No',
+    gstNumber: '',
+    courierExperience: 'No',
+    infrastructure: '',
+  });
+
+  const updateField = (field: string, value: string) => setForm((current) => ({ ...current, [field]: value }));
+  const nextStep = () => setCurrentStep((step) => Math.min(step + 1, 5));
+  const previousStep = () => setCurrentStep((step) => Math.max(step - 1, 1));
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmissionError('');
+    setSubmitting(true);
+    const payload = {
+      name: form.fullName,
+      company: form.businessName,
+      email: form.email,
+      phone: form.mobile,
+      serviceInterest: form.interest,
+      subject: 'Partnership Enquiry',
+      message: [
+        `Business Type: ${form.businessType}`,
+        `Years in Business: ${form.yearsInBusiness}`,
+        `State: ${form.state}`,
+        `City: ${form.city}`,
+        `Area: ${form.area}`,
+        `Operating Location: ${form.operatingLocation}`,
+        `GST Registered: ${form.gstRegistered}`,
+        `GST Number: ${form.gstNumber || 'Not provided'}`,
+        `Courier Experience: ${form.courierExperience}`,
+        `Infrastructure: ${form.infrastructure || 'Not provided'}`,
+      ].join('\n'),
+      source: 'business-page',
+    };
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        setSubmissionError(response.status >= 500
+          ? 'We couldn’t submit your enquiry due to a temporary service issue. Please try again or contact our team.'
+          : 'We couldn’t submit your enquiry. Please review the information and try again.');
+        return;
+      }
+      const result: unknown = await response.json();
+      setReference(isRecord(result) && typeof result.id === 'string' ? result.id : '');
+      setSubmitted(true);
+    } catch (error) {
+      console.warn('Business enquiry submission failed', error);
+      setSubmissionError('We couldn’t connect to the enquiry service. Please check your connection or contact our team.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const renderStep = () => {
+    if (submitted) {
+      return (
+        <div className="partner-confirmation">
+          <div className="section-label">Partnership enquiry</div>
+          <h2>Thank You for Your Interest</h2>
+          <p>Thank you for your interest in partnering with Atlant Global India. Our team has received your enquiry and will review the information provided.</p>
+          {reference && <div className="reference-box"><span>Enquiry Reference</span><strong>{reference}</strong></div>}
+          <Link className="btn btn-primary" href="/careers">Explore Career Opportunities</Link>
+        </div>
+      );
+    }
+
+    const isLastStep = currentStep === 5;
+
+    return (
+      <form className="partner-form" onSubmit={handleSubmit}>
+        {currentStep === 1 && (
+          <div className="partner-form-step">
+            <h3>Step 1 — Personal Information</h3>
+            <div className="partner-grid">
+              <div className="field"><label>Full Name</label><input value={form.fullName} onChange={(e) => updateField('fullName', e.target.value)} required /></div>
+              <div className="field"><label>Mobile Number</label><input value={form.mobile} onChange={(e) => updateField('mobile', e.target.value)} required /></div>
+              <div className="field full"><label>Email Address</label><input value={form.email} type="email" onChange={(e) => updateField('email', e.target.value)} required /></div>
             </div>
           </div>
-          <div className="business-image-wrap">
-            <img className="business-image" src="https://images.pexels.com/photos/6169056/pexels-photo-6169056.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Courier worker preparing a parcel for dispatch" loading="lazy" />
-            <p className="photo-disclaimer">{STOCK_NOTE}</p>
+        )}
+
+        {currentStep === 2 && (
+          <div className="partner-form-step">
+            <h3>Step 2 — Business Information</h3>
+            <div className="partner-grid">
+              <div className="field"><label>Business / Company Name</label><input value={form.businessName} onChange={(e) => updateField('businessName', e.target.value)} required /></div>
+              <div className="field"><label>Existing Business Type</label><input value={form.businessType} onChange={(e) => updateField('businessType', e.target.value)} required /></div>
+              <div className="field full"><label>Years in Business</label><input value={form.yearsInBusiness} onChange={(e) => updateField('yearsInBusiness', e.target.value)} required /></div>
+            </div>
+          </div>
+        )}
+
+        {currentStep === 3 && (
+          <div className="partner-form-step">
+            <h3>Step 3 — Location</h3>
+            <div className="partner-grid">
+              <div className="field"><label>State</label><input value={form.state} onChange={(e) => updateField('state', e.target.value)} required /></div>
+              <div className="field"><label>City</label><input value={form.city} onChange={(e) => updateField('city', e.target.value)} required /></div>
+              <div className="field"><label>Area / Locality</label><input value={form.area} onChange={(e) => updateField('area', e.target.value)} required /></div>
+              <div className="field full"><label>Proposed Operating Location</label><input value={form.operatingLocation} onChange={(e) => updateField('operatingLocation', e.target.value)} required /></div>
+            </div>
+          </div>
+        )}
+
+        {currentStep === 4 && (
+          <div className="partner-form-step">
+            <h3>Step 4 — Partnership Information</h3>
+            <div className="partner-option-group">
+              <p>What type of opportunity are you interested in?</p>
+              {['Franchise / Branch Opportunity', 'Channel Partner', 'Business Association', 'Other'].map((option) => (
+                <label key={option} className="radio-option">
+                  <input type="radio" name="interest" checked={form.interest === option} onChange={() => updateField('interest', option)} />
+                  <span>{option}</span>
+                </label>
+              ))}
+            </div>
+
+            <div className="partner-option-group">
+              <p>Are you currently registered under GST?</p>
+              {['Yes', 'No'].map((option) => (
+                <label key={option} className="radio-option">
+                  <input type="radio" name="gstRegistered" checked={form.gstRegistered === option} onChange={() => updateField('gstRegistered', option)} />
+                  <span>{option}</span>
+                </label>
+              ))}
+            </div>
+
+            {form.gstRegistered === 'Yes' && (
+              <div className="field full"><label>GST Number</label><input value={form.gstNumber} onChange={(e) => updateField('gstNumber', e.target.value)} required /></div>
+            )}
+
+            <div className="partner-option-group">
+              <p>Do you have logistics / courier experience?</p>
+              {['Yes', 'No'].map((option) => (
+                <label key={option} className="radio-option">
+                  <input type="radio" name="courierExperience" checked={form.courierExperience === option} onChange={() => updateField('courierExperience', option)} />
+                  <span>{option}</span>
+                </label>
+              ))}
+            </div>
+
+            <div className="field full"><label>Available Infrastructure</label><textarea value={form.infrastructure} onChange={(e) => updateField('infrastructure', e.target.value)} rows={4} placeholder="Provide relevant details about your available space, capacity or operational readiness." /></div>
+          </div>
+        )}
+
+        {currentStep === 5 && (
+          <div className="partner-form-step">
+            <h3>Step 5 — Submit</h3>
+            <div className="review-box">
+              <p><strong>Name:</strong> {form.fullName}</p>
+              <p><strong>Mobile:</strong> {form.mobile}</p>
+              <p><strong>Email:</strong> {form.email}</p>
+              <p><strong>Business:</strong> {form.businessName}</p>
+              <p><strong>Location:</strong> {form.city}, {form.state}</p>
+              <p><strong>Interest:</strong> {form.interest}</p>
+              <p><strong>GST:</strong> {form.gstRegistered}</p>
+              <p><strong>Courier Experience:</strong> {form.courierExperience}</p>
+            </div>
+          </div>
+        )}
+
+        <div className="partner-form-actions">
+          {submissionError && <div className="error-message" role="alert">{submissionError} <a href={`mailto:${EMAIL}`}>Email {EMAIL}</a>.</div>}
+          {currentStep > 1 && !submitted && <button type="button" className="btn btn-outline" onClick={previousStep}>Previous</button>}
+          {!submitted && currentStep < 5 && <button type="button" className="btn btn-primary" onClick={nextStep}>Continue</button>}
+          {!submitted && isLastStep && <button type="submit" className="btn btn-primary" disabled={submitting}>{submitting ? 'Submitting…' : 'Submit Partnership Enquiry'}</button>}
+        </div>
+      </form>
+    );
+  };
+
+  return (
+    <>
+      <PageHeading
+        eyebrow="Business opportunities"
+        title="Start Your Courier &amp; Logistics Business"
+        intro="Explore opportunities to become a Franchise or Channel Partner and build your presence in the courier and logistics industry with the support of Atlant Global India."
+      />
+
+      <section className="section section-sm business-partner-hero">
+        <div className="container partner-hero-grid">
+          <div className="partner-hero-copy">
+            <div className="section-label">Business opportunity</div>
+            <h2>Start Your Courier &amp; Logistics Business with Atlant Global India</h2>
+            <p>Explore opportunities to become a Franchise or Channel Partner and build your presence in the courier and logistics industry with the support of Atlant Global India.</p>
+            <div className="hero-actions">
+              <a href="#partnership-enquiry" className="btn btn-primary">Explore Partnership</a>
+            </div>
+          </div>
+          <div className="partner-hero-panel">
+            <div className="metric-card"><strong>Local Network</strong><span>Established presence in Bengaluru and surrounding regions</span></div>
+            <div className="metric-card"><strong>Business Model</strong><span>Franchise and channel partnership opportunities</span></div>
+            <div className="metric-card"><strong>Operational Support</strong><span>Relevant support for courier and logistics operations</span></div>
           </div>
         </div>
       </section>
-      <section className="section quote-section" id="business-enquiry">
-        <div className="container quote-grid">
-          <div className="quote-aside">
-            <div className="section-label">Business enquiry</div>
-            <h2>Tell us what you need to move.</h2>
-            <p>This form prepares an email enquiry on your device. There is no backend submission.</p>
-            <p><strong>Prefer to speak?</strong><br /><a href={`tel:${PHONE}`}>+91 7411 708 958</a><br /><a href={`mailto:${EMAIL}`}>{EMAIL}</a></p>
-            <p>Monday–Saturday, 10am–6pm</p>
+
+      <section className="section why-partner-section">
+        <div className="container">
+          <div className="section-label">Why partner with us</div>
+          <h2>Why Partner With Atlant Global India?</h2>
+          <div className="partner-feature-grid">
+            <article className="partner-feature-card"><Building2 size={18} /><h3>Established Network</h3><p>Connect with an established courier and logistics network.</p></article>
+            <article className="partner-feature-card"><PackageCheck size={18} /><h3>Operational Support</h3><p>Receive relevant support for courier and logistics operations.</p></article>
+            <article className="partner-feature-card"><Clock3 size={18} /><h3>Industry Experience</h3><p>Benefit from experience in courier, cargo and logistics operations.</p></article>
+            <article className="partner-feature-card"><ArrowUpRight size={18} /><h3>Business Opportunity</h3><p>Build and develop your own courier and logistics business.</p></article>
+            <article className="partner-feature-card"><Headset size={18} /><h3>Technology &amp; Operations</h3><p>Use relevant systems and operational processes supporting courier activities.</p></article>
+            <article className="partner-feature-card"><Globe2 size={18} /><h3>Growth Potential</h3><p>Develop your business presence in your selected market.</p></article>
           </div>
-          <QuoteForm />
+        </div>
+      </section>
+
+      <section className="section section-sm partnership-process">
+        <div className="container">
+          <div className="section-label">How the partnership works</div>
+          <h2>How the Partnership Works</h2>
+          <div className="process-grid">
+            <div className="process-step"><span>01</span><h3>Submit Your Enquiry</h3><p>Provide your personal, business and location details.</p></div>
+            <div className="process-step"><span>02</span><h3>Application Review</h3><p>Our team reviews your information.</p></div>
+            <div className="process-step"><span>03</span><h3>Discussion &amp; Evaluation</h3><p>Discuss the proposed business location, infrastructure and operational requirements.</p></div>
+            <div className="process-step"><span>04</span><h3>Partnership Onboarding</h3><p>Complete applicable formalities and begin the onboarding process.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section who-can-partner-section">
+        <div className="container">
+          <div className="section-label">Who can become a partner</div>
+          <h2>Who Can Become a Partner?</h2>
+          <div className="partner-audience-grid">
+            <span>Entrepreneurs</span>
+            <span>Existing business owners</span>
+            <span>Retail / business operators</span>
+            <span>Logistics professionals</span>
+            <span>Individuals interested in courier and logistics</span>
+            <span>Businesses looking to expand into logistics</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="partnership-enquiry" className="section partner-enquiry-section">
+        <div className="container partner-enquiry-box">
+          <div className="partner-enquiry-copy">
+            <div className="section-label">Partnership enquiry</div>
+            <h2>Start a Strategic Conversation</h2>
+            <p>Share your details and our team will review your enquiry for the right partnership opportunity.</p>
+            <div className="partner-enquiry-points">
+              <div><Check size={16} /><span>Business and location information</span></div>
+              <div><Check size={16} /><span>Operational and GST details</span></div>
+              <div><Check size={16} /><span>Evaluation for franchise or channel partnership</span></div>
+            </div>
+          </div>
+          {renderStep()}
+        </div>
+      </section>
+
+      <section className="section section-sm partner-footer-cta">
+        <div className="container partner-cross-link">
+          <div>
+            <div className="section-label">Looking for a career instead?</div>
+            <h2>Explore Career Opportunities</h2>
+          </div>
+          <Link href="/careers" className="btn btn-primary">Explore Career Opportunities</Link>
         </div>
       </section>
     </>
@@ -384,7 +1636,7 @@ export function AboutPage() {
       <PageHeading eyebrow="About Atlant Global India" title="Experience that moves business." intro="Atlant Global India (Inc) was established on July 2, 1990 by Mr. Suresh Surendranath and operates under The Professional Couriers." />
       <section className="section section-sm">
         <div className="container intro-grid">
-          <div className="intro-photo-wrap"><img className="intro-photo" src="https://images.pexels.com/photos/4481259/pexels-photo-4481259.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Warehouse aisle with goods and logistics equipment" loading="lazy" /><div className="photo-caption">Representative logistics stock imagery.</div></div>
+          <div className="intro-photo-wrap"><div className="intro-photo intro-operations-visual" role="img" aria-label="Atlant Global India logistics operations"><Warehouse size={62} strokeWidth={1.2} /><span>Operations hub</span><strong>Kudlu Gate · Bengaluru</strong></div></div>
           <div className="intro-copy">
             <div className="section-label">Local operations</div>
             <h2>A Bengaluru base with a wider network.</h2>
@@ -407,8 +1659,14 @@ export function AboutPage() {
       <section className="section section-sm">
         <div className="container">
           <div className="section-label">Leadership</div><h2>Led with experience.</h2>
-          <div className="leadership"><div className="portrait-placeholder" aria-label="Portrait not provided"><Building2 size={45} strokeWidth={1.2} /></div><div><h3>Mr. Suresh Surendranath Nair</h3><div className="role">Chief Executive Officer</div><p>Mr. Suresh Surendranath founded Atlant Global India in 1990. No approved biography or portrait is currently available for this presentation.</p></div></div>
-          <p className="photo-disclaimer">{STOCK_NOTE}</p>
+          <div className="leadership">
+            <img className="portrait-image" src="/images/CEO-compressed-1-e1562394173820-180x220.jpg" alt="Mr. Suresh Surendranath Nair, Chief Executive Officer" loading="lazy" />
+            <div>
+              <h3>Mr. Suresh Surendranath Nair</h3>
+              <div className="role">Chief Executive Officer</div>
+              <p>Mr. Suresh Surendranath founded Atlant Global India in 1990 and continues to lead the company with a long-standing commitment to customer trust, service quality, and reliable logistics operations.</p>
+            </div>
+          </div>
         </div>
       </section>
     </>
@@ -419,13 +1677,11 @@ export function ResourcesPage() {
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [length, setLength] = useState('');
   const [width, setWidth] = useState('');
-  const [height, setHeight] = useState('');
   const volumetric = useMemo(() => {
     const l = Number(length);
     const w = Number(width);
-    const h = Number(height);
-    return l > 0 && w > 0 && h > 0 ? (l * w * h) / 5000 : null;
-  }, [height, length, width]);
+    return l > 0 && w > 0 ? (l * w) / 5000 : null;
+  }, [length, width]);
   return (
     <>
       <PageHeading eyebrow="Resources" title="Helpful answers for shipping." intro="Find practical information about the local network and services, plus a volumetric weight estimate. Confirm applicable service terms with Atlant Global India." />
@@ -443,11 +1699,10 @@ export function ResourcesPage() {
           </div>
           <div className="calculator">
             <div className="section-label">Shipping reference</div><h3>Volumetric weight calculator</h3>
-            <p>Estimate volumetric weight with L × W × H ÷ 5,000. Enter dimensions in centimetres. Confirm the applicable divisor and chargeable weight with the team.</p>
+            <p>Estimate volumetric weight using the formula: Length × Width ÷ 5,000. Enter dimensions in centimetres.</p>
             <div className="calc-row">
               <div className="calc-input-wrap"><label htmlFor="calc-l">Length (cm)</label><input className="calc-input" id="calc-l" type="number" min="0" step="any" value={length} onChange={(event) => setLength(event.target.value)} /></div>
               <div className="calc-input-wrap"><label htmlFor="calc-w">Width (cm)</label><input className="calc-input" id="calc-w" type="number" min="0" step="any" value={width} onChange={(event) => setWidth(event.target.value)} /></div>
-              <div className="calc-input-wrap"><label htmlFor="calc-h">Height (cm)</label><input className="calc-input" id="calc-h" type="number" min="0" step="any" value={height} onChange={(event) => setHeight(event.target.value)} /></div>
             </div>
             <div className="calc-result"><span>Volumetric weight</span><strong>{volumetric === null ? '—' : `${volumetric.toFixed(2)} kg`}</strong></div>
           </div>
@@ -459,30 +1714,7 @@ export function ResourcesPage() {
           <div className="resources-cards">
             <article className="resource-card"><span className="resource-cat">Shipping basics</span><h3>Preparing a consignment</h3><p>Confirm packaging, service availability and shipment details with a nearby branch.</p><a href={`mailto:${EMAIL}?subject=${encodeURIComponent('Packaging and shipment preparation question')}`}>Ask the team <ArrowRight size={12} /></a></article>
             <article className="resource-card"><span className="resource-cat">Business shipping</span><h3>Planning recurring shipments</h3><p>Share locations, shipment type and expected frequency in a business enquiry.</p><Link href="/business">Start a business enquiry <ArrowRight size={12} /></Link></article>
-            <article className="resource-card"><span className="resource-cat">Shipment visibility</span><h3>Need a consignment update?</h3><p>Use the official tracking service or contact Atlant Global India for assistance.</p><Link href="/tracking">Go to tracking <ArrowRight size={12} /></Link></article>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
-
-export function CareersPage() {
-  return (
-    <>
-      <PageHeading eyebrow="Careers & franchise enquiries" title="Grow with Atlant Global India." intro="Contact the company directly to discuss career or franchise enquiries. Current openings and franchise terms are not published on this site." />
-      <section className="section section-sm">
-        <div className="container opportunity-layout">
-          <div className="opportunity-image">
-            <img src="https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Logistics workers handling cartons in a warehouse" loading="lazy" />
-            <p className="photo-disclaimer">{STOCK_NOTE}</p>
-          </div>
-          <div>
-            <div className="section-label">Start a conversation</div>
-            <h2>Interested in working with us?</h2>
-            <p className="section-lead">For career enquiries, send a short introduction, your location and a CV attachment by email. The company can confirm current requirements directly.</p>
-            <div className="opportunity-panel"><h3>Career enquiry</h3><p>No vacancies are listed here. Reach out to ask about current opportunities.</p><a className="btn btn-navy" href={`mailto:${EMAIL}?subject=${encodeURIComponent('Career enquiry')}&body=${encodeURIComponent('Hello Atlant Global India team,\n\nI would like to enquire about career opportunities.\n\nName:\nLocation:\nContact number:\n\nI will attach my CV to this email.')}`}>Email a career enquiry <ArrowUpRight size={14} /></a></div>
-            <div className="opportunity-panel"><h3>Franchise enquiry</h3><p>Contact the team to discuss whether a franchise opportunity is available and what it may involve.</p><a className="btn btn-outline" href={`mailto:${EMAIL}?subject=${encodeURIComponent('Franchise enquiry')}`}>Email a franchise enquiry <ArrowUpRight size={14} /></a></div>
+            <article className="resource-card"><span className="resource-cat">Shipment visibility</span><h3>Need a consignment update?</h3><p>Use the tracking page to review the latest status and contact Atlant Global India if you need further assistance.</p><Link href="/tracking">Go to tracking <ArrowRight size={12} /></Link></article>
           </div>
         </div>
       </section>
@@ -495,13 +1727,13 @@ const offices = [
     name: 'Corporate Office',
     address: '#136, 7th Cross, 29th Main Road, Lake Road, BTM 2nd Stage, Bengaluru, Karnataka 560076',
     keywords: 'btm lake road corporate office south bengaluru 560076',
-    map: 'https://www.google.com/maps/search/?api=1&query=%23136%2C+7th+Cross%2C+29th+Main+Road%2C+Lake+Road%2C+BTM+2nd+Stage%2C+Bengaluru+560076',
+    map: 'https://maps.app.goo.gl/PrDEJi5HG4fnZYEo6',
   },
   {
     name: 'Operations Office · Kudlu Gate',
-    address: 'No 51/2, Chikka Begur Gate, Lakshmi Layout, Hosur Main Road, Kudlu Gate, Bengaluru 560068',
-    keywords: 'kudlu gate operations office east bengaluru 560068',
-    map: 'https://www.google.com/maps/search/?api=1&query=No+51%2F2%2C+Chikka+Begur+Gate%2C+Lakshmi+Layout%2C+Hosur+Main+Road%2C+Kudlu+Gate%2C+Bengaluru+560068',
+    address: 'VJPQ+H74, 51/2, Chikka Begur Gate, Lakshmi Layout Main Rd, Hosur, Bengaluru, Karnataka 560068',
+    keywords: 'kudlu gate operations office chikka begur gate lakshmi layout main road hosur bengaluru 560068',
+    map: 'https://maps.app.goo.gl/bXvW6bkRdBFCmKDL9',
   },
 ];
 
@@ -541,12 +1773,15 @@ export function ContactPage() {
 
 export function NotFoundPage() {
   return (
-    <section className="page-heading section">
+    <section className="page-heading section site-error-page">
       <div className="container not-found">
-        <div className="section-label">Page not found</div>
-        <h1>This page has moved on.</h1>
-        <p>The address may be incorrect or the page may no longer be available.</p>
-        <Link className="btn btn-primary" href="/">Return to home <ArrowRight size={14} /></Link>
+        <div className="section-label">404 · Page not found</div>
+        <h1>Oops! The page you're looking for could not be found.</h1>
+        <p>The link may be out of date, or the page may have moved.</p>
+        <div className="site-error-actions">
+          <Link className="btn btn-primary" href="/">Go to Homepage <ArrowRight size={14} /></Link>
+          <button className="btn btn-outline" type="button" onClick={() => window.history.back()}>Go Back</button>
+        </div>
       </div>
     </section>
   );

@@ -18,6 +18,7 @@ import {
   ContactPage,
   HomePage,
   NotFoundPage,
+  OpportunitiesPage,
   ResourcesPage,
   ServicesPage,
   TrackingPage,
@@ -38,14 +39,19 @@ const pageMeta: Record<string, { title: string; description: string }> = {
       'Explore Domestic, Pro Premium, Priority Class, International and Warehousing services from Atlant Global India, serving Bengaluru South and East.',
   },
   '/tracking': {
-    title: 'Shipment Tracking with TPC | Atlant Global India',
+    title: 'Shipment Tracking | Atlant Global India',
     description:
-      'Continue to The Professional Couriers official multiple-consignment tracking service. Atlant Global India does not simulate or display shipment statuses.',
+      'Enter your AWB or CNOTE number on this page to review the latest shipment status without leaving the Atlant Global India website.',
+  },
+  '/opportunities': {
+    title: 'Opportunities at Atlant Global India | Careers & Business',
+    description:
+      'Explore career opportunities and business partnership opportunities with Atlant Global India.',
   },
   '/business': {
-    title: 'Business Courier & Cargo Enquiries | Atlant Global India',
+    title: 'Business Partnership Opportunities | Atlant Global India',
     description:
-      'Discuss regular, bulk and time-sensitive business shipping with Atlant Global India. Share your requirements through a transparent email enquiry form.',
+      'Explore franchise and channel partner opportunities with Atlant Global India and build your courier and logistics business.',
   },
   '/about': {
     title: 'About Atlant Global India | Courier & Cargo since 1990',
@@ -97,6 +103,80 @@ function RouteMeta() {
   return null;
 }
 
+function ScrollProgress() {
+  const [progress, setProgress] = useState(0);
+  const [location] = useLocation();
+
+  useEffect(() => {
+    const updateProgress = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const nextProgress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+      setProgress(Math.min(Math.max(nextProgress, 0), 100));
+
+      const header = document.querySelector<HTMLElement>('.header');
+      if (header) {
+        header.classList.toggle('header-scrolled', window.scrollY > 20);
+      }
+    };
+
+    updateProgress();
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    return () => window.removeEventListener('scroll', updateProgress);
+  }, []);
+
+  if (location === '/tracking') return null;
+
+  return (
+    <div className="page-progress" aria-hidden="true">
+      <span style={{ width: `${progress}%` }} />
+    </div>
+  );
+}
+
+function ScrollReveal() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      typeof IntersectionObserver === 'undefined'
+    ) {
+      return;
+    }
+
+    const targets = document.querySelectorAll<HTMLElement>(
+      '.section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-status-card, .detail-card, .track-side-info, .job-card, .career-form-card, .hero-content, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result',
+    );
+
+    if (!targets.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -20px 0px' },
+    );
+
+    targets.forEach((target) => {
+      const isHeader = target.classList.contains('hero-content') || target.classList.contains('page-heading');
+      target.classList.add('reveal-on-scroll');
+      if (isHeader) {
+        target.style.transitionDelay = '80ms';
+      }
+      observer.observe(target);
+    });
+
+    return () => observer.disconnect();
+  }, [location]);
+
+  return null;
+}
+
 function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [location] = useLocation();
@@ -115,8 +195,7 @@ function SiteHeader() {
       <header className="header">
         <nav className="nav" aria-label="Main navigation">
           <Link className="brand" href="/" onClick={closeMenu} aria-label="Atlant Global India home">
-            <strong>Atlant Global India</strong>
-            <span>OPERATING UNDER THE PROFESSIONAL COURIERS</span>
+            <img className="brand-logo" src="/images/AGI%20PNG%20Black.png" alt="Atlant Global India logo" />
           </Link>
           <button
             className="menu-toggle"
@@ -129,17 +208,19 @@ function SiteHeader() {
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
           <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
+            <Link href="/" onClick={closeMenu}>Home</Link>
             <Link href="/services" onClick={closeMenu}>Services</Link>
             <Link href="/tracking" onClick={closeMenu}>Tracking</Link>
+            <Link href="/opportunities" onClick={closeMenu}>Opportunities</Link>
             <Link href="/business" onClick={closeMenu}>Business</Link>
             <Link href="/about" onClick={closeMenu}>About</Link>
             <Link href="/resources" onClick={closeMenu}>Resources</Link>
-            <Link href="/careers" onClick={closeMenu}>Careers &amp; Franchise</Link>
+            <Link href="/careers" onClick={closeMenu}>Careers</Link>
             <Link href="/contact" onClick={closeMenu}>Contact</Link>
           </div>
           <div className="nav-cta">
             <Link className="btn btn-outline" href="/contact">Contact</Link>
-            <Link className="btn btn-primary" href="/business">Get a quote <ArrowRight size={14} /></Link>
+            <Link className="btn btn-primary" href="/opportunities">Explore opportunities <ArrowRight size={14} /></Link>
           </div>
         </nav>
       </header>
@@ -154,10 +235,9 @@ function SiteFooter() {
         <div className="container">
           <div className="footer-top">
             <div className="footer-brand">
-              <Link href="/" aria-label="Atlant Global India home">
-                <strong>Atlant Global India</strong>
+              <Link href="/" aria-label="Atlant Global India home" className="footer-brand-link">
+                <img className="footer-brand-logo" src="/images/AGI%20PNG%20White.png" alt="Atlant Global India logo" />
               </Link>
-              <span>OPERATING UNDER THE PROFESSIONAL COURIERS</span>
               <p>Courier, cargo and warehousing services in Bengaluru South and East, with access to a wider network.</p>
             </div>
             <div className="footer-col">
@@ -168,13 +248,17 @@ function SiteFooter() {
             <div className="footer-col">
               <h4>Company</h4>
               <Link href="/about">About</Link><Link href="/about">Leadership</Link>
-              <Link href="/about">Infrastructure</Link><Link href="/careers">Careers</Link>
-              <Link href="/careers">Franchise enquiries</Link>
+              <Link href="/about">Infrastructure</Link><Link href="/opportunities">Opportunities</Link>
+              <Link href="/careers">Careers</Link><Link href="/business">Business opportunities</Link>
             </div>
             <div className="footer-col">
               <h4>Help &amp; contact</h4>
               <Link href="/tracking">Tracking</Link><Link href="/resources">FAQs &amp; resources</Link>
               <Link href="/contact">Branch locator</Link><Link href="/business">Get a quote</Link>
+              <div className="footer-map-card">
+                <span className="footer-map-badge">Find us</span>
+                <a href="https://maps.app.goo.gl/PrDEJi5HG4fnZYEo6" target="_blank" rel="noreferrer">Open in Google Maps</a>
+              </div>
               <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
             </div>
           </div>
@@ -210,6 +294,7 @@ function SiteRoutes() {
           <Route path="/" component={HomePage} />
           <Route path="/services" component={ServicesPage} />
           <Route path="/tracking" component={TrackingPage} />
+          <Route path="/opportunities" component={OpportunitiesPage} />
           <Route path="/business" component={BusinessPage} />
           <Route path="/about" component={AboutPage} />
           <Route path="/resources" component={ResourcesPage} />
@@ -223,11 +308,15 @@ function SiteRoutes() {
 }
 
 function RouterApp() {
+  const [location] = useLocation();
+
   return (
     <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <div className="site-wrap">
+        <ScrollProgress />
+        <ScrollReveal />
         <SiteHeader />
-        <ErrorBoundary>
+        <ErrorBoundary resetKey={location}>
           <SiteRoutes />
         </ErrorBoundary>
         <SiteFooter />
