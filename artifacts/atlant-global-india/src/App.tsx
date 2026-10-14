@@ -14,6 +14,7 @@ import {
 import { Link, Route, Router as WouterRouter, Switch, useLocation } from 'wouter';
 import {
   AboutPage,
+  AssistPage,
   BusinessPage,
   CareersPage,
   ContactPage,
@@ -43,6 +44,10 @@ const pageMeta: Record<string, { title: string; description: string }> = {
     title: 'Shipment Tracking | Atlant Global India',
     description:
       'Enter your AWB or CNOTE number on this page to review the latest shipment status without leaving the Atlant Global India website.',
+  },
+  '/assist': {
+    title: 'AGI Assist | Atlant Global India',
+    description: 'Meet AGI Assist. Chat support is coming soon; track a shipment or contact the Atlant Global India team in the meantime.',
   },
   '/opportunities': {
     title: 'Opportunities at Atlant Global India | Careers & Business',
@@ -295,6 +300,7 @@ function SiteRoutes() {
           <Route path="/" component={HomePage} />
           <Route path="/services" component={ServicesPage} />
           <Route path="/tracking" component={TrackingPage} />
+          <Route path="/assist" component={AssistPage} />
           <Route path="/opportunities" component={OpportunitiesPage} />
           <Route path="/business" component={BusinessPage} />
           <Route path="/about" component={AboutPage} />
@@ -322,10 +328,10 @@ function RouterApp() {
         </ErrorBoundary>
         <SiteFooter />
       </div>
-      <div className="agi-assist-launcher" role="img" aria-label="AGI Assist, coming soon">
+      <Link className="agi-assist-launcher" href="/assist" aria-label="Open AGI Assist chat page">
         <MessageCircle size={20} aria-hidden="true" />
         <span>AGI Assist</span>
-      </div>
+      </Link>
     </WouterRouter>
   );
 }

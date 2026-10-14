@@ -13,6 +13,7 @@ import {
   Globe2,
   Headset,
   MapPin,
+  MessageCircle,
   PackageCheck,
   Phone,
   Search,
@@ -1876,6 +1877,29 @@ export function ContactPage() {
         <div className="container contact-bottom-grid">
           <div><div className="section-label">Get in touch</div><h2>Speak with the team.</h2><div className="contact-methods"><p><Phone size={15} /><a href={`tel:${PHONE}`}>+91 7411 708 958</a></p><p><Headset size={15} /><a href={`mailto:${EMAIL}`}>{EMAIL}</a></p><p><Clock3 size={15} />Monday–Saturday, 10am–6pm</p></div></div>
           <div className="contact-note"><h3>Pickup through nearby branches</h3><p>Pickup is available through nearby branches. Contact Atlant Global India to confirm options for your area.</p><Link className="btn btn-primary" href="/services">View services <ArrowRight size={14} /></Link></div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+export function AssistPage() {
+  return (
+    <>
+      <PageHeading eyebrow="AGI Assist" title="How can we help?" intro="Your Atlant Global India chat assistant is getting ready." />
+      <section className="agi-chat-section">
+        <div className="container">
+          <div className="agi-chat-window" aria-label="AGI Assist chat preview">
+            <header className="agi-chat-header">
+              <span className="agi-chat-avatar"><MessageCircle size={20} /></span>
+              <span className="agi-chat-title"><strong>AGI Assist</strong><small>Chat support coming soon</small></span>
+            </header>
+            <div className="agi-chat-messages" aria-live="polite">
+              <div className="agi-chat-message">Hi! I’m AGI Assist. I’ll be here to help with your courier questions soon.</div>
+              <Link className="btn btn-primary agi-chat-track-link" href="/tracking">Track a shipment <ArrowRight size={14} /></Link>
+            </div>
+            <div className="agi-chat-footer">Messaging will be available soon.</div>
+          </div>
         </div>
       </section>
     </>
