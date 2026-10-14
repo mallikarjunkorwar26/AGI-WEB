@@ -321,10 +321,10 @@ function RouterApp() {
           <SiteRoutes />
         </ErrorBoundary>
         <SiteFooter />
-        <div className="agi-assist-launcher" role="img" aria-label="AGI Assist, coming soon">
-          <MessageCircle size={19} aria-hidden="true" />
-          <span>AGI Assist</span>
-        </div>
+      </div>
+      <div className="agi-assist-launcher" role="img" aria-label="AGI Assist, coming soon">
+        <MessageCircle size={20} aria-hidden="true" />
+        <span>AGI Assist</span>
       </div>
     </WouterRouter>
   );
