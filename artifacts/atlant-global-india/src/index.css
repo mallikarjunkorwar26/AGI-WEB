@@ -367,6 +367,17 @@ h1,h2,h3,p { margin-top:0; }
 .trust-item:last-child { border:0; }
 .trust-item strong { display:block; color:#183b61; font:800 22px var(--app-font-serif); letter-spacing:-.04em; }
 .trust-item span { display:block; color:#68737c; font-size:11px; margin-top:4px; }
+.customer-marquee-section { overflow:hidden; padding:36px 0 30px; border-bottom:1px solid #e9e4da; background:#fff; }
+.customer-marquee-heading { margin-bottom:22px; text-align:center; }
+.customer-marquee-heading > span { color:#a64e38; font-size:10px; font-weight:800; letter-spacing:.17em; text-transform:uppercase; }
+.customer-marquee-heading h2 { margin:7px 0 0; color:#183b61; font:700 clamp(19px,2.2vw,25px)/1.2 var(--app-font-serif); letter-spacing:-.03em; }
+.customer-marquee { overflow:hidden; mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent); }
+.customer-marquee-track { display:flex; width:max-content; animation:customer-marquee-scroll 27s linear infinite; }
+.customer-logo-group { display:flex; flex:0 0 auto; align-items:center; justify-content:space-around; gap:clamp(64px,10vw,144px); padding:0 clamp(40px,7vw,96px); }
+.customer-logo-group img { display:block; width:auto; max-width:185px; height:72px; object-fit:contain; }
+.customer-marquee:hover .customer-marquee-track { animation-play-state:paused; }
+@keyframes customer-marquee-scroll { to { transform:translateX(-50%); } }
+@media(prefers-reduced-motion:reduce) { .customer-marquee-track { animation:none; } }
 .section { padding:88px 0; }
 .section-sm { padding:72px 0; }
 .section-label { font-size:10px; font-weight:800; letter-spacing:.2em; text-transform:uppercase; color:var(--brand-crimson); margin-bottom:16px; }

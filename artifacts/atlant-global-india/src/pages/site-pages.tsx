@@ -349,6 +349,26 @@ export function HomePage() {
           <div className="trust-item"><strong>South &amp; East</strong><span>Bengaluru service region</span></div>
         </div>
       </section>
+      <section className="customer-marquee-section" aria-labelledby="customer-logos-title">
+        <div className="container customer-marquee-heading">
+          <span>Our customers</span>
+          <h2 id="customer-logos-title">Moving business forward together.</h2>
+        </div>
+        <div className="customer-marquee" aria-label="Customer logos">
+          <div className="customer-marquee-track">
+            <div className="customer-logo-group">
+              <img src={`${import.meta.env.BASE_URL}images/Essl.jpg`} alt="ESSL" />
+              <img src={`${import.meta.env.BASE_URL}images/Pharmed.png`} alt="Pharmed" />
+              <img src={`${import.meta.env.BASE_URL}images/varsity_education_management_logo.jpg`} alt="Varsity Education Management" />
+            </div>
+            <div className="customer-logo-group" aria-hidden="true">
+              <img src={`${import.meta.env.BASE_URL}images/Essl.jpg`} alt="" />
+              <img src={`${import.meta.env.BASE_URL}images/Pharmed.png`} alt="" />
+              <img src={`${import.meta.env.BASE_URL}images/varsity_education_management_logo.jpg`} alt="" />
+            </div>
+          </div>
+        </div>
+      </section>
       <section className="actions-band" aria-label="Quick actions">
         <div className="container quick-grid">
           <div className="quick-card"><PackageCheck className="quick-icon" size={21} /><strong>Track a shipment</strong><p>Continue to the official tracking service.</p><Link href="/tracking">Track now <ArrowRight size={12} /></Link></div>
