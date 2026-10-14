@@ -385,7 +385,7 @@ h1,h2,h3,p { margin-top:0; }
 .section-lead { max-width:700px; line-height:1.75; color:#616e78; font-size:15px; }
 .intro-grid { display:grid; grid-template-columns:1.06fr .94fr; gap:78px; align-items:center; }
 .intro-photo-wrap { position:relative; min-height:430px; }
-.intro-photo { width:100%; height:430px; object-fit:cover; display:block; }
+.intro-photo { width:100%; height:430px; border-radius:14px; object-fit:cover; display:block; }
 .photo-caption { position:absolute; right:-18px; bottom:22px; background:#183b61; color:#fff; padding:17px 20px; max-width:200px; font:700 12px/1.6 var(--app-font-sans); }
 .intro-copy p { color:#616e78; line-height:1.8; font-size:14px; }
 .intro-copy .btn { margin-top:12px; }
