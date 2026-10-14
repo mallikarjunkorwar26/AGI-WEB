@@ -380,8 +380,8 @@ export function HomePage() {
       <section className="section">
         <div className="container intro-grid">
           <div className="intro-photo-wrap">
-            <div className="intro-photo intro-operations-visual" role="img" aria-label="Atlant Global India logistics operations"><Warehouse size={62} strokeWidth={1.2} /><span>Operations hub</span><strong>Kudlu Gate · Bengaluru</strong></div>
-            <div className="photo-caption">Bengaluru operations, connected to a wider network.</div>
+            <img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.jpg`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" />
+            <div className="photo-caption">Operations hub · Kudlu Gate, Bengaluru.</div>
           </div>
           <div className="intro-copy">
             <div className="section-label">About Atlant Global India</div>
@@ -1739,7 +1739,7 @@ export function AboutPage() {
       <PageHeading eyebrow="About Atlant Global India" title="Experience that moves business." intro="Atlant Global India (Inc) was established on July 2, 1990 by Mr. Suresh Surendranath and operates under The Professional Couriers." />
       <section className="section section-sm">
         <div className="container intro-grid">
-          <div className="intro-photo-wrap"><div className="intro-photo intro-operations-visual" role="img" aria-label="Atlant Global India logistics operations"><Warehouse size={62} strokeWidth={1.2} /><span>Operations hub</span><strong>Kudlu Gate · Bengaluru</strong></div></div>
+          <div className="intro-photo-wrap"><img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.jpg`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" /></div>
           <div className="intro-copy">
             <div className="section-label">Local operations</div>
             <h2>A Bengaluru base with a wider network.</h2>
