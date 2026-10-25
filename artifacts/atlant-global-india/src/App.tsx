@@ -146,40 +146,149 @@ function ScrollReveal() {
 
   useEffect(() => {
     if (
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
       typeof IntersectionObserver === 'undefined'
     ) {
       return;
     }
 
-    const targets = document.querySelectorAll<HTMLElement>(
-      '.section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-status-card, .detail-card, .track-side-info, .job-card, .career-form-card, .hero-content, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result',
+    const mobileViewport = window.matchMedia(
+      '(max-width: 767px), (max-height: 500px) and (pointer: coarse)',
     );
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const desktopTargetSelector =
+      '.section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-status-card, .detail-card, .track-side-info, .job-card, .career-form-card, .hero-content, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result';
+    const mobileTargetSelector = [
+      '.section',
+      '.quick-card',
+      '.service-card',
+      '.trust-item',
+      '.contact-card',
+      '.quote-form',
+      '.tracking-panel',
+      '.tracking-status-card',
+      '.detail-card',
+      '.track-side-info',
+      '.job-card',
+      '.career-form-card',
+      '.hero-content',
+      '.intro-photo-wrap',
+      '.intro-copy',
+      '.business-image-wrap',
+      '.network-visual',
+      '.leadership',
+      '.resource-card',
+      '.page-heading',
+      '.tracking-result',
+      '.service-visual',
+      '.home-facts > div',
+      '.about-value',
+      '.partner-feature-card',
+      '.process-step',
+      '.footer',
+      'main h1',
+      'main h2',
+      'main h3',
+      'main p',
+      'main .section-label',
+      'main .btn',
+      '.footer-brand',
+      '.footer-col',
+      '.footer-bottom',
+    ].join(', ');
+    const visualSelector = '.intro-photo-wrap, .business-image-wrap, .network-visual, .service-visual';
+    let observer: IntersectionObserver | undefined;
+    let revealTargets: HTMLElement[] = [];
+    let activeMobileMode: boolean | undefined;
+    let activeReducedMotion: boolean | undefined;
 
-    if (!targets.length) return;
+    const clearReveals = () => {
+      observer?.disconnect();
+      observer = undefined;
+      revealTargets.forEach((target) => {
+        target.classList.remove('reveal-on-scroll', 'reveal-from-left', 'reveal-from-right', 'is-visible');
+        target.style.removeProperty('transition-delay');
+      });
+      revealTargets = [];
+    };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -20px 0px' },
-    );
-
-    targets.forEach((target) => {
-      const isHeader = target.classList.contains('hero-content') || target.classList.contains('page-heading');
-      target.classList.add('reveal-on-scroll');
-      if (isHeader) {
-        target.style.transitionDelay = '80ms';
+    const setupReveals = (force = false) => {
+      if (
+        !force &&
+        activeMobileMode === mobileViewport.matches &&
+        activeReducedMotion === reducedMotion.matches
+      ) {
+        return;
       }
-      observer.observe(target);
-    });
+      clearReveals();
+      activeMobileMode = mobileViewport.matches;
+      activeReducedMotion = reducedMotion.matches;
+      if (activeReducedMotion) return;
 
-    return () => observer.disconnect();
+      revealTargets = Array.from(
+        document.querySelectorAll<HTMLElement>(activeMobileMode ? mobileTargetSelector : desktopTargetSelector),
+      );
+      if (activeMobileMode) {
+        const visuals = Array.from(document.querySelectorAll<HTMLElement>(visualSelector));
+        visuals.forEach((visual, index) => {
+          visual.classList.add(index % 2 === 0 ? 'reveal-from-left' : 'reveal-from-right');
+        });
+      }
+      if (!revealTargets.length) return;
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer?.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: activeMobileMode ? 0.08 : 0.12,
+          rootMargin: activeMobileMode ? '0px 0px -24px 0px' : '0px 0px -20px 0px',
+        },
+      );
+
+      revealTargets.forEach((target) => {
+        target.classList.add('reveal-on-scroll');
+        if (target.classList.contains('hero-content') || target.classList.contains('page-heading')) {
+          target.style.transitionDelay = '80ms';
+        }
+        observer?.observe(target);
+      });
+    };
+
+    setupReveals();
+    const handleViewportChange = () => setupReveals();
+    if (typeof mobileViewport.addEventListener === 'function') {
+      mobileViewport.addEventListener('change', handleViewportChange);
+    } else {
+      mobileViewport.addListener(handleViewportChange);
+    }
+    if (typeof reducedMotion.addEventListener === 'function') {
+      reducedMotion.addEventListener('change', handleViewportChange);
+    } else {
+      reducedMotion.addListener(handleViewportChange);
+    }
+    window.addEventListener('resize', handleViewportChange, { passive: true });
+    window.addEventListener('orientationchange', handleViewportChange, { passive: true });
+
+    return () => {
+      if (typeof mobileViewport.removeEventListener === 'function') {
+        mobileViewport.removeEventListener('change', handleViewportChange);
+      } else {
+        mobileViewport.removeListener(handleViewportChange);
+      }
+      if (typeof reducedMotion.removeEventListener === 'function') {
+        reducedMotion.removeEventListener('change', handleViewportChange);
+      } else {
+        reducedMotion.removeListener(handleViewportChange);
+      }
+      window.removeEventListener('resize', handleViewportChange);
+      window.removeEventListener('orientationchange', handleViewportChange);
+      clearReveals();
+    };
   }, [location]);
 
   return null;

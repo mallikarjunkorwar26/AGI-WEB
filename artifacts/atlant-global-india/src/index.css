@@ -245,7 +245,7 @@ main {
   transition: width 0.1s linear;
 }
 
-/* Scroll reveal helper */
+/* Preserve the existing desktop reveal behavior. */
 .reveal-on-scroll {
   opacity: 0;
   transform: translate3d(0, 16px, 0);
@@ -3680,33 +3680,6 @@ main {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
-  .reveal-on-scroll {
-    transform: translate3d(0, 20px, 0);
-    transition-duration: 0.7s;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .quick-grid > .reveal-on-scroll:nth-child(2),
-  .service-grid > .reveal-on-scroll:nth-child(2),
-  .opportunities-grid > .reveal-on-scroll:nth-child(2),
-  .resource-grid > .reveal-on-scroll:nth-child(2),
-  .contact-grid > .reveal-on-scroll:nth-child(2),
-  .process-grid > .reveal-on-scroll:nth-child(2),
-  .partner-feature-grid > .reveal-on-scroll:nth-child(2) {
-    transition-delay: 70ms;
-  }
-  .quick-grid > .reveal-on-scroll:nth-child(3),
-  .service-grid > .reveal-on-scroll:nth-child(3),
-  .opportunities-grid > .reveal-on-scroll:nth-child(3),
-  .contact-grid > .reveal-on-scroll:nth-child(3),
-  .process-grid > .reveal-on-scroll:nth-child(3),
-  .partner-feature-grid > .reveal-on-scroll:nth-child(3) {
-    transition-delay: 140ms;
-  }
-  .quick-grid > .reveal-on-scroll:nth-child(4),
-  .service-grid > .reveal-on-scroll:nth-child(4),
-  .process-grid > .reveal-on-scroll:nth-child(4) {
-    transition-delay: 210ms;
-  }
   .container {
     width: calc(100% - 28px);
   }
@@ -4021,6 +3994,59 @@ main {
   .tracking-search-card,
   .calculator {
     padding: 16px;
+  }
+}
+
+@media (max-width: 767px), (max-height: 500px) and (pointer: coarse) {
+  .reveal-on-scroll {
+    transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .reveal-on-scroll.reveal-from-left {
+    transform: translate3d(-14px, 0, 0);
+  }
+
+  .reveal-on-scroll.reveal-from-right {
+    transform: translate3d(14px, 0, 0);
+  }
+
+  .reveal-on-scroll.reveal-from-left.is-visible,
+  .reveal-on-scroll.reveal-from-right.is-visible {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .quick-grid > .reveal-on-scroll:nth-child(2),
+  .service-grid > .reveal-on-scroll:nth-child(2),
+  .opportunities-grid > .reveal-on-scroll:nth-child(2),
+  .resource-grid > .reveal-on-scroll:nth-child(2),
+  .contact-grid > .reveal-on-scroll:nth-child(2),
+  .process-grid > .reveal-on-scroll:nth-child(2),
+  .partner-feature-grid > .reveal-on-scroll:nth-child(2) {
+    transition-delay: 70ms;
+  }
+
+  .quick-grid > .reveal-on-scroll:nth-child(3),
+  .service-grid > .reveal-on-scroll:nth-child(3),
+  .opportunities-grid > .reveal-on-scroll:nth-child(3),
+  .contact-grid > .reveal-on-scroll:nth-child(3),
+  .process-grid > .reveal-on-scroll:nth-child(3),
+  .partner-feature-grid > .reveal-on-scroll:nth-child(3) {
+    transition-delay: 140ms;
+  }
+
+  .quick-grid > .reveal-on-scroll:nth-child(4),
+  .service-grid > .reveal-on-scroll:nth-child(4),
+  .process-grid > .reveal-on-scroll:nth-child(4) {
+    transition-delay: 210ms;
+  }
+
+  .service-grid > .reveal-on-scroll:nth-child(5) {
+    transition-delay: 280ms;
   }
 }
 
