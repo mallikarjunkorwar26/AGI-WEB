@@ -378,8 +378,11 @@ export function HomePage() {
             <div className="hero-note">Established 2 July 1990 · Operating under The Professional Couriers</div>
           </div>
           <div className="hero-tracking-wrap">
+            <h2>Track Your Shipment</h2>
             <form className="hero-tracking" onSubmit={submitHeroTracking}>
+              <label htmlFor="hero-track-number">AWB / Consignment Number</label>
               <input
+                id="hero-track-number"
                 aria-label="Tracking number"
                 aria-describedby={trackingError ? 'hero-tracking-error' : undefined}
                 aria-invalid={Boolean(trackingError)}
@@ -388,10 +391,10 @@ export function HomePage() {
                   setTrackingNumber(event.target.value);
                   if (trackingError) setTrackingError('');
                 }}
-                placeholder="Enter your tracking number"
+                placeholder="Enter your AWB number"
                 value={trackingNumber}
               />
-              <button className="btn btn-primary" type="submit">Track →</button>
+              <button className="btn btn-primary" type="submit">Track</button>
             </form>
             {trackingError && <div className="hero-tracking-error" id="hero-tracking-error" role="alert">{trackingError}</div>}
           </div>
