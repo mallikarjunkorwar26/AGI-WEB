@@ -4012,6 +4012,56 @@ main {
     transform: translate3d(0, 0, 0);
   }
 
+  .reveal-on-scroll.reveal-zoom {
+    transform: scale(1.035);
+  }
+
+  .reveal-on-scroll.reveal-zoom.is-visible {
+    transform: scale(1);
+  }
+
+  .hero-content .eyebrow.reveal-on-scroll {
+    transition-delay: 60ms;
+  }
+
+  .hero-content h1.reveal-on-scroll {
+    transition-delay: 120ms;
+  }
+
+  .hero-content p.reveal-on-scroll {
+    transition-delay: 190ms;
+  }
+
+  .hero-content .hero-actions.reveal-on-scroll {
+    transition-delay: 250ms;
+  }
+
+  .hero-content .hero-note.reveal-on-scroll,
+  .hero-tracking-wrap.reveal-on-scroll {
+    transition-delay: 320ms;
+  }
+
+  .tracking-timeline > .reveal-on-scroll:nth-child(2) {
+    transition-delay: 70ms;
+  }
+
+  .tracking-timeline > .reveal-on-scroll:nth-child(3) {
+    transition-delay: 140ms;
+  }
+
+  .tracking-timeline > .reveal-on-scroll:nth-child(4) {
+    transition-delay: 210ms;
+  }
+
+  .tracking-timeline > .reveal-on-scroll:nth-child(5) {
+    transition-delay: 280ms;
+  }
+
+  main .btn:active {
+    transform: translateY(1px);
+    transition-duration: 0.12s;
+  }
+
   .quick-grid > .reveal-on-scroll:nth-child(2),
   .service-grid > .reveal-on-scroll:nth-child(2),
   .opportunities-grid > .reveal-on-scroll:nth-child(2),

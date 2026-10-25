@@ -165,7 +165,9 @@ function ScrollReveal() {
       '.contact-card',
       '.quote-form',
       '.tracking-panel',
+      '.tracking-status-panel',
       '.tracking-status-card',
+      '.tracking-status-topline',
       '.detail-card',
       '.track-side-info',
       '.job-card',
@@ -179,6 +181,12 @@ function ScrollReveal() {
       '.resource-card',
       '.page-heading',
       '.tracking-result',
+      '.hero-photo',
+      '.hero-content .eyebrow',
+      '.hero-actions',
+      '.hero-note',
+      '.hero-tracking-wrap',
+      '.tracking-timeline > li',
       '.service-visual',
       '.home-facts > div',
       '.about-value',
@@ -197,6 +205,7 @@ function ScrollReveal() {
     ].join(', ');
     const visualSelector = '.intro-photo-wrap, .business-image-wrap, .network-visual, .service-visual';
     let observer: IntersectionObserver | undefined;
+    let contentObserver: MutationObserver | undefined;
     let revealTargets: HTMLElement[] = [];
     let activeMobileMode: boolean | undefined;
     let activeReducedMotion: boolean | undefined;
@@ -204,8 +213,10 @@ function ScrollReveal() {
     const clearReveals = () => {
       observer?.disconnect();
       observer = undefined;
+      contentObserver?.disconnect();
+      contentObserver = undefined;
       revealTargets.forEach((target) => {
-        target.classList.remove('reveal-on-scroll', 'reveal-from-left', 'reveal-from-right', 'is-visible');
+        target.classList.remove('reveal-on-scroll', 'reveal-from-left', 'reveal-from-right', 'reveal-zoom', 'is-visible');
         target.style.removeProperty('transition-delay');
       });
       revealTargets = [];
@@ -232,6 +243,7 @@ function ScrollReveal() {
         visuals.forEach((visual, index) => {
           visual.classList.add(index % 2 === 0 ? 'reveal-from-left' : 'reveal-from-right');
         });
+        document.querySelector('.hero-photo')?.classList.add('reveal-zoom');
       }
       if (!revealTargets.length) return;
 
@@ -250,13 +262,36 @@ function ScrollReveal() {
         },
       );
 
-      revealTargets.forEach((target) => {
+      const observeTarget = (target: HTMLElement) => {
+        if (target.classList.contains('reveal-on-scroll')) return;
         target.classList.add('reveal-on-scroll');
+        if (activeMobileMode && target.matches(visualSelector)) {
+          const visualIndex = revealTargets.filter((item) => item.matches(visualSelector)).length;
+          target.classList.add(visualIndex % 2 === 0 ? 'reveal-from-left' : 'reveal-from-right');
+        }
         if (target.classList.contains('hero-content') || target.classList.contains('page-heading')) {
           target.style.transitionDelay = '80ms';
         }
+        revealTargets.push(target);
         observer?.observe(target);
-      });
+      };
+
+      revealTargets = [];
+      document.querySelectorAll<HTMLElement>(activeMobileMode ? mobileTargetSelector : desktopTargetSelector)
+        .forEach(observeTarget);
+
+      if (activeMobileMode && typeof MutationObserver !== 'undefined') {
+        contentObserver = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (!(node instanceof HTMLElement)) return;
+              if (node.matches(mobileTargetSelector)) observeTarget(node);
+              node.querySelectorAll<HTMLElement>(mobileTargetSelector).forEach(observeTarget);
+            });
+          });
+        });
+        contentObserver.observe(document.body, { childList: true, subtree: true });
+      }
     };
 
     setupReveals();
