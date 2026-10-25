@@ -365,7 +365,7 @@ export function HomePage() {
       <section className="hero">
         <img
           className="hero-photo"
-          src={`${import.meta.env.BASE_URL}images/T3A0179-1024x683.jpg`}
+          src={`${import.meta.env.BASE_URL}images/Operation_Hub.png`}
           alt=""
           aria-hidden="true"
           fetchPriority="high"
@@ -452,7 +452,7 @@ export function HomePage() {
       <section className="section">
         <div className="container intro-grid">
           <div className="intro-photo-wrap">
-            <img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.jpg`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" />
+            <img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.png`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" />
             <div className="photo-caption">Operations hub · Kudlu Gate, Bengaluru.</div>
           </div>
           <div className="intro-copy">
@@ -2059,7 +2059,7 @@ export function AboutPage() {
       <PageHeading eyebrow="About Atlant Global India" title="Experience that moves business." intro="Atlant Global India (Inc) was established on July 2, 1990 by Mr. Suresh Surendranath and operates under The Professional Couriers." />
       <section className="section section-sm" id="infrastructure">
         <div className="container intro-grid">
-          <div className="intro-photo-wrap"><img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.jpg`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" /></div>
+          <div className="intro-photo-wrap"><img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.png`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" /></div>
           <div className="intro-copy">
             <div className="section-label">Local operations</div>
             <h2>A Bengaluru base with a wider network.</h2>

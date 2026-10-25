@@ -675,12 +675,12 @@ main {
 .hero-tracking-wrap {
   position: relative;
   z-index: 2;
-  width: min(100%, 440px);
+  width: min(100%, 460px);
   justify-self: end;
-  padding: 30px;
+  padding: 32px;
   border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 8px;
-  background: rgba(18, 24, 36, 0.62);
+  background: rgba(255, 255, 255, 0.12);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
@@ -690,14 +690,14 @@ main {
 .hero-tracking-wrap h2 {
   margin: 0 0 22px;
   color: #ffffff;
-  font-size: 24px;
+  font-size: 26px;
   line-height: 1.25;
 }
 
 .hero-tracking {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .hero-tracking label {
@@ -712,7 +712,7 @@ main {
 
 .hero-tracking input {
   width: 100%;
-  min-height: 46px;
+  min-height: 48px;
   padding: 11px 15px;
   border: 1px solid var(--color-border);
   border-radius: var(--app-radius-sm);
@@ -824,11 +824,7 @@ main {
 .customer-marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee 32s linear infinite;
-}
-
-.customer-marquee:hover .customer-marquee-track {
-  animation-play-state: paused;
+  animation: marquee 26s linear infinite;
 }
 
 @keyframes marquee {
@@ -848,14 +844,6 @@ main {
   width: auto;
   max-width: 140px;
   object-fit: contain;
-  filter: grayscale(100%);
-  opacity: 0.72;
-  transition: opacity 0.2s ease, filter 0.2s ease;
-}
-
-.customer-logo-group img:hover {
-  filter: grayscale(0%);
-  opacity: 1;
 }
 
 /* ==========================================================================
@@ -3817,13 +3805,14 @@ main {
     margin-top: 8px;
   }
   .hero-tracking-wrap {
-    padding: 20px;
+    padding: 22px;
   }
   .hero-tracking-wrap h2 {
     margin-bottom: 14px;
+    font-size: 25px;
   }
   .hero-tracking {
-    gap: 6px;
+    gap: 10px;
   }
   .trust-grid {
     grid-template-columns: 1fr;
