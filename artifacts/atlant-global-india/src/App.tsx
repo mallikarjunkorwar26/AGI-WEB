@@ -190,6 +190,22 @@ function SiteHeader() {
   const [location] = useLocation();
   useEffect(() => setMenuOpen(false), [location]);
   const closeMenu = () => setMenuOpen(false);
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeMenu();
+    };
+    const isMobileMenu = window.matchMedia('(max-width: 540px)').matches;
+    const previousOverflow = document.body.style.overflow;
+    if (isMobileMenu) document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      if (isMobileMenu) document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [menuOpen]);
 
   const isActive = (path: string) => {
     const currentPath = location.split(/[?#]/)[0].replace(/\/+$/, '') || '/';
@@ -215,29 +231,45 @@ function SiteHeader() {
             className="menu-toggle"
             type="button"
             aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-controls="mobile-navigation"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((open) => !open)}
             data-testid="button-mobile-menu"
           >
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
-          <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
-            <Link href="/" className={isActive('/') ? 'active' : ''} aria-current={isActive('/') ? 'page' : undefined} onClick={closeMenu}>Home</Link>
-            <Link href="/services" className={isActive('/services') ? 'active' : ''} aria-current={isActive('/services') ? 'page' : undefined} onClick={closeMenu}>Services</Link>
-            <Link href="/tracking" className={isActive('/tracking') ? 'active' : ''} aria-current={isActive('/tracking') ? 'page' : undefined} onClick={closeMenu}>Tracking</Link>
-            <Link href="/opportunities" className={isActive('/opportunities') ? 'active' : ''} aria-current={isActive('/opportunities') ? 'page' : undefined} onClick={closeMenu}>Opportunities</Link>
-            <Link href="/business" className={isActive('/business') ? 'active' : ''} aria-current={isActive('/business') ? 'page' : undefined} onClick={closeMenu}>Business</Link>
-            <Link href="/about" className={isActive('/about') ? 'active' : ''} aria-current={isActive('/about') ? 'page' : undefined} onClick={closeMenu}>About</Link>
-            <Link href="/resources" className={isActive('/resources') ? 'active' : ''} aria-current={isActive('/resources') ? 'page' : undefined} onClick={closeMenu}>Resources</Link>
-            <Link href="/careers" className={isActive('/careers') ? 'active' : ''} aria-current={isActive('/careers') ? 'page' : undefined} onClick={closeMenu}>Careers</Link>
-            <Link href="/contact" className={isActive('/contact') ? 'active' : ''} aria-current={isActive('/contact') ? 'page' : undefined} onClick={closeMenu}>Contact</Link>
-          </div>
-          <div className="nav-cta">
-            <Link className="btn btn-outline" href="/tracking">Track</Link>
-            <Link className="btn btn-primary" href="/services#quote">Get a quote <ArrowRight size={14} /></Link>
+          <div id="mobile-navigation" className={`nav-menu ${menuOpen ? 'open' : ''}`}>
+            <div className="nav-menu-heading">
+              <span>Menu</span>
+              <button className="nav-menu-close" type="button" onClick={closeMenu} aria-label="Close navigation menu">
+                <X size={20} />
+              </button>
+            </div>
+            <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
+              <Link href="/" className={isActive('/') ? 'active' : ''} aria-current={isActive('/') ? 'page' : undefined} onClick={closeMenu}>Home</Link>
+              <Link href="/services" className={isActive('/services') ? 'active' : ''} aria-current={isActive('/services') ? 'page' : undefined} onClick={closeMenu}>Services</Link>
+              <Link href="/tracking" className={isActive('/tracking') ? 'active' : ''} aria-current={isActive('/tracking') ? 'page' : undefined} onClick={closeMenu}>Tracking</Link>
+              <Link href="/opportunities" className={isActive('/opportunities') ? 'active' : ''} aria-current={isActive('/opportunities') ? 'page' : undefined} onClick={closeMenu}>Opportunities</Link>
+              <Link href="/business" className={isActive('/business') ? 'active' : ''} aria-current={isActive('/business') ? 'page' : undefined} onClick={closeMenu}>Business</Link>
+              <Link href="/about" className={isActive('/about') ? 'active' : ''} aria-current={isActive('/about') ? 'page' : undefined} onClick={closeMenu}>About</Link>
+              <Link href="/resources" className={isActive('/resources') ? 'active' : ''} aria-current={isActive('/resources') ? 'page' : undefined} onClick={closeMenu}>Resources</Link>
+              <Link href="/careers" className={isActive('/careers') ? 'active' : ''} aria-current={isActive('/careers') ? 'page' : undefined} onClick={closeMenu}>Careers</Link>
+              <Link href="/contact" className={isActive('/contact') ? 'active' : ''} aria-current={isActive('/contact') ? 'page' : undefined} onClick={closeMenu}>Contact</Link>
+            </div>
+            <div className="nav-cta">
+              <Link className="btn btn-outline" href="/tracking" onClick={closeMenu}>Track</Link>
+              <Link className="btn btn-primary" href="/services#quote" onClick={closeMenu}>Get a quote <ArrowRight size={14} /></Link>
+            </div>
           </div>
         </nav>
       </header>
+      <button
+        className={`nav-menu-backdrop${menuOpen ? ' open' : ''}`}
+        type="button"
+        aria-label="Close navigation menu"
+        tabIndex={menuOpen ? 0 : -1}
+        onClick={closeMenu}
+      />
     </>
   );
 }
