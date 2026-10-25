@@ -375,7 +375,7 @@ main {
 .nav-links a.active,
 .nav-links a[aria-current="page"] {
   color: var(--brand-crimson);
-  background-color: var(--brand-rose);
+  background-color: transparent;
   font-weight: 700;
 }
 
@@ -3756,6 +3756,12 @@ main {
     min-height: 46px;
     padding: 12px 0;
     font-size: 14px;
+  }
+  .nav-menu .nav-links a:hover,
+  .nav-menu .nav-links a.active,
+  .nav-menu .nav-links a[aria-current="page"] {
+    background-color: transparent;
+    color: var(--brand-crimson);
   }
   .nav-menu .nav-cta {
     display: grid;
