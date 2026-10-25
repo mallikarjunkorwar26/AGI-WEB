@@ -3943,6 +3943,10 @@ main {
     width: 2px;
     height: auto;
   }
+  .tracking-stage:first-child::before {
+    left: 20px;
+    width: 2px;
+  }
   .tracking-stage:last-child::before {
     display: none;
   }
