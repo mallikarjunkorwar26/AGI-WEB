@@ -3672,6 +3672,33 @@ main {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
+  .reveal-on-scroll {
+    transform: translate3d(0, 20px, 0);
+    transition-duration: 0.7s;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .quick-grid > .reveal-on-scroll:nth-child(2),
+  .service-grid > .reveal-on-scroll:nth-child(2),
+  .opportunities-grid > .reveal-on-scroll:nth-child(2),
+  .resource-grid > .reveal-on-scroll:nth-child(2),
+  .contact-grid > .reveal-on-scroll:nth-child(2),
+  .process-grid > .reveal-on-scroll:nth-child(2),
+  .partner-feature-grid > .reveal-on-scroll:nth-child(2) {
+    transition-delay: 70ms;
+  }
+  .quick-grid > .reveal-on-scroll:nth-child(3),
+  .service-grid > .reveal-on-scroll:nth-child(3),
+  .opportunities-grid > .reveal-on-scroll:nth-child(3),
+  .contact-grid > .reveal-on-scroll:nth-child(3),
+  .process-grid > .reveal-on-scroll:nth-child(3),
+  .partner-feature-grid > .reveal-on-scroll:nth-child(3) {
+    transition-delay: 140ms;
+  }
+  .quick-grid > .reveal-on-scroll:nth-child(4),
+  .service-grid > .reveal-on-scroll:nth-child(4),
+  .process-grid > .reveal-on-scroll:nth-child(4) {
+    transition-delay: 210ms;
+  }
   .container {
     width: calc(100% - 28px);
   }
