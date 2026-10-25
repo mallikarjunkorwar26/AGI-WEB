@@ -1800,11 +1800,13 @@ export function ResourcesPage() {
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [length, setLength] = useState('');
   const [width, setWidth] = useState('');
+  const [height, setHeight] = useState('');
   const volumetric = useMemo(() => {
     const l = Number(length);
     const w = Number(width);
-    return l > 0 && w > 0 ? (l * w) / 5000 : null;
-  }, [length, width]);
+    const h = Number(height);
+    return l > 0 && w > 0 && h > 0 ? (l * w * h) / 5000 : null;
+  }, [length, width, height]);
   return (
     <>
       <PageHeading eyebrow="Resources" title="Helpful answers for shipping." intro="Find practical information about the local network and services, plus a volumetric weight estimate. Confirm applicable service terms with Atlant Global India." />
@@ -1822,10 +1824,11 @@ export function ResourcesPage() {
           </div>
           <div className="calculator">
             <div className="section-label">Shipping reference</div><h3>Volumetric weight calculator</h3>
-            <p>Estimate volumetric weight using the formula: Length × Width ÷ 5,000. Enter dimensions in centimetres.</p>
+            <p>Estimate volumetric weight using the formula: Length (cm) x Width (cm) x Height (cm) / 5000 = Volumetric Weight (kg). Enter dimensions in centimetres.</p>
             <div className="calc-row">
               <div className="calc-input-wrap"><label htmlFor="calc-l">Length (cm)</label><input className="calc-input" id="calc-l" type="number" min="0" step="any" value={length} onChange={(event) => setLength(event.target.value)} /></div>
               <div className="calc-input-wrap"><label htmlFor="calc-w">Width (cm)</label><input className="calc-input" id="calc-w" type="number" min="0" step="any" value={width} onChange={(event) => setWidth(event.target.value)} /></div>
+              <div className="calc-input-wrap"><label htmlFor="calc-h">Height (cm)</label><input className="calc-input" id="calc-h" type="number" min="0" step="any" value={height} onChange={(event) => setHeight(event.target.value)} /></div>
             </div>
             <div className="calc-result"><span>Volumetric weight</span><strong>{volumetric === null ? '—' : `${volumetric.toFixed(2)} kg`}</strong></div>
           </div>
