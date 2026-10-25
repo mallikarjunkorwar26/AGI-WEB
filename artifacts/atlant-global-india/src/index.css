@@ -1685,6 +1685,45 @@ main {
   box-shadow: 0 0 0 4px var(--brand-rose);
 }
 
+.tracking-stage-icon-inner {
+  position: relative;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+}
+
+.tracking-stage-icon-inner svg {
+  position: relative;
+  z-index: 1;
+}
+
+.tracking-stage-active-icon {
+  isolation: isolate;
+}
+
+.tracking-stage-active-icon::before {
+  position: absolute;
+  inset: 2px;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.4) 42%, transparent 76%);
+  content: "";
+  pointer-events: none;
+  animation: tracking-active-icon-glow 2.25s ease-in-out infinite;
+}
+
+@keyframes tracking-active-icon-glow {
+  0%, 100% {
+    opacity: 0.38;
+    filter: blur(1px);
+  }
+  50% {
+    opacity: 0.95;
+    filter: blur(3px);
+  }
+}
+
 .tracking-stage-content h3 {
   font-size: 13px;
   margin: 0;
@@ -3784,6 +3823,9 @@ main {
     transform: none;
   }
   .customer-marquee-track {
+    animation: none;
+  }
+  .tracking-stage-active-icon::before {
     animation: none;
   }
 }

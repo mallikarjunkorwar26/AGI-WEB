@@ -807,7 +807,11 @@ export function TrackingPage() {
 
                     return (
                       <li className={`tracking-stage${completed ? ' is-complete' : ''}${current ? ' is-current' : ''}`} key={stage.label}>
-                        <span className="tracking-stage-icon"><StageIcon size={18} aria-hidden="true" /></span>
+                        <span className="tracking-stage-icon">
+                          <span className={`tracking-stage-icon-inner${current ? ' tracking-stage-active-icon' : ''}`}>
+                            <StageIcon size={18} aria-hidden="true" />
+                          </span>
+                        </span>
                         <div className="tracking-stage-content">
                           <h3>{stage.label}</h3>
                           {stageEvent ? (
