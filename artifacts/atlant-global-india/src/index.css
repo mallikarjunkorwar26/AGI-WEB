@@ -826,8 +826,8 @@ main {
 .customer-logo-group {
   display: flex;
   align-items: center;
-  gap: 56px;
-  padding-right: 56px;
+  gap: 80px;
+  padding-right: 80px;
 }
 
 .customer-logo-group img {
