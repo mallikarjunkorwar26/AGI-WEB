@@ -152,30 +152,35 @@ function trackingErrorForStatus(status: number): string {
 const services = [
   {
     title: 'Domestic',
+    image: 'Domestic.png',
     text: 'Courier and cargo services for shipments moving across India.',
     icon: PackageCheck,
     features: ['Courier', 'Cargo', 'Domestic destinations'],
   },
   {
     title: 'Pro Premium',
+    image: 'ProPremium.png',
     text: 'A time-sensitive service option for important documents and consignments.',
     icon: FileText,
     features: ['AM–PM delivery', 'Visa applications', 'Legal and important documents'],
   },
   {
     title: 'Priority Class',
+    image: 'Priorityclass.png',
     text: 'Express courier and cargo services for business requirements.',
     icon: Truck,
     features: ['Business shipments', 'Express delivery', 'Cargo'],
   },
   {
     title: 'International',
+    image: 'Internation.png',
     text: 'International courier and cargo connectivity through The Professional Couriers network and applicable partners.',
     icon: Globe2,
     features: ['Courier', 'Cargo', 'International destinations'],
   },
   {
     title: 'Warehousing',
+    image: 'Wharehousing.png',
     text: 'Storage, handling and distribution support at the Kudlu Gate facility.',
     icon: Warehouse,
     features: ['Kudlu Gate hub', 'Storage', 'Handling and distribution'],
@@ -497,7 +502,9 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
   const Icon = service.icon;
   return (
     <article className="service-card">
-      <div className="service-photo service-visual" aria-hidden="true"><Icon size={38} strokeWidth={1.4} /></div>
+      <div className="service-photo service-visual" aria-hidden="true">
+        <img src={`${import.meta.env.BASE_URL}images/${service.image}`} alt="" />
+      </div>
       <div className="service-body">
         <h3><Icon size={17} aria-hidden="true" /> {service.title}</h3>
         <p>{service.text}</p>
