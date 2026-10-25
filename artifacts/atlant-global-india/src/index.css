@@ -850,7 +850,7 @@ main {
    ========================================================================== */
 .actions-band {
   background-color: var(--color-surface-subtle);
-  padding-top: 28px;
+  padding: 28px 0;
 }
 
 .quick-grid {
