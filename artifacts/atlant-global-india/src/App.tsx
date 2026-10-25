@@ -21,6 +21,7 @@ import {
   HomePage,
   NotFoundPage,
   OpportunitiesPage,
+  QuotePage,
   ResourcesPage,
   ServicesPage,
   TrackingPage,
@@ -39,6 +40,11 @@ const pageMeta: Record<string, { title: string; description: string }> = {
     title: 'Courier, Cargo & Warehousing Services | Atlant Global India',
     description:
       'Explore Domestic, Pro Premium, Priority Class, International and Warehousing services from Atlant Global India, serving Bengaluru South and East.',
+  },
+  '/quote': {
+    title: 'Request a Shipping Quote | Atlant Global India',
+    description:
+      'Request a customized quote for courier, cargo or warehousing services from Atlant Global India in Bengaluru.',
   },
   '/tracking': {
     title: 'Shipment Tracking | Atlant Global India',
@@ -66,9 +72,9 @@ const pageMeta: Record<string, { title: string; description: string }> = {
       'Find practical service information, verified FAQs and a volumetric weight estimator from Atlant Global India. Confirm shipment terms with the team.',
   },
   '/careers': {
-    title: 'Careers & Franchise Enquiries | Atlant Global India',
+    title: 'Careers & Opportunities | Atlant Global India',
     description:
-      'Contact Atlant Global India about career or franchise opportunities. No unverified vacancies, franchise terms or openings are listed on this page.',
+      'Explore career opportunities and open positions at Atlant Global India.',
   },
   '/contact': {
     title: 'Contact & Offices in Bengaluru | Atlant Global India',
@@ -185,6 +191,12 @@ function SiteHeader() {
   useEffect(() => setMenuOpen(false), [location]);
   const closeMenu = () => setMenuOpen(false);
 
+  const isActive = (path: string) => {
+    const currentPath = location.split(/[?#]/)[0].replace(/\/+$/, '') || '/';
+    if (path === '/') return currentPath === '/';
+    return currentPath.startsWith(path);
+  };
+
   return (
     <>
       <div className="topbar">
@@ -210,19 +222,19 @@ function SiteHeader() {
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
           <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
-            <Link href="/" onClick={closeMenu}>Home</Link>
-            <Link href="/services" onClick={closeMenu}>Services</Link>
-            <Link href="/tracking" onClick={closeMenu}>Tracking</Link>
-            <Link href="/opportunities" onClick={closeMenu}>Opportunities</Link>
-            <Link href="/business" onClick={closeMenu}>Business</Link>
-            <Link href="/about" onClick={closeMenu}>About</Link>
-            <Link href="/resources" onClick={closeMenu}>Resources</Link>
-            <Link href="/careers" onClick={closeMenu}>Careers</Link>
-            <Link href="/contact" onClick={closeMenu}>Contact</Link>
+            <Link href="/" className={isActive('/') ? 'active' : ''} aria-current={isActive('/') ? 'page' : undefined} onClick={closeMenu}>Home</Link>
+            <Link href="/services" className={isActive('/services') ? 'active' : ''} aria-current={isActive('/services') ? 'page' : undefined} onClick={closeMenu}>Services</Link>
+            <Link href="/tracking" className={isActive('/tracking') ? 'active' : ''} aria-current={isActive('/tracking') ? 'page' : undefined} onClick={closeMenu}>Tracking</Link>
+            <Link href="/opportunities" className={isActive('/opportunities') ? 'active' : ''} aria-current={isActive('/opportunities') ? 'page' : undefined} onClick={closeMenu}>Opportunities</Link>
+            <Link href="/business" className={isActive('/business') ? 'active' : ''} aria-current={isActive('/business') ? 'page' : undefined} onClick={closeMenu}>Business</Link>
+            <Link href="/about" className={isActive('/about') ? 'active' : ''} aria-current={isActive('/about') ? 'page' : undefined} onClick={closeMenu}>About</Link>
+            <Link href="/resources" className={isActive('/resources') ? 'active' : ''} aria-current={isActive('/resources') ? 'page' : undefined} onClick={closeMenu}>Resources</Link>
+            <Link href="/careers" className={isActive('/careers') ? 'active' : ''} aria-current={isActive('/careers') ? 'page' : undefined} onClick={closeMenu}>Careers</Link>
+            <Link href="/contact" className={isActive('/contact') ? 'active' : ''} aria-current={isActive('/contact') ? 'page' : undefined} onClick={closeMenu}>Contact</Link>
           </div>
           <div className="nav-cta">
-            <Link className="btn btn-outline" href="/contact">Contact</Link>
-            <Link className="btn btn-primary" href="/opportunities">Explore opportunities <ArrowRight size={14} /></Link>
+            <Link className="btn btn-outline" href="/tracking">Track</Link>
+            <Link className="btn btn-primary" href="/services#quote">Get a quote <ArrowRight size={14} /></Link>
           </div>
         </nav>
       </header>
@@ -240,7 +252,7 @@ function SiteFooter() {
               <Link href="/" aria-label="Atlant Global India home" className="footer-brand-link">
                 <img className="footer-brand-logo" src={`${import.meta.env.BASE_URL}images/AGI%20PNG%20White.png`} alt="Atlant Global India logo" />
               </Link>
-              <p>Courier, cargo and warehousing services in Bengaluru South and East, with access to a wider network.</p>
+              <p>Courier, cargo and warehousing services in Bengaluru South and East, with access to a wider network under The Professional Couriers.</p>
               <nav className="footer-social" aria-label="Follow Atlant Global India">
                 <a href="https://www.instagram.com/atlantglobalindia/" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><FaInstagram /></a>
                 <a href="https://www.facebook.com/atlantglobalindia/" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><FaFacebookF /></a>
@@ -250,19 +262,27 @@ function SiteFooter() {
             </div>
             <div className="footer-col">
               <h4>Services</h4>
-              <Link href="/services">Domestic</Link><Link href="/services">Pro Premium</Link>
-              <Link href="/services">Priority Class</Link><Link href="/services">International</Link><Link href="/services">Warehousing</Link>
+              <Link href="/services">Domestic Courier</Link>
+              <Link href="/services">Pro Premium</Link>
+              <Link href="/services">Priority Class</Link>
+              <Link href="/services">International</Link>
+              <Link href="/services">Warehousing</Link>
             </div>
             <div className="footer-col">
               <h4>Company</h4>
-              <Link href="/about">About</Link><Link href="/about">Leadership</Link>
-              <Link href="/about">Infrastructure</Link><Link href="/opportunities">Opportunities</Link>
-              <Link href="/careers">Careers</Link><Link href="/business">Business opportunities</Link>
+              <Link href="/about">About Us</Link>
+              <Link href="/about#leadership">Leadership</Link>
+              <Link href="/about#infrastructure">Operations Hub</Link>
+              <Link href="/opportunities">Opportunities</Link>
+              <Link href="/careers">Careers</Link>
+              <Link href="/business">Business Partnership</Link>
             </div>
             <div className="footer-col">
               <h4>Help &amp; contact</h4>
-              <Link href="/tracking">Tracking</Link><Link href="/resources">FAQs &amp; resources</Link>
-              <Link href="/contact">Branch locator</Link><Link href="/business">Get a quote</Link>
+              <Link href="/tracking">Shipment Tracking</Link>
+              <Link href="/resources">FAQs &amp; Resources</Link>
+              <Link href="/contact">Branch Locator</Link>
+              <Link href="/services#quote">Get a Quote</Link>
               <div className="footer-map-card">
                 <span className="footer-map-badge">Find us</span>
                 <a href="https://maps.app.goo.gl/PrDEJi5HG4fnZYEo6" target="_blank" rel="noreferrer">Open in Google Maps</a>
@@ -280,10 +300,10 @@ function SiteFooter() {
         </div>
       </footer>
       <div className="mobile-actions" aria-label="Quick contact actions">
-        <Link href="/tracking"><PackageCheck size={17} />Track</Link>
-        <Link href="/business"><FileText size={17} />Quote</Link>
-        <a href={`https://wa.me/${PHONE.replace('+', '')}`} target="_blank" rel="noreferrer"><Headset size={17} />WhatsApp</a>
-        <a href={`tel:${PHONE}`}><Phone size={17} />Call</a>
+        <Link href="/tracking"><PackageCheck size={18} />Track</Link>
+        <Link href="/services#quote"><FileText size={18} />Quote</Link>
+        <a href={`https://wa.me/${PHONE.replace('+', '')}`} target="_blank" rel="noreferrer"><Headset size={18} />WhatsApp</a>
+        <a href={`tel:${PHONE}`}><Phone size={18} />Call</a>
       </div>
     </>
   );
@@ -292,7 +312,15 @@ function SiteFooter() {
 function SiteRoutes() {
   const [location] = useLocation();
   useEffect(() => {
-    if (!location.includes('#')) window.scrollTo({ top: 0, behavior: 'instant' });
+    if (window.location.hash) {
+      const id = window.location.hash.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) {
+        window.setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+        return;
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [location]);
   return (
     <>
@@ -301,6 +329,7 @@ function SiteRoutes() {
         <Switch>
           <Route path="/" component={HomePage} />
           <Route path="/services" component={ServicesPage} />
+          <Route path="/quote" component={QuotePage} />
           <Route path="/tracking" component={TrackingPage} />
           <Route path="/opportunities" component={OpportunitiesPage} />
           <Route path="/business" component={BusinessPage} />

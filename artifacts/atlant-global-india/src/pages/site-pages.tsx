@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -15,6 +15,8 @@ import {
   MapPin,
   PackageCheck,
   Phone,
+  Plane,
+  RotateCcw,
   Search,
   Truck,
   Warehouse,
@@ -220,26 +222,31 @@ function PageHeading({
 }
 
 function QuoteForm() {
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submittedViaEmail, setSubmittedViaEmail] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const submitQuote = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setErrorMessage('');
+    setSubmitting(true);
     const data = new FormData(event.currentTarget);
     const payload = {
-      customerName: String(data.get('name') ?? ''),
-      company: String(data.get('company') ?? ''),
-      email: String(data.get('email') ?? ''),
-      phone: String(data.get('mobile') ?? ''),
-      service: String(data.get('type') ?? ''),
+      customerName: String(data.get('name') ?? '').trim(),
+      company: String(data.get('company') ?? '').trim(),
+      email: String(data.get('email') ?? '').trim(),
+      phone: String(data.get('mobile') ?? '').trim(),
+      service: String(data.get('type') ?? '').trim(),
       requirements: [
         `Pickup: ${data.get('pickup') ?? 'Not provided'}`,
         `Delivery: ${data.get('delivery') ?? 'Not provided'}`,
-        `Weight: ${data.get('weight') ?? 'Not provided'}`,
-        `Dimensions: ${data.get('dimensions') ?? 'Not provided'}`,
-        `Monthly volume: ${data.get('volume') ?? 'Not provided'}`,
-        `Requirement: ${data.get('requirement') ?? 'Not provided'}`,
+        `Weight: ${data.get('weight') || 'Not provided'}`,
+        `Dimensions: ${data.get('dimensions') || 'Not provided'}`,
+        `Monthly volume: ${data.get('volume') || 'Not provided'}`,
+        `Requirement: ${data.get('requirement') || 'Not provided'}`,
       ].join(' | '),
-      location: String(data.get('pickup') ?? ''),
+      location: String(data.get('pickup') ?? '').trim(),
       source: 'website-quote-form',
     };
 
@@ -252,6 +259,14 @@ function QuoteForm() {
 
       if (response.ok) {
         setSubmitted(true);
+        setSubmitting(false);
+        return;
+      }
+
+      if (response.status >= 400 && response.status < 500) {
+        const errJson = await response.json().catch(() => null);
+        setErrorMessage(errJson?.message || 'Please check your information and try again.');
+        setSubmitting(false);
         return;
       }
     } catch (error) {
@@ -274,6 +289,7 @@ function QuoteForm() {
         `Requirement: ${data.get('requirement') || 'Not provided'}`,
       ].join('\n'),
     );
+    setSubmitting(false);
     setSubmittedViaEmail(true);
     setSubmitted(true);
     window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
@@ -301,11 +317,16 @@ function QuoteForm() {
         <div className="field"><label htmlFor="quote-volume">Monthly shipment volume</label><input id="quote-volume" name="volume" placeholder="Approximate volume" /></div>
         <div className="field full"><label htmlFor="quote-requirement">Tell us about your requirement</label><textarea id="quote-requirement" name="requirement" placeholder="What are you shipping, and how often?" /></div>
       </div>
-      <button className="btn btn-primary" type="submit" data-testid="button-request-quote">Request a quote <ArrowRight size={14} /></button>
+      <button className="btn btn-primary" type="submit" disabled={submitting} data-testid="button-request-quote">
+        {submitting ? 'Submitting…' : <>Request a quote <ArrowRight size={14} /></>}
+      </button>
       <p className="form-disclaimer">
         Your enquiry is submitted through a secure website API when the backend is available.
         If the API is temporarily unavailable, this form falls back to your email application for delivery to {EMAIL}.
       </p>
+      {errorMessage && (
+        <div className="error-message" role="alert">{errorMessage}</div>
+      )}
       {submitted && (
         <div className={submittedViaEmail ? 'error-message' : 'success-message'} role="status">
           {submittedViaEmail
@@ -318,6 +339,22 @@ function QuoteForm() {
 }
 
 export function HomePage() {
+  const [, navigate] = useLocation();
+  const [trackingNumber, setTrackingNumber] = useState('');
+  const [trackingError, setTrackingError] = useState('');
+
+  const submitHeroTracking = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const cleaned = trackingNumber.trim();
+    if (!cleaned) {
+      setTrackingError('Enter your consignment number to start tracking.');
+      return;
+    }
+
+    setTrackingError('');
+    navigate(`/tracking?consignment=${encodeURIComponent(cleaned)}`);
+  };
+
   return (
     <>
       <section className="hero">
@@ -329,16 +366,35 @@ export function HomePage() {
           fetchPriority="high"
           decoding="async"
         />
-        <div className="hero-content">
-          <div className="eyebrow">Local knowledge. Wider reach.</div>
-          <h1>Move more.<br />Deliver further.</h1>
-          <p>Your one-stop solution for courier and cargo requirements. Reliable logistics for people and businesses in Bengaluru and destinations across India and beyond.</p>
-          <div className="hero-actions">
-            <Link className="btn btn-primary" href="/business">Get a quote <ArrowRight size={15} /></Link>
-            <Link className="btn btn-outline" href="/tracking">Track shipment <ArrowUpRight size={15} /></Link>
-            <Link className="btn btn-outline" href="/services">Explore services</Link>
+        <div className="container hero-layout">
+          <div className="hero-content">
+            <div className="eyebrow">Local knowledge. Wider reach.</div>
+            <h1>Move more.<br />Deliver further.</h1>
+            <p>Your one-stop solution for courier and cargo requirements. Reliable logistics for people and businesses in Bengaluru and destinations across India and beyond.</p>
+            <div className="hero-actions">
+              <Link className="btn btn-primary" href="/services#quote">Get a quote <ArrowRight size={15} /></Link>
+              <Link className="btn btn-outline" href="/services">Explore services</Link>
+            </div>
+            <div className="hero-note">Established 2 July 1990 · Operating under The Professional Couriers</div>
           </div>
-          <div className="hero-note">Established 2 July 1990 · Operating under The Professional Couriers</div>
+          <div className="hero-tracking-wrap">
+            <form className="hero-tracking" onSubmit={submitHeroTracking}>
+              <input
+                aria-label="Tracking number"
+                aria-describedby={trackingError ? 'hero-tracking-error' : undefined}
+                aria-invalid={Boolean(trackingError)}
+                autoComplete="off"
+                onChange={(event) => {
+                  setTrackingNumber(event.target.value);
+                  if (trackingError) setTrackingError('');
+                }}
+                placeholder="Enter your tracking number"
+                value={trackingNumber}
+              />
+              <button className="btn btn-primary" type="submit">Track →</button>
+            </form>
+            {trackingError && <div className="hero-tracking-error" id="hero-tracking-error" role="alert">{trackingError}</div>}
+          </div>
         </div>
       </section>
       <section className="trustbar" aria-label="Company facts">
@@ -380,7 +436,7 @@ export function HomePage() {
       <section className="actions-band" aria-label="Quick actions">
         <div className="container quick-grid">
           <div className="quick-card"><PackageCheck className="quick-icon" size={21} /><strong>Track a shipment</strong><p>Continue to the official tracking service.</p><Link href="/tracking">Track now <ArrowRight size={12} /></Link></div>
-          <div className="quick-card"><FileText className="quick-icon" size={21} /><strong>Get a quote</strong><p>Tell us about your courier or cargo requirement.</p><Link href="/business">Start an enquiry <ArrowRight size={12} /></Link></div>
+          <div className="quick-card"><FileText className="quick-icon" size={21} /><strong>Get a quote</strong><p>Tell us about your courier or cargo requirement.</p><Link href="/services#quote">Start an enquiry <ArrowRight size={12} /></Link></div>
           <div className="quick-card"><Truck className="quick-icon" size={21} /><strong>Arrange a pickup</strong><p>Pickup is available through nearby branches.</p><Link href="/contact">Contact a branch <ArrowRight size={12} /></Link></div>
           <div className="quick-card"><Building2 className="quick-icon" size={21} /><strong>Business solutions</strong><p>Discuss regular, bulk or time-sensitive shipping.</p><Link href="/business">Explore options <ArrowRight size={12} /></Link></div>
         </div>
@@ -427,7 +483,7 @@ export function HomePage() {
       <section className="section section-sm">
         <div className="container home-route-cta">
           <div><div className="section-label">Need a hand?</div><h2>Let’s talk about your shipment.</h2></div>
-          <div className="hero-actions"><Link className="btn btn-primary" href="/business">Request a quote <ArrowRight size={14} /></Link><Link className="btn btn-outline" href="/contact">Contact our team</Link></div>
+          <div className="hero-actions"><Link className="btn btn-primary" href="/services#quote">Request a quote <ArrowRight size={14} /></Link><Link className="btn btn-outline" href="/contact">Contact our team</Link></div>
         </div>
       </section>
     </>
@@ -443,7 +499,7 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
         <h3><Icon size={17} aria-hidden="true" /> {service.title}</h3>
         <p>{service.text}</p>
         <p className="service-features">{service.features.join(' · ')}</p>
-        <Link href="/business">Enquire about this service <ArrowRight size={13} /></Link>
+        <Link href="/services#quote">Enquire about this service <ArrowRight size={13} /></Link>
       </div>
     </article>
   );
@@ -460,11 +516,53 @@ export function ServicesPage() {
           </div>
         </div>
       </section>
+      <section className="section quote-section" id="quote">
+        <div className="container quote-grid">
+          <div className="quote-aside">
+            <div className="section-label">Request a quote</div>
+            <h2>Get a personalized shipping quote.</h2>
+            <p>Tell us about your consignment — whether it is an urgent document, commercial cargo, or regular logistics support. Our team will provide rate estimates and delivery schedules.</p>
+            <div className="quote-contact-points">
+              <p><strong>Prefer to speak with us?</strong><br />
+                <a href={`tel:${PHONE}`}>+91 7411 708 958</a><br />
+                <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+              </p>
+              <p>Monday–Saturday · 10am–6pm</p>
+            </div>
+          </div>
+          <QuoteForm />
+        </div>
+      </section>
       <section className="section dark-section">
         <div className="container service-support">
           <div><div className="section-label">Need help choosing?</div><h2>Tell us where it’s going.</h2><p className="section-lead">Share your pickup, delivery and shipment details. The team can help you discuss the available service options.</p></div>
           <div className="service-callout"><Check size={20} /><p>Pickup is available through nearby branches. Atlant Global India serves Bengaluru South and East.</p><Link className="btn btn-outline" href="/contact">Find contact details <ArrowRight size={14} /></Link></div>
           <div className="service-callout"><PackageCheck size={20} /><p>For a consignment already in transit, use our tracking page to see the latest status without leaving the website.</p><Link className="btn btn-outline" href="/tracking">Track a shipment <ArrowRight size={14} /></Link></div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+export function QuotePage() {
+  return (
+    <>
+      <PageHeading eyebrow="Get a quote" title="Request a shipping quote." intro="Provide your pickup, delivery and shipment specifications. Our logistics specialists will prepare custom rates for your domestic or international consignments." />
+      <section className="section section-sm quote-section">
+        <div className="container quote-grid">
+          <div className="quote-aside">
+            <div className="section-label">Quick turnaround</div>
+            <h2>Fast, reliable quote estimates.</h2>
+            <p>We serve Bengaluru South & East with 65 branches and full connectivity across India and overseas through The Professional Couriers network.</p>
+            <div className="quote-contact-points">
+              <p><strong>Direct contact</strong><br />
+                <a href={`tel:${PHONE}`}>+91 7411 708 958</a><br />
+                <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+              </p>
+              <p>Monday–Saturday · 10am–6pm</p>
+            </div>
+          </div>
+          <QuoteForm />
         </div>
       </section>
     </>
@@ -490,9 +588,9 @@ export function TrackingPage() {
     return () => window.clearTimeout(scrollTimer);
   }, [trackingResult]);
 
-  const submit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const cleaned = consignment.trim();
+  const submit = async (event?: FormEvent<HTMLFormElement>, numberToTrack = consignment) => {
+    event?.preventDefault();
+    const cleaned = numberToTrack.trim();
 
     if (!cleaned) {
       setTrackingResult(null);
@@ -564,6 +662,14 @@ export function TrackingPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const initialNumber = new URLSearchParams(window.location.search).get('consignment')?.trim();
+    if (!initialNumber) return;
+
+    setConsignment(initialNumber);
+    void submit(undefined, initialNumber);
+  }, []);
 
   const transactions = trackingResult?.transactions ?? [];
   const latestTransaction = transactions[transactions.length - 1];
@@ -951,8 +1057,12 @@ export function CareersPage() {
   const [typeFilter, setTypeFilter] = useState('All');
   const [selectedJob, setSelectedJob] = useState<string>(careerJobs[0].id);
   const [applicationStep, setApplicationStep] = useState(1);
+  const [appError, setAppError] = useState('');
+  const [appSubmitting, setAppSubmitting] = useState(false);
   const [careerSubmitted, setCareerSubmitted] = useState(false);
   const [careerSubmittedViaEmail, setCareerSubmittedViaEmail] = useState(false);
+  const [resumeSubmitting, setResumeSubmitting] = useState(false);
+  const [resumeError, setResumeError] = useState('');
   const [resumeSubmitted, setResumeSubmitted] = useState(false);
   const [resumeSubmittedViaEmail, setResumeSubmittedViaEmail] = useState(false);
   const [application, setApplication] = useState({
@@ -1004,6 +1114,21 @@ export function CareersPage() {
     setTypeFilter('All');
   };
 
+  const nextApplicationStep = () => {
+    setAppError('');
+    if (applicationStep === 1) {
+      if (!application.fullName.trim()) { setAppError('Please enter your full name.'); return; }
+      if (!application.email.trim() || !/\S+@\S+\.\S+/.test(application.email)) { setAppError('Please enter a valid email address.'); return; }
+      if (!application.mobile.trim() || application.mobile.trim().length < 7) { setAppError('Please enter a valid mobile number.'); return; }
+      if (!application.location.trim()) { setAppError('Please enter your current location.'); return; }
+    }
+    if (applicationStep === 2) {
+      if (!application.experience.trim()) { setAppError('Please enter your years of experience.'); return; }
+      if (!application.skills.trim()) { setAppError('Please enter your relevant skills.'); return; }
+    }
+    setApplicationStep((step) => Math.min(4, step + 1));
+  };
+
   const handleApplicationChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name } = event.target;
     const value = event.target instanceof HTMLInputElement && event.target.type === 'file' ? event.target.files?.[0]?.name ?? '' : event.target.value;
@@ -1017,12 +1142,14 @@ export function CareersPage() {
 
   const submitCareerApplication = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setAppError('');
+    setAppSubmitting(true);
 
     const payload = {
-      name: application.fullName,
-      company: application.currentCompany || '',
-      email: application.email,
-      phone: application.mobile,
+      name: application.fullName.trim(),
+      company: application.currentCompany?.trim() || '',
+      email: application.email.trim(),
+      phone: application.mobile.trim(),
       serviceInterest: application.position,
       subject: `Job Application - ${application.position}`,
       message: [
@@ -1045,6 +1172,14 @@ export function CareersPage() {
 
       if (response.ok) {
         setCareerSubmitted(true);
+        setAppSubmitting(false);
+        return;
+      }
+
+      if (response.status >= 400 && response.status < 500) {
+        const errJson = await response.json().catch(() => null);
+        setAppError(errJson?.message || 'Please check your application information and try again.');
+        setAppSubmitting(false);
         return;
       }
     } catch (error) {
@@ -1065,6 +1200,7 @@ export function CareersPage() {
       `Resume: ${application.resume || 'Not provided'}`,
       `Cover Note: ${application.coverNote || 'Not provided'}`,
     ].join('\n');
+    setAppSubmitting(false);
     setCareerSubmittedViaEmail(true);
     setCareerSubmitted(true);
     window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(`Job Application - ${application.position}`)}&body=${encodeURIComponent(body)}`;
@@ -1072,15 +1208,18 @@ export function CareersPage() {
 
   const submitTalentNetwork = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setResumeError('');
+    setResumeSubmitting(true);
+
     const payload = {
-      name: resume.fullName,
-      email: resume.email,
-      phone: resume.mobile,
+      name: resume.fullName.trim(),
+      email: resume.email.trim(),
+      phone: resume.mobile.trim(),
       serviceInterest: 'General Resume Submission',
       subject: 'General Resume Submission',
       message: [
-        `Current Location: ${resume.location}`,
-        `Core Skills: ${resume.skills}`,
+        `Current Location: ${resume.location || 'Not provided'}`,
+        `Core Skills: ${resume.skills || 'Not provided'}`,
         `Message: ${resume.message || 'Not provided'}`,
       ].join('\n'),
       source: 'talent-network',
@@ -1095,6 +1234,14 @@ export function CareersPage() {
 
       if (response.ok) {
         setResumeSubmitted(true);
+        setResumeSubmitting(false);
+        return;
+      }
+
+      if (response.status >= 400 && response.status < 500) {
+        const errJson = await response.json().catch(() => null);
+        setResumeError(errJson?.message || 'Please check your details and try again.');
+        setResumeSubmitting(false);
         return;
       }
     } catch (error) {
@@ -1109,6 +1256,7 @@ export function CareersPage() {
       `Core Skills: ${resume.skills}`,
       `Message: ${resume.message || 'Not provided'}`,
     ].join('\n');
+    setResumeSubmitting(false);
     setResumeSubmittedViaEmail(true);
     setResumeSubmitted(true);
     window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent('General Resume Submission')}&body=${encodeURIComponent(body)}`;
@@ -1291,14 +1439,29 @@ export function CareersPage() {
             </div>
           ) : (
             <form className="career-multi-step-form" onSubmit={submitCareerApplication}>
+              {appError && (
+                <div className="error-message" role="alert" style={{ marginBottom: '16px' }}>{appError}</div>
+              )}
               {applicationStep === 1 && (
                 <div className="career-step-form">
                   <h3>Step 1 — Personal Details</h3>
                   <div className="career-multi-grid">
-                    <div className="field"><label>Full Name</label><input name="fullName" value={application.fullName} onChange={handleApplicationChange} required /></div>
-                    <div className="field"><label>Email</label><input name="email" type="email" value={application.email} onChange={handleApplicationChange} required /></div>
-                    <div className="field"><label>Mobile</label><input name="mobile" type="tel" value={application.mobile} onChange={handleApplicationChange} required /></div>
-                    <div className="field full"><label>Current Location</label><input name="location" value={application.location} onChange={handleApplicationChange} required /></div>
+                    <div className="field">
+                      <label htmlFor="career-app-name">Full Name *</label>
+                      <input id="career-app-name" name="fullName" value={application.fullName} onChange={handleApplicationChange} required autoComplete="name" />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="career-app-email">Email *</label>
+                      <input id="career-app-email" name="email" type="email" value={application.email} onChange={handleApplicationChange} required autoComplete="email" />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="career-app-mobile">Mobile *</label>
+                      <input id="career-app-mobile" name="mobile" type="tel" value={application.mobile} onChange={handleApplicationChange} required autoComplete="tel" />
+                    </div>
+                    <div className="field full">
+                      <label htmlFor="career-app-location">Current Location *</label>
+                      <input id="career-app-location" name="location" value={application.location} onChange={handleApplicationChange} required />
+                    </div>
                   </div>
                 </div>
               )}
@@ -1307,14 +1470,32 @@ export function CareersPage() {
                 <div className="career-step-form">
                   <h3>Step 2 — Professional Details</h3>
                   <div className="career-multi-grid">
-                    <div className="field"><label>Position</label><select name="position" value={application.position} onChange={handleApplicationChange}>
-                      {careerJobs.map((job) => <option key={job.id} value={job.title}>{job.title}</option>)}
-                    </select></div>
-                    <div className="field"><label>Current Company</label><input name="currentCompany" value={application.currentCompany} onChange={handleApplicationChange} /></div>
-                    <div className="field"><label>Experience</label><input name="experience" value={application.experience} onChange={handleApplicationChange} required /></div>
-                    <div className="field full"><label>Relevant Skills</label><input name="skills" value={application.skills} onChange={handleApplicationChange} required /></div>
-                    <div className="field"><label>LinkedIn</label><input name="linkedin" value={application.linkedin} onChange={handleApplicationChange} /></div>
-                    <div className="field"><label>Portfolio / Website</label><input name="portfolio" value={application.portfolio} onChange={handleApplicationChange} /></div>
+                    <div className="field">
+                      <label htmlFor="career-app-position">Position</label>
+                      <select id="career-app-position" name="position" value={application.position} onChange={handleApplicationChange}>
+                        {careerJobs.map((job) => <option key={job.id} value={job.title}>{job.title}</option>)}
+                      </select>
+                    </div>
+                    <div className="field">
+                      <label htmlFor="career-app-company">Current Company</label>
+                      <input id="career-app-company" name="currentCompany" value={application.currentCompany} onChange={handleApplicationChange} />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="career-app-experience">Experience *</label>
+                      <input id="career-app-experience" name="experience" value={application.experience} onChange={handleApplicationChange} required placeholder="e.g. 2 years" />
+                    </div>
+                    <div className="field full">
+                      <label htmlFor="career-app-skills">Relevant Skills *</label>
+                      <input id="career-app-skills" name="skills" value={application.skills} onChange={handleApplicationChange} required placeholder="e.g. Sales, CRM, Operations" />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="career-app-linkedin">LinkedIn</label>
+                      <input id="career-app-linkedin" name="linkedin" value={application.linkedin} onChange={handleApplicationChange} placeholder="Profile URL" />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="career-app-portfolio">Portfolio / Website</label>
+                      <input id="career-app-portfolio" name="portfolio" value={application.portfolio} onChange={handleApplicationChange} placeholder="Website URL" />
+                    </div>
                   </div>
                 </div>
               )}
@@ -1323,11 +1504,11 @@ export function CareersPage() {
                 <div className="career-step-form">
                   <h3>Step 3 — Resume</h3>
                   <div className="upload-wrap">
-                    <label className="upload-input">
+                    <label className="upload-input" htmlFor="career-app-resume">
                       <span>Upload resume</span>
-                      <input type="file" name="resume" accept=".pdf,.doc,.docx" onChange={handleApplicationChange} />
+                      <input id="career-app-resume" type="file" name="resume" accept=".pdf,.doc,.docx" onChange={handleApplicationChange} />
                     </label>
-                    <p>Accepted formats: PDF / DOC / DOCX</p>
+                    <p>{application.resume ? `Selected: ${application.resume}` : 'Accepted formats: PDF / DOC / DOCX'}</p>
                   </div>
                 </div>
               )}
@@ -1348,8 +1529,8 @@ export function CareersPage() {
 
               <div className="career-multi-actions">
                 {applicationStep > 1 && <button type="button" className="btn btn-outline" onClick={() => setApplicationStep((step) => Math.max(1, step - 1))}>Previous</button>}
-                {applicationStep < 4 && <button type="button" className="btn btn-primary" onClick={() => setApplicationStep((step) => Math.min(4, step + 1))}>Next</button>}
-                {applicationStep === 4 && <button type="submit" className="btn btn-primary">Submit Application</button>}
+                {applicationStep < 4 && <button type="button" className="btn btn-primary" onClick={nextApplicationStep}>Next</button>}
+                {applicationStep === 4 && <button type="submit" className="btn btn-primary" disabled={appSubmitting}>{appSubmitting ? 'Submitting…' : 'Submit Application'}</button>}
               </div>
             </form>
           )}
@@ -1372,15 +1553,38 @@ export function CareersPage() {
             </div>
           ) : (
             <form className="talent-network-form" onSubmit={submitTalentNetwork}>
+              {resumeError && (
+                <div className="error-message" role="alert">{resumeError}</div>
+              )}
               <div className="career-multi-grid">
-                <div className="field"><label>Full Name</label><input name="fullName" value={resume.fullName} onChange={handleResumeChange} required /></div>
-                <div className="field"><label>Email</label><input name="email" type="email" value={resume.email} onChange={handleResumeChange} required /></div>
-                <div className="field"><label>Mobile</label><input name="mobile" type="tel" value={resume.mobile} onChange={handleResumeChange} required /></div>
-                <div className="field full"><label>Current Location</label><input name="location" value={resume.location} onChange={handleResumeChange} /></div>
-                <div className="field full"><label>Core Skills</label><input name="skills" value={resume.skills} onChange={handleResumeChange} /></div>
-                <div className="field full"><label>Tell us about yourself</label><textarea name="message" value={resume.message} onChange={handleResumeChange} rows={4} /></div>
+                <div className="field">
+                  <label htmlFor="talent-name">Full Name *</label>
+                  <input id="talent-name" name="fullName" value={resume.fullName} onChange={handleResumeChange} required autoComplete="name" />
+                </div>
+                <div className="field">
+                  <label htmlFor="talent-email">Email *</label>
+                  <input id="talent-email" name="email" type="email" value={resume.email} onChange={handleResumeChange} required autoComplete="email" />
+                </div>
+                <div className="field">
+                  <label htmlFor="talent-mobile">Mobile *</label>
+                  <input id="talent-mobile" name="mobile" type="tel" value={resume.mobile} onChange={handleResumeChange} required autoComplete="tel" />
+                </div>
+                <div className="field full">
+                  <label htmlFor="talent-location">Current Location</label>
+                  <input id="talent-location" name="location" value={resume.location} onChange={handleResumeChange} />
+                </div>
+                <div className="field full">
+                  <label htmlFor="talent-skills">Core Skills</label>
+                  <input id="talent-skills" name="skills" value={resume.skills} onChange={handleResumeChange} />
+                </div>
+                <div className="field full">
+                  <label htmlFor="talent-message">Tell us about yourself</label>
+                  <textarea id="talent-message" name="message" value={resume.message} onChange={handleResumeChange} rows={4} />
+                </div>
               </div>
-              <button type="submit" className="btn btn-primary">Submit Your Resume</button>
+              <button type="submit" className="btn btn-primary" disabled={resumeSubmitting}>
+                {resumeSubmitting ? 'Submitting…' : 'Submit Your Resume'}
+              </button>
             </form>
           )}
         </div>
@@ -1398,8 +1602,6 @@ export function CareersPage() {
     </>
   );
 }
-
-const partnerLeadStatuses = ['New', 'Contacted', 'Under Review', 'Discussion', 'Approved', 'Not Proceeding'];
 
 export function OpportunitiesPage() {
   return (
@@ -1475,9 +1677,45 @@ export function BusinessPage() {
     infrastructure: '',
   });
 
-  const updateField = (field: string, value: string) => setForm((current) => ({ ...current, [field]: value }));
-  const nextStep = () => setCurrentStep((step) => Math.min(step + 1, 5));
-  const previousStep = () => setCurrentStep((step) => Math.max(step - 1, 1));
+  const updateField = (field: string, value: string) => {
+    setSubmissionError('');
+    setForm((current) => ({ ...current, [field]: value }));
+  };
+
+  const nextStep = () => {
+    setSubmissionError('');
+    if (currentStep === 1) {
+      if (!form.fullName.trim() || !form.mobile.trim() || !form.email.trim()) {
+        setSubmissionError('Please provide your full name, mobile number, and email address.');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+        setSubmissionError('Please provide a valid email address.');
+        return;
+      }
+    } else if (currentStep === 2) {
+      if (!form.businessName.trim() || !form.businessType.trim() || !form.yearsInBusiness.trim()) {
+        setSubmissionError('Please provide your business name, business type, and years in business.');
+        return;
+      }
+    } else if (currentStep === 3) {
+      if (!form.state.trim() || !form.city.trim() || !form.area.trim() || !form.operatingLocation.trim()) {
+        setSubmissionError('Please fill in the state, city, area, and proposed operating location.');
+        return;
+      }
+    } else if (currentStep === 4) {
+      if (form.gstRegistered === 'Yes' && !form.gstNumber.trim()) {
+        setSubmissionError('Please provide your GST number or change GST registration to "No".');
+        return;
+      }
+    }
+    setCurrentStep((step) => Math.min(step + 1, 5));
+  };
+
+  const previousStep = () => {
+    setSubmissionError('');
+    setCurrentStep((step) => Math.max(step - 1, 1));
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -1550,9 +1788,18 @@ export function BusinessPage() {
           <div className="partner-form-step">
             <h3>Step 1 — Personal Information</h3>
             <div className="partner-grid">
-              <div className="field"><label>Full Name</label><input value={form.fullName} onChange={(e) => updateField('fullName', e.target.value)} required /></div>
-              <div className="field"><label>Mobile Number</label><input value={form.mobile} onChange={(e) => updateField('mobile', e.target.value)} required /></div>
-              <div className="field full"><label>Email Address</label><input value={form.email} type="email" onChange={(e) => updateField('email', e.target.value)} required /></div>
+              <div className="field">
+                <label htmlFor="biz-fullname">Full Name *</label>
+                <input id="biz-fullname" value={form.fullName} onChange={(e) => updateField('fullName', e.target.value)} required autoComplete="name" />
+              </div>
+              <div className="field">
+                <label htmlFor="biz-mobile">Mobile Number *</label>
+                <input id="biz-mobile" type="tel" value={form.mobile} onChange={(e) => updateField('mobile', e.target.value)} required autoComplete="tel" />
+              </div>
+              <div className="field full">
+                <label htmlFor="biz-email">Email Address *</label>
+                <input id="biz-email" type="email" value={form.email} onChange={(e) => updateField('email', e.target.value)} required autoComplete="email" />
+              </div>
             </div>
           </div>
         )}
@@ -1561,9 +1808,18 @@ export function BusinessPage() {
           <div className="partner-form-step">
             <h3>Step 2 — Business Information</h3>
             <div className="partner-grid">
-              <div className="field"><label>Business / Company Name</label><input value={form.businessName} onChange={(e) => updateField('businessName', e.target.value)} required /></div>
-              <div className="field"><label>Existing Business Type</label><input value={form.businessType} onChange={(e) => updateField('businessType', e.target.value)} required /></div>
-              <div className="field full"><label>Years in Business</label><input value={form.yearsInBusiness} onChange={(e) => updateField('yearsInBusiness', e.target.value)} required /></div>
+              <div className="field">
+                <label htmlFor="biz-company">Business / Company Name *</label>
+                <input id="biz-company" value={form.businessName} onChange={(e) => updateField('businessName', e.target.value)} required autoComplete="organization" />
+              </div>
+              <div className="field">
+                <label htmlFor="biz-type">Existing Business Type *</label>
+                <input id="biz-type" value={form.businessType} onChange={(e) => updateField('businessType', e.target.value)} required placeholder="e.g. Retail, Logistics, Distribution" />
+              </div>
+              <div className="field full">
+                <label htmlFor="biz-years">Years in Business *</label>
+                <input id="biz-years" value={form.yearsInBusiness} onChange={(e) => updateField('yearsInBusiness', e.target.value)} required placeholder="e.g. 3 years" />
+              </div>
             </div>
           </div>
         )}
@@ -1572,10 +1828,22 @@ export function BusinessPage() {
           <div className="partner-form-step">
             <h3>Step 3 — Location</h3>
             <div className="partner-grid">
-              <div className="field"><label>State</label><input value={form.state} onChange={(e) => updateField('state', e.target.value)} required /></div>
-              <div className="field"><label>City</label><input value={form.city} onChange={(e) => updateField('city', e.target.value)} required /></div>
-              <div className="field"><label>Area / Locality</label><input value={form.area} onChange={(e) => updateField('area', e.target.value)} required /></div>
-              <div className="field full"><label>Proposed Operating Location</label><input value={form.operatingLocation} onChange={(e) => updateField('operatingLocation', e.target.value)} required /></div>
+              <div className="field">
+                <label htmlFor="biz-state">State *</label>
+                <input id="biz-state" value={form.state} onChange={(e) => updateField('state', e.target.value)} required />
+              </div>
+              <div className="field">
+                <label htmlFor="biz-city">City *</label>
+                <input id="biz-city" value={form.city} onChange={(e) => updateField('city', e.target.value)} required />
+              </div>
+              <div className="field">
+                <label htmlFor="biz-area">Area / Locality *</label>
+                <input id="biz-area" value={form.area} onChange={(e) => updateField('area', e.target.value)} required />
+              </div>
+              <div className="field full">
+                <label htmlFor="biz-operating">Proposed Operating Location *</label>
+                <input id="biz-operating" value={form.operatingLocation} onChange={(e) => updateField('operatingLocation', e.target.value)} required placeholder="Target locality or premises address" />
+              </div>
             </div>
           </div>
         )}
@@ -1585,9 +1853,9 @@ export function BusinessPage() {
             <h3>Step 4 — Partnership Information</h3>
             <div className="partner-option-group">
               <p>What type of opportunity are you interested in?</p>
-              {['Franchise / Branch Opportunity', 'Channel Partner', 'Business Association', 'Other'].map((option) => (
-                <label key={option} className="radio-option">
-                  <input type="radio" name="interest" checked={form.interest === option} onChange={() => updateField('interest', option)} />
+              {['Franchise / Branch Opportunity', 'Channel Partner', 'Business Association', 'Other'].map((option, idx) => (
+                <label key={option} htmlFor={`biz-opp-${idx}`} className="radio-option">
+                  <input id={`biz-opp-${idx}`} type="radio" name="interest" checked={form.interest === option} onChange={() => updateField('interest', option)} />
                   <span>{option}</span>
                 </label>
               ))}
@@ -1595,29 +1863,35 @@ export function BusinessPage() {
 
             <div className="partner-option-group">
               <p>Are you currently registered under GST?</p>
-              {['Yes', 'No'].map((option) => (
-                <label key={option} className="radio-option">
-                  <input type="radio" name="gstRegistered" checked={form.gstRegistered === option} onChange={() => updateField('gstRegistered', option)} />
+              {['Yes', 'No'].map((option, idx) => (
+                <label key={option} htmlFor={`biz-gst-${idx}`} className="radio-option">
+                  <input id={`biz-gst-${idx}`} type="radio" name="gstRegistered" checked={form.gstRegistered === option} onChange={() => updateField('gstRegistered', option)} />
                   <span>{option}</span>
                 </label>
               ))}
             </div>
 
             {form.gstRegistered === 'Yes' && (
-              <div className="field full"><label>GST Number</label><input value={form.gstNumber} onChange={(e) => updateField('gstNumber', e.target.value)} required /></div>
+              <div className="field full">
+                <label htmlFor="biz-gst-number">GST Number *</label>
+                <input id="biz-gst-number" value={form.gstNumber} onChange={(e) => updateField('gstNumber', e.target.value)} required placeholder="22AAAAA0000A1Z5" />
+              </div>
             )}
 
             <div className="partner-option-group">
               <p>Do you have logistics / courier experience?</p>
-              {['Yes', 'No'].map((option) => (
-                <label key={option} className="radio-option">
-                  <input type="radio" name="courierExperience" checked={form.courierExperience === option} onChange={() => updateField('courierExperience', option)} />
+              {['Yes', 'No'].map((option, idx) => (
+                <label key={option} htmlFor={`biz-exp-${idx}`} className="radio-option">
+                  <input id={`biz-exp-${idx}`} type="radio" name="courierExperience" checked={form.courierExperience === option} onChange={() => updateField('courierExperience', option)} />
                   <span>{option}</span>
                 </label>
               ))}
             </div>
 
-            <div className="field full"><label>Available Infrastructure</label><textarea value={form.infrastructure} onChange={(e) => updateField('infrastructure', e.target.value)} rows={4} placeholder="Provide relevant details about your available space, capacity or operational readiness." /></div>
+            <div className="field full">
+              <label htmlFor="biz-infra">Available Infrastructure</label>
+              <textarea id="biz-infra" value={form.infrastructure} onChange={(e) => updateField('infrastructure', e.target.value)} rows={4} placeholder="Provide relevant details about your available space, vehicle fleet, or operational readiness." />
+            </div>
           </div>
         )}
 
@@ -1735,10 +2009,13 @@ export function BusinessPage() {
       <section className="section section-sm partner-footer-cta">
         <div className="container partner-cross-link">
           <div>
-            <div className="section-label">Looking for a career instead?</div>
-            <h2>Explore Career Opportunities</h2>
+            <div className="section-label">Need shipping or seeking employment?</div>
+            <h2>Explore Our Other Solutions</h2>
           </div>
-          <Link href="/careers" className="btn btn-primary">Explore Career Opportunities</Link>
+          <div className="hero-actions">
+            <Link href="/services#quote" className="btn btn-primary">Get a Shipping Quote</Link>
+            <Link href="/careers" className="btn btn-outline">Explore Careers</Link>
+          </div>
         </div>
       </section>
     </>
@@ -1757,7 +2034,7 @@ export function AboutPage() {
   return (
     <>
       <PageHeading eyebrow="About Atlant Global India" title="Experience that moves business." intro="Atlant Global India (Inc) was established on July 2, 1990 by Mr. Suresh Surendranath and operates under The Professional Couriers." />
-      <section className="section section-sm">
+      <section className="section section-sm" id="infrastructure">
         <div className="container intro-grid">
           <div className="intro-photo-wrap"><img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.jpg`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" /></div>
           <div className="intro-copy">
@@ -1779,7 +2056,7 @@ export function AboutPage() {
           <div><div className="section-label">Network</div><h2>Rooted in Bengaluru.<br />Connected beyond it.</h2><p className="section-lead">Through The Professional Couriers network, Atlant Global India supports domestic and international courier and cargo requirements. Its local service area is Bengaluru South and East.</p><Link className="btn btn-navy" href="/contact">Contact the company <ArrowRight size={14} /></Link></div>
         </div>
       </section>
-      <section className="section section-sm">
+      <section className="section section-sm" id="leadership">
         <div className="container">
           <div className="section-label">Leadership</div><h2>Led with experience.</h2>
           <div className="leadership">
@@ -1796,17 +2073,316 @@ export function AboutPage() {
   );
 }
 
+type ShippingMethod = 'surface' | 'air';
+
+interface ShippingMethodConfig {
+  id: ShippingMethod;
+  name: string;
+  subtitle: string;
+  divisor: number;
+  formula: string;
+}
+
+const SHIPPING_METHODS: Record<ShippingMethod, ShippingMethodConfig> = {
+  surface: {
+    id: 'surface',
+    name: 'Surface Cargo (Road / Sea)',
+    subtitle: 'Divisor: 5,000',
+    divisor: 5000,
+    formula: 'Length (cm) x Width (cm) x Height (cm) / 5000',
+  },
+  air: {
+    id: 'air',
+    name: 'Air Cargo',
+    subtitle: 'Divisor: 6,000',
+    divisor: 6000,
+    formula: 'Length (cm) × Width (cm) × Height (cm) ÷ 6000',
+  },
+};
+
+export function VolumetricCalculator() {
+  const [method, setMethod] = useState<ShippingMethod>('surface');
+  const [length, setLength] = useState<string>('');
+  const [width, setWidth] = useState<string>('');
+  const [height, setHeight] = useState<string>('');
+  const [calculatedResult, setCalculatedResult] = useState<number | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ length?: boolean; width?: boolean; height?: boolean }>({});
+
+  const activeConfig = SHIPPING_METHODS[method];
+
+  const validateAndCalculate = (
+    selectedMethod: ShippingMethod = method,
+    lStr: string = length,
+    wStr: string = width,
+    hStr: string = height,
+    isExplicit: boolean = true
+  ): boolean => {
+    const lTrim = lStr.trim();
+    const wTrim = wStr.trim();
+    const hTrim = hStr.trim();
+
+    // Check for empty fields
+    if (!lTrim || !wTrim || !hTrim) {
+      if (isExplicit) {
+        setValidationError('All three dimensions (Length, Width, Height) are required.');
+        setFieldErrors({
+          length: !lTrim,
+          width: !wTrim,
+          height: !hTrim,
+        });
+        setCalculatedResult(null);
+      }
+      return false;
+    }
+
+    const lNum = Number(lTrim);
+    const wNum = Number(wTrim);
+    const hNum = Number(hTrim);
+
+    const errors: { length?: boolean; width?: boolean; height?: boolean } = {};
+    if (isNaN(lNum) || lNum <= 0) errors.length = true;
+    if (isNaN(wNum) || wNum <= 0) errors.width = true;
+    if (isNaN(hNum) || hNum <= 0) errors.height = true;
+
+    if (errors.length || errors.width || errors.height) {
+      if (isExplicit) {
+        setValidationError('Dimensions must be valid positive numbers greater than 0.');
+        setFieldErrors(errors);
+        setCalculatedResult(null);
+      }
+      return false;
+    }
+
+    // All dimensions are valid positive numbers
+    setFieldErrors({});
+    setValidationError(null);
+    const divisor = SHIPPING_METHODS[selectedMethod].divisor;
+    const volumetricWeight = (lNum * wNum * hNum) / divisor;
+    setCalculatedResult(volumetricWeight);
+    return true;
+  };
+
+  const handleMethodChange = (newMethod: ShippingMethod) => {
+    setMethod(newMethod);
+    // If a calculation was already made or dimensions are filled, recalculate immediately with the new divisor:
+    if (calculatedResult !== null || (length.trim() && width.trim() && height.trim())) {
+      validateAndCalculate(newMethod, length, width, height, false);
+    }
+  };
+
+  const handleInputChange = (field: 'length' | 'width' | 'height', value: string) => {
+    if (field === 'length') setLength(value);
+    if (field === 'width') setWidth(value);
+    if (field === 'height') setHeight(value);
+
+    if (fieldErrors[field]) {
+      setFieldErrors((prev) => ({ ...prev, [field]: false }));
+    }
+    if (validationError) {
+      setValidationError(null);
+    }
+
+    // If calculation has already been run, update calculation reactively:
+    if (calculatedResult !== null) {
+      const nextL = field === 'length' ? value : length;
+      const nextW = field === 'width' ? value : width;
+      const nextH = field === 'height' ? value : height;
+      const lNum = Number(nextL.trim());
+      const wNum = Number(nextW.trim());
+      const hNum = Number(nextH.trim());
+      if (lNum > 0 && wNum > 0 && hNum > 0) {
+        const divisor = SHIPPING_METHODS[method].divisor;
+        setCalculatedResult((lNum * wNum * hNum) / divisor);
+      } else {
+        setCalculatedResult(null);
+      }
+    }
+  };
+
+  const handleCalculate = (e?: FormEvent) => {
+    if (e) e.preventDefault();
+    validateAndCalculate(method, length, width, height, true);
+  };
+
+  const handleReset = () => {
+    setMethod('surface');
+    setLength('');
+    setWidth('');
+    setHeight('');
+    setCalculatedResult(null);
+    setValidationError(null);
+    setFieldErrors({});
+  };
+
+  return (
+    <div className="calculator" aria-labelledby="calc-heading">
+      <div className="section-label">Shipping reference</div>
+      <h3 id="calc-heading">Volumetric weight calculator</h3>
+      <p className="calc-intro">
+        Estimate volumetric weight for road/sea or air consignments. The chargeable weight will be the greater of actual gross weight and volumetric weight.
+      </p>
+
+      {/* Shipping Method Selector */}
+      <div className="calc-mode-selector">
+        <label className="calc-section-title">Shipping Method</label>
+        <div className="calc-mode-group" role="radiogroup" aria-label="Shipping Method">
+          <button
+            type="button"
+            role="radio"
+            aria-checked={method === 'surface'}
+            className={`calc-mode-btn ${method === 'surface' ? 'active' : ''}`}
+            onClick={() => handleMethodChange('surface')}
+            data-testid="calc-mode-surface"
+          >
+            <span className="calc-mode-icon" aria-hidden="true">
+              <Truck size={18} />
+            </span>
+            <span className="calc-mode-content">
+              <strong>Surface Cargo (Road / Sea)</strong>
+              <small>Divisor: 5,000</small>
+            </span>
+          </button>
+
+          <button
+            type="button"
+            role="radio"
+            aria-checked={method === 'air'}
+            className={`calc-mode-btn ${method === 'air' ? 'active' : ''}`}
+            onClick={() => handleMethodChange('air')}
+            data-testid="calc-mode-air"
+          >
+            <span className="calc-mode-icon" aria-hidden="true">
+              <Plane size={18} />
+            </span>
+            <span className="calc-mode-content">
+              <strong>Air Cargo</strong>
+              <small>Divisor: 6,000</small>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {/* Input Dimensions */}
+      <form onSubmit={handleCalculate} noValidate>
+        <div className="calc-row">
+          <div className="calc-input-wrap">
+            <label htmlFor="calc-length">Length (cm) *</label>
+            <input
+              className={`calc-input ${fieldErrors.length ? 'input-error' : ''}`}
+              id="calc-length"
+              type="number"
+              min="0.01"
+              step="any"
+              placeholder="e.g. 100"
+              value={length}
+              onChange={(e) => handleInputChange('length', e.target.value)}
+              aria-invalid={fieldErrors.length ? 'true' : 'false'}
+              data-testid="input-calc-length"
+            />
+          </div>
+          <div className="calc-input-wrap">
+            <label htmlFor="calc-width">Width (cm) *</label>
+            <input
+              className={`calc-input ${fieldErrors.width ? 'input-error' : ''}`}
+              id="calc-width"
+              type="number"
+              min="0.01"
+              step="any"
+              placeholder="e.g. 50"
+              value={width}
+              onChange={(e) => handleInputChange('width', e.target.value)}
+              aria-invalid={fieldErrors.width ? 'true' : 'false'}
+              data-testid="input-calc-width"
+            />
+          </div>
+          <div className="calc-input-wrap">
+            <label htmlFor="calc-height">Height (cm) *</label>
+            <input
+              className={`calc-input ${fieldErrors.height ? 'input-error' : ''}`}
+              id="calc-height"
+              type="number"
+              min="0.01"
+              step="any"
+              placeholder="e.g. 40"
+              value={height}
+              onChange={(e) => handleInputChange('height', e.target.value)}
+              aria-invalid={fieldErrors.height ? 'true' : 'false'}
+              data-testid="input-calc-height"
+            />
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="calc-actions">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            data-testid="btn-calc-submit"
+          >
+            Calculate Volumetric Weight
+          </button>
+          <button
+            type="button"
+            className="btn btn-outline calc-btn-reset"
+            onClick={handleReset}
+            data-testid="btn-calc-reset"
+          >
+            <RotateCcw size={14} aria-hidden="true" />
+            Reset
+          </button>
+        </div>
+      </form>
+
+      {/* Friendly Validation Error Message */}
+      {validationError && (
+        <div className="calc-error-banner" role="alert" data-testid="calc-error-message">
+          <Circle size={16} aria-hidden="true" />
+          <span>{validationError}</span>
+        </div>
+      )}
+
+      {/* Result Display */}
+      <div className="calc-result-panel" data-testid="calc-result-panel">
+        <div className="calc-result-top">
+          <div className="calc-result-label">
+            <span>Volumetric Weight</span>
+            <small className="calc-result-subtext">
+              {activeConfig.name} · Divisor: {activeConfig.divisor.toLocaleString()}
+            </small>
+          </div>
+          <div className="calc-result-value">
+            <strong>{calculatedResult !== null ? `${calculatedResult.toFixed(2)} kg` : '—'}</strong>
+          </div>
+        </div>
+
+        <div className="calc-formula-display">
+          <span className="calc-formula-tag">Active Formula</span>
+          <code>
+            {calculatedResult !== null && length && width && height
+              ? `${Number(length)} × ${Number(width)} × ${Number(height)} ÷ ${activeConfig.divisor} = ${calculatedResult.toFixed(2)} kg`
+              : `${activeConfig.formula} = Volumetric Weight (kg)`}
+          </code>
+        </div>
+
+        <div className="calc-notes">
+          <p>
+            <strong>Commercial Freight Rule:</strong> Courier and cargo carriers apply charges on the basis of chargeable weight, which is whichever is higher between actual gross weight and volumetric weight.
+          </p>
+        </div>
+
+        <div className="calc-footer-cta">
+          <Link className="btn btn-primary btn-sm" href="/services#quote">
+            Request a Quote for this Consignment <ArrowRight size={13} aria-hidden="true" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ResourcesPage() {
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
-  const [length, setLength] = useState('');
-  const [width, setWidth] = useState('');
-  const [height, setHeight] = useState('');
-  const volumetric = useMemo(() => {
-    const l = Number(length);
-    const w = Number(width);
-    const h = Number(height);
-    return l > 0 && w > 0 && h > 0 ? (l * w * h) / 5000 : null;
-  }, [length, width, height]);
   return (
     <>
       <PageHeading eyebrow="Resources" title="Helpful answers for shipping." intro="Find practical information about the local network and services, plus a volumetric weight estimate. Confirm applicable service terms with Atlant Global India." />
@@ -1822,16 +2398,7 @@ export function ResourcesPage() {
             </div>
             <a className="faq-link" href={`mailto:${EMAIL}?subject=${encodeURIComponent('Shipping question')}`}>Ask Atlant Global India <ArrowRight size={13} /></a>
           </div>
-          <div className="calculator">
-            <div className="section-label">Shipping reference</div><h3>Volumetric weight calculator</h3>
-            <p>Estimate volumetric weight using the formula: Length (cm) x Width (cm) x Height (cm) / 5000 = Volumetric Weight (kg). Enter dimensions in centimetres.</p>
-            <div className="calc-row">
-              <div className="calc-input-wrap"><label htmlFor="calc-l">Length (cm)</label><input className="calc-input" id="calc-l" type="number" min="0" step="any" value={length} onChange={(event) => setLength(event.target.value)} /></div>
-              <div className="calc-input-wrap"><label htmlFor="calc-w">Width (cm)</label><input className="calc-input" id="calc-w" type="number" min="0" step="any" value={width} onChange={(event) => setWidth(event.target.value)} /></div>
-              <div className="calc-input-wrap"><label htmlFor="calc-h">Height (cm)</label><input className="calc-input" id="calc-h" type="number" min="0" step="any" value={height} onChange={(event) => setHeight(event.target.value)} /></div>
-            </div>
-            <div className="calc-result"><span>Volumetric weight</span><strong>{volumetric === null ? '—' : `${volumetric.toFixed(2)} kg`}</strong></div>
-          </div>
+          <VolumetricCalculator />
         </div>
       </section>
       <section className="section">
