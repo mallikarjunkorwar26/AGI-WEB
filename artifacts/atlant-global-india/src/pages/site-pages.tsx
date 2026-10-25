@@ -816,9 +816,18 @@ export function TrackingPage() {
                           <h3>{stage.label}</h3>
                           {stageEvent ? (
                             <p>
-                              {trackingField(stageEvent, 'Date') && <span>{trackingField(stageEvent, 'Date')}</span>}
-                              {trackingField(stageEvent, 'Time') && <span>{trackingField(stageEvent, 'Time')}</span>}
-                              {trackingField(stageEvent, 'City') && <span><MapPin size={13} aria-hidden="true" />{trackingField(stageEvent, 'City')}</span>}
+                              {(trackingField(stageEvent, 'Date') || trackingField(stageEvent, 'Time')) && (
+                                <span className="tracking-stage-datetime">
+                                  {trackingField(stageEvent, 'Date') && <span>{trackingField(stageEvent, 'Date')}</span>}
+                                  {trackingField(stageEvent, 'Time') && <span>{trackingField(stageEvent, 'Time')}</span>}
+                                </span>
+                              )}
+                              {trackingField(stageEvent, 'City') && (
+                                <span className="tracking-stage-location">
+                                  <MapPin size={13} aria-hidden="true" />
+                                  {trackingField(stageEvent, 'City')}
+                                </span>
+                              )}
                             </p>
                           ) : <small>{completed ? 'Completed' : 'Awaiting update'}</small>}
                         </div>

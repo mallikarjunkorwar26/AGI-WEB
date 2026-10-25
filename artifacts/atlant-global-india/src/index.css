@@ -1731,12 +1731,29 @@ main {
 
 .tracking-stage-content p {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 4px 8px;
+  gap: 4px;
   margin: 6px 0 0;
   color: var(--color-text-secondary);
   font-size: 11.5px;
+}
+
+.tracking-stage-datetime,
+.tracking-stage-location {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.tracking-stage-datetime {
+  flex-wrap: wrap;
+}
+
+.tracking-stage-location svg {
+  flex: 0 0 auto;
 }
 
 .tracking-stage-content small {
@@ -3782,6 +3799,12 @@ main {
   .tracking-stage-icon {
     margin: 0;
     flex-shrink: 0;
+  }
+  .tracking-stage-content p,
+  .tracking-stage-datetime,
+  .tracking-stage-location {
+    align-items: flex-start;
+    justify-content: flex-start;
   }
 }
 
