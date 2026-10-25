@@ -2115,27 +2115,19 @@ export function VolumetricCalculator() {
   const activeConfig = SHIPPING_METHODS[method];
 
   const validateAndCalculate = (
-    selectedMethod: ShippingMethod = method,
-    lStr: string = length,
-    wStr: string = width,
-    hStr: string = height,
-    isExplicit: boolean = true
+    selectedMethod: ShippingMethod,
+    lStr: string,
+    wStr: string,
+    hStr: string,
   ): boolean => {
     const lTrim = lStr.trim();
     const wTrim = wStr.trim();
     const hTrim = hStr.trim();
 
-    // Check for empty fields
     if (!lTrim || !wTrim || !hTrim) {
-      if (isExplicit) {
-        setValidationError('All three dimensions (Length, Width, Height) are required.');
-        setFieldErrors({
-          length: !lTrim,
-          width: !wTrim,
-          height: !hTrim,
-        });
-        setCalculatedResult(null);
-      }
+      setValidationError(null);
+      setFieldErrors({});
+      setCalculatedResult(null);
       return false;
     }
 
@@ -2144,20 +2136,17 @@ export function VolumetricCalculator() {
     const hNum = Number(hTrim);
 
     const errors: { length?: boolean; width?: boolean; height?: boolean } = {};
-    if (isNaN(lNum) || lNum <= 0) errors.length = true;
-    if (isNaN(wNum) || wNum <= 0) errors.width = true;
-    if (isNaN(hNum) || hNum <= 0) errors.height = true;
+    if (!Number.isFinite(lNum) || lNum <= 0) errors.length = true;
+    if (!Number.isFinite(wNum) || wNum <= 0) errors.width = true;
+    if (!Number.isFinite(hNum) || hNum <= 0) errors.height = true;
 
     if (errors.length || errors.width || errors.height) {
-      if (isExplicit) {
-        setValidationError('Dimensions must be valid positive numbers greater than 0.');
-        setFieldErrors(errors);
-        setCalculatedResult(null);
-      }
+      setValidationError('Dimensions must be valid positive numbers greater than 0.');
+      setFieldErrors(errors);
+      setCalculatedResult(null);
       return false;
     }
 
-    // All dimensions are valid positive numbers
     setFieldErrors({});
     setValidationError(null);
     const divisor = SHIPPING_METHODS[selectedMethod].divisor;
@@ -2168,44 +2157,17 @@ export function VolumetricCalculator() {
 
   const handleMethodChange = (newMethod: ShippingMethod) => {
     setMethod(newMethod);
-    // If a calculation was already made or dimensions are filled, recalculate immediately with the new divisor:
-    if (calculatedResult !== null || (length.trim() && width.trim() && height.trim())) {
-      validateAndCalculate(newMethod, length, width, height, false);
-    }
+    validateAndCalculate(newMethod, length, width, height);
   };
 
   const handleInputChange = (field: 'length' | 'width' | 'height', value: string) => {
-    if (field === 'length') setLength(value);
-    if (field === 'width') setWidth(value);
-    if (field === 'height') setHeight(value);
-
-    if (fieldErrors[field]) {
-      setFieldErrors((prev) => ({ ...prev, [field]: false }));
-    }
-    if (validationError) {
-      setValidationError(null);
-    }
-
-    // If calculation has already been run, update calculation reactively:
-    if (calculatedResult !== null) {
-      const nextL = field === 'length' ? value : length;
-      const nextW = field === 'width' ? value : width;
-      const nextH = field === 'height' ? value : height;
-      const lNum = Number(nextL.trim());
-      const wNum = Number(nextW.trim());
-      const hNum = Number(nextH.trim());
-      if (lNum > 0 && wNum > 0 && hNum > 0) {
-        const divisor = SHIPPING_METHODS[method].divisor;
-        setCalculatedResult((lNum * wNum * hNum) / divisor);
-      } else {
-        setCalculatedResult(null);
-      }
-    }
-  };
-
-  const handleCalculate = (e?: FormEvent) => {
-    if (e) e.preventDefault();
-    validateAndCalculate(method, length, width, height, true);
+    const nextLength = field === 'length' ? value : length;
+    const nextWidth = field === 'width' ? value : width;
+    const nextHeight = field === 'height' ? value : height;
+    setLength(nextLength);
+    setWidth(nextWidth);
+    setHeight(nextHeight);
+    validateAndCalculate(method, nextLength, nextWidth, nextHeight);
   };
 
   const handleReset = () => {
@@ -2267,7 +2229,7 @@ export function VolumetricCalculator() {
       </div>
 
       {/* Input Dimensions */}
-      <form onSubmit={handleCalculate} noValidate>
+      <div>
         <div className="calc-row">
           <div className="calc-input-wrap">
             <label htmlFor="calc-length">Length (cm) *</label>
@@ -2319,13 +2281,6 @@ export function VolumetricCalculator() {
         {/* Action Buttons */}
         <div className="calc-actions">
           <button
-            type="submit"
-            className="btn btn-primary"
-            data-testid="btn-calc-submit"
-          >
-            Calculate Volumetric Weight
-          </button>
-          <button
             type="button"
             className="btn btn-outline calc-btn-reset"
             onClick={handleReset}
@@ -2335,7 +2290,7 @@ export function VolumetricCalculator() {
             Reset
           </button>
         </div>
-      </form>
+      </div>
 
       {/* Friendly Validation Error Message */}
       {validationError && (
