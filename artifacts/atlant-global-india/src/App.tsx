@@ -204,6 +204,7 @@ function ScrollReveal() {
       '.footer-bottom',
     ].join(', ');
     const visualSelector = '.intro-photo-wrap, .business-image-wrap, .network-visual, .service-visual';
+    const serviceCardSelector = '.service-card';
     let observer: IntersectionObserver | undefined;
     let contentObserver: MutationObserver | undefined;
     let revealTargets: HTMLElement[] = [];
@@ -245,7 +246,14 @@ function ScrollReveal() {
       if (activeMobileMode) {
         const visuals = Array.from(document.querySelectorAll<HTMLElement>(visualSelector));
         visuals.forEach((visual, index) => {
-          visual.classList.add(index % 2 === 0 ? 'reveal-from-left' : 'reveal-from-right');
+          const serviceCard = visual.closest<HTMLElement>(serviceCardSelector);
+          const visualIndex = serviceCard
+            ? Array.from(document.querySelectorAll(serviceCardSelector)).indexOf(serviceCard)
+            : index;
+          visual.classList.add(visualIndex % 2 === 0 ? 'reveal-from-left' : 'reveal-from-right');
+        });
+        document.querySelectorAll<HTMLElement>(serviceCardSelector).forEach((card, index) => {
+          card.classList.add(index % 2 === 0 ? 'reveal-from-left' : 'reveal-from-right');
         });
         document.querySelector('.hero-photo')?.classList.add('reveal-zoom');
       }
@@ -271,8 +279,14 @@ function ScrollReveal() {
       const observeTarget = (target: HTMLElement) => {
         if (target.classList.contains('reveal-on-scroll')) return;
         target.classList.add('reveal-on-scroll');
-        if (activeMobileMode && target.matches(visualSelector)) {
-          const visualIndex = revealTargets.filter((item) => item.matches(visualSelector)).length;
+        if (activeMobileMode && target.matches(serviceCardSelector)) {
+          const cardIndex = Array.from(document.querySelectorAll(serviceCardSelector)).indexOf(target);
+          target.classList.add(cardIndex % 2 === 0 ? 'reveal-from-left' : 'reveal-from-right');
+        } else if (activeMobileMode && target.matches(visualSelector)) {
+          const serviceCard = target.closest(serviceCardSelector);
+          const visualIndex = serviceCard
+            ? Array.from(document.querySelectorAll(serviceCardSelector)).indexOf(serviceCard)
+            : revealTargets.filter((item) => item.matches(visualSelector)).length;
           target.classList.add(visualIndex % 2 === 0 ? 'reveal-from-left' : 'reveal-from-right');
         }
         if (target.classList.contains('hero-content') || target.classList.contains('page-heading')) {

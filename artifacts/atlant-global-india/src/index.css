@@ -3817,10 +3817,43 @@ main {
   .trust-grid {
     grid-template-columns: 1fr;
   }
-  .service-grid,
   .process-grid,
   .partner-feature-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .service-grid .service-card {
+    min-width: 0;
+    padding: 0;
+  }
+  .service-grid .service-visual {
+    height: 104px;
+  }
+  .service-grid .service-body {
+    min-width: 0;
+    padding: 14px;
+  }
+  .service-grid .service-body h3 {
+    align-items: flex-start;
+    font-size: 15px;
+    gap: 6px;
+  }
+  .service-grid .service-body h3 svg {
+    flex: 0 0 auto;
+    width: 15px;
+  }
+  .service-grid .service-body p {
+    font-size: 12px;
+  }
+  .service-grid .service-body .service-features {
+    font-size: 10.5px;
+  }
+  .service-grid .service-body a {
+    align-items: flex-start;
+    font-size: 11px;
   }
   .resource-grid {
     grid-template-columns: minmax(0, 1fr);
