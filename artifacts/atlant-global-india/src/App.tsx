@@ -259,8 +259,8 @@ function ScrollReveal() {
           });
         },
         {
-          threshold: activeMobileMode ? 0.08 : 0.12,
-          rootMargin: activeMobileMode ? '0px 0px -24px 0px' : '0px 0px -20px 0px',
+          threshold: activeMobileMode ? 0.04 : 0.12,
+          rootMargin: activeMobileMode ? '0px 0px -32px 0px' : '0px 0px -20px 0px',
         },
       );
 
