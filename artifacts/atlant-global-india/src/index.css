@@ -4090,7 +4090,7 @@ main {
     transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .tracking-stage.is-complete::before {
+  .tracking-stage.is-complete.is-visible::before {
     transform: scaleY(1);
   }
 
