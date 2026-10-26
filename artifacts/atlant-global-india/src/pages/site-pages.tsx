@@ -2075,7 +2075,7 @@ export function AboutPage() {
       </section>
       <section className="section network-band">
         <div className="container network-grid">
-          <div className="network-visual" aria-label="Static illustration marking Bengaluru"><div className="india-shape" aria-hidden="true" /><span className="map-pin" aria-hidden="true" /><span className="map-label">Bengaluru</span><div className="map-key"><span>Local operations</span> · Wider network via The Professional Couriers</div></div>
+          <div className="network-visual"><img className="network-map-image" src={`${import.meta.env.BASE_URL}images/BangloreSouth%20East.png`} alt="Map highlighting Bengaluru South and Bengaluru East" loading="lazy" /></div>
           <div><div className="section-label">Network</div><h2>Rooted in Bengaluru.<br />Connected beyond it.</h2><p className="section-lead">Through The Professional Couriers network, Atlant Global India supports domestic and international courier and cargo requirements. Its local service area is Bengaluru South and East.</p><Link className="btn btn-navy" href="/contact">Contact the company <ArrowRight size={14} /></Link></div>
         </div>
       </section>
