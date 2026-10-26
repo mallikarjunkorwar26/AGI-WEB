@@ -215,6 +215,7 @@ function ScrollReveal() {
       observer = undefined;
       contentObserver?.disconnect();
       contentObserver = undefined;
+      document.documentElement.classList.remove('home-mobile-reveal');
       revealTargets.forEach((target) => {
         target.classList.remove('reveal-on-scroll', 'reveal-from-left', 'reveal-from-right', 'reveal-zoom', 'is-visible');
         target.style.removeProperty('transition-delay');
@@ -233,6 +234,9 @@ function ScrollReveal() {
       clearReveals();
       activeMobileMode = mobileViewport.matches;
       activeReducedMotion = reducedMotion.matches;
+      if (activeMobileMode && location === '/') {
+        document.documentElement.classList.add('home-mobile-reveal');
+      }
       if (activeReducedMotion) return;
 
       revealTargets = Array.from(

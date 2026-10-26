@@ -4013,6 +4013,10 @@ main {
     display: none;
   }
 
+  :root {
+    --mobile-reveal-duration: 0.68s;
+  }
+
   .reveal-on-scroll {
     --reveal-x: 0px;
     --reveal-y: 26px;
@@ -4020,9 +4024,9 @@ main {
     opacity: 0;
     transform: translate3d(var(--reveal-x), var(--reveal-y), 0) scale(var(--reveal-scale));
     transition:
-      opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 1s cubic-bezier(0.22, 1, 0.36, 1),
-      clip-path 1s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity var(--mobile-reveal-duration) cubic-bezier(0.22, 1, 0.36, 1),
+      transform var(--mobile-reveal-duration) cubic-bezier(0.22, 1, 0.36, 1),
+      clip-path var(--mobile-reveal-duration) cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .reveal-on-scroll.is-visible {
@@ -4087,7 +4091,7 @@ main {
   .tracking-stage::before {
     transform: scaleY(0);
     transform-origin: top;
-    transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .tracking-stage.is-complete.is-visible::before {
@@ -4097,8 +4101,8 @@ main {
   .tracking-stage .tracking-stage-icon {
     transform: scale(0.88);
     transition:
-      transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.85s ease;
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.5s ease;
   }
 
   .tracking-stage.is-visible .tracking-stage-icon {
@@ -4162,6 +4166,18 @@ main {
 
   .footer-bottom.reveal-on-scroll {
     transition-delay: 340ms;
+  }
+
+  :root.home-mobile-reveal {
+    --mobile-reveal-duration: 1.15s;
+  }
+
+  .home-mobile-reveal .tracking-stage::before {
+    transition-duration: 1s;
+  }
+
+  .home-mobile-reveal .tracking-stage .tracking-stage-icon {
+    transition-duration: 0.95s;
   }
 
   @supports (animation-timeline: view()) {
