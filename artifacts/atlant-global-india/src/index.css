@@ -4014,33 +4014,37 @@ main {
   }
 
   .reveal-on-scroll {
-    transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    --reveal-x: 0px;
+    --reveal-y: 26px;
+    --reveal-scale: 0.985;
+    opacity: 0;
+    transform: translate3d(var(--reveal-x), var(--reveal-y), 0) scale(var(--reveal-scale));
+    transition:
+      opacity 0.68s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.68s cubic-bezier(0.22, 1, 0.36, 1),
+      clip-path 0.72s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .reveal-on-scroll.is-visible {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 
   .reveal-on-scroll.reveal-from-left {
-    transform: translate3d(-14px, 0, 0);
+    --reveal-x: -24px;
+    --reveal-y: 10px;
+    --reveal-scale: 0.975;
   }
 
   .reveal-on-scroll.reveal-from-right {
-    transform: translate3d(14px, 0, 0);
-  }
-
-  .reveal-on-scroll.reveal-from-left.is-visible,
-  .reveal-on-scroll.reveal-from-right.is-visible {
-    transform: translate3d(0, 0, 0);
+    --reveal-x: 24px;
+    --reveal-y: 10px;
+    --reveal-scale: 0.975;
   }
 
   .reveal-on-scroll.reveal-zoom {
-    transform: scale(1.035);
-  }
-
-  .reveal-on-scroll.reveal-zoom.is-visible {
-    transform: scale(1);
+    --reveal-y: 0px;
+    --reveal-scale: 1.055;
   }
 
   .hero-content .eyebrow.reveal-on-scroll {
@@ -4080,9 +4084,34 @@ main {
     transition-delay: 280ms;
   }
 
-  main .btn:active {
-    transform: translateY(1px);
-    transition-duration: 0.12s;
+  .tracking-stage::before {
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .tracking-stage.is-complete::before {
+    transform: scaleY(1);
+  }
+
+  .tracking-stage .tracking-stage-icon {
+    transform: scale(0.88);
+    transition:
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.5s ease;
+  }
+
+  .tracking-stage.is-visible .tracking-stage-icon {
+    transform: scale(1);
+  }
+
+  .tracking-stage.is-current.is-visible .tracking-stage-icon {
+    box-shadow: 0 0 0 5px var(--brand-rose);
+  }
+
+  .hero-tracking-wrap.reveal-on-scroll {
+    --reveal-y: 22px;
+    --reveal-scale: 0.975;
   }
 
   .quick-grid > .reveal-on-scroll:nth-child(2),
@@ -4092,26 +4121,67 @@ main {
   .contact-grid > .reveal-on-scroll:nth-child(2),
   .process-grid > .reveal-on-scroll:nth-child(2),
   .partner-feature-grid > .reveal-on-scroll:nth-child(2) {
-    transition-delay: 70ms;
+    transition-delay: 80ms;
   }
 
   .quick-grid > .reveal-on-scroll:nth-child(3),
   .service-grid > .reveal-on-scroll:nth-child(3),
   .opportunities-grid > .reveal-on-scroll:nth-child(3),
+  .resource-grid > .reveal-on-scroll:nth-child(3),
   .contact-grid > .reveal-on-scroll:nth-child(3),
   .process-grid > .reveal-on-scroll:nth-child(3),
   .partner-feature-grid > .reveal-on-scroll:nth-child(3) {
-    transition-delay: 140ms;
+    transition-delay: 160ms;
   }
 
   .quick-grid > .reveal-on-scroll:nth-child(4),
   .service-grid > .reveal-on-scroll:nth-child(4),
   .process-grid > .reveal-on-scroll:nth-child(4) {
-    transition-delay: 210ms;
+    transition-delay: 240ms;
   }
 
   .service-grid > .reveal-on-scroll:nth-child(5) {
+    transition-delay: 320ms;
+  }
+
+  .footer-brand.reveal-on-scroll {
+    transition-delay: 40ms;
+  }
+
+  .footer-col.reveal-on-scroll:nth-of-type(2) {
+    transition-delay: 120ms;
+  }
+
+  .footer-col.reveal-on-scroll:nth-of-type(3) {
+    transition-delay: 200ms;
+  }
+
+  .footer-col.reveal-on-scroll:nth-of-type(4) {
     transition-delay: 280ms;
+  }
+
+  .footer-bottom.reveal-on-scroll {
+    transition-delay: 340ms;
+  }
+
+  @supports (animation-timeline: view()) {
+    .intro-photo-wrap img,
+    .business-image-wrap img,
+    .service-visual img {
+      animation: mobile-image-parallax linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+
+    @keyframes mobile-image-parallax {
+      from { transform: translate3d(0, 10px, 0) scale(1.04); }
+      to { transform: translate3d(0, -10px, 0) scale(1.04); }
+    }
+  }
+
+  main .btn:active {
+    transform: translateY(1px);
+    transition-duration: 0.12s;
   }
 }
 
