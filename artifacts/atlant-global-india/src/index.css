@@ -3990,6 +3990,29 @@ main {
 }
 
 @media (max-width: 767px), (max-height: 500px) and (pointer: coarse) {
+  .hero {
+    min-height: max(520px, calc(100vh - 110px));
+    min-height: max(520px, calc(100svh - 110px));
+  }
+
+  .hero-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 8px 0;
+  }
+
+  .hero-content {
+    display: none;
+  }
+
+  .hero-tracking-wrap {
+    justify-self: center;
+  }
+
+  .hero-note {
+    display: none;
+  }
+
   .reveal-on-scroll {
     transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
   }
