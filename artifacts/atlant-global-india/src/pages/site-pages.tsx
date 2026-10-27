@@ -21,6 +21,7 @@ import {
   Truck,
   Warehouse,
 } from 'lucide-react';
+import officesData from '../data/offices.json';
 
 const EMAIL = 'connect@atlantglobalindia.com';
 const PHONE = '+917411708958';
@@ -2393,40 +2394,68 @@ export function ResourcesPage() {
   );
 }
 
-const offices = [
-  {
-    name: 'Corporate Office',
-    address: '#136, 7th Cross, 29th Main Road, Lake Road, BTM 2nd Stage, Bengaluru, Karnataka 560076',
-    keywords: 'btm lake road corporate office south bengaluru 560076',
-    map: 'https://maps.app.goo.gl/PrDEJi5HG4fnZYEo6',
-  },
-  {
-    name: 'Operations Office · Kudlu Gate',
-    address: 'VJPQ+H74, 51/2, Chikka Begur Gate, Lakshmi Layout Main Rd, Hosur, Bengaluru, Karnataka 560068',
-    keywords: 'kudlu gate operations office chikka begur gate lakshmi layout main road hosur bengaluru 560068',
-    map: 'https://maps.app.goo.gl/bXvW6bkRdBFCmKDL9',
-  },
-];
+type OfficeRecord = {
+  name?: string;
+  address: string;
+  pincode: string | null;
+  mobile: string | null;
+  keywords?: string;
+  map?: string;
+};
+
+const offices: OfficeRecord[] = officesData;
+
+const normalizeOfficeSearchText = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+
+const officeDisplayName = (office: OfficeRecord) => {
+  if (office.name) return office.name;
+  const addressParts = office.address.split(',').map((part) => part.trim());
+  const locality = [...addressParts].reverse().find(
+    (part) => part && !/\b(bangalore|bengaluru|karnataka|district|taluk|post|hobli)\b/i.test(part),
+  );
+  return locality ? `Office · ${locality}` : 'Listed office';
+};
 
 export function ContactPage() {
   const [query, setQuery] = useState('');
-  const filteredOffices = offices.filter((office) => `${office.name} ${office.address} ${office.keywords}`.toLowerCase().includes(query.trim().toLowerCase()));
+  const queryTerms = normalizeOfficeSearchText(query).split(/\s+/).filter(Boolean);
+  const filteredOffices = offices.filter((office) => {
+    const searchableText = normalizeOfficeSearchText(
+      `${office.name ?? ''} ${office.address} ${office.pincode ?? ''} ${office.keywords ?? ''}`,
+    );
+    return queryTerms.every((term) => searchableText.includes(term));
+  });
   return (
     <>
       <PageHeading eyebrow="Contact & branches" title="Here when you need us." intro="Get in touch with Atlant Global India in Bengaluru. The company serves Bengaluru South and East through 65 branches; the verified office details below are searchable." />
       <section className="section section-sm">
         <div className="container">
-          <div className="section-label">Find a listed office</div><h2>Search by area or PIN code.</h2>
+          <div className="branch-search-heading">
+            <div className="section-label">Find a listed office</div>
+            <h2>Search by area or PIN code.</h2>
+          </div>
           <div className="branch-search">
             <label className="sr-only" htmlFor="branch-search">Search office by area or PIN code</label>
-            <input id="branch-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Try BTM, Kudlu Gate or a PIN code" data-testid="input-branch-search" />
+            <input id="branch-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search office by area or PIN code" data-testid="input-branch-search" />
             <a className="btn btn-navy" href={`tel:${PHONE}`}><Phone size={14} /> Call the team</a>
           </div>
           <div className="contact-grid">
-            {filteredOffices.map((office) => <article className="contact-card" key={office.name}>
-              <h3>{office.name}</h3><p><MapPin size={14} /> {office.address}</p>
+            {filteredOffices.map((office) => <article className="contact-card" key={`${office.address}-${office.mobile ?? 'team'}`}>
+              <h3>{officeDisplayName(office)}</h3>
+              <p><MapPin size={14} /> {office.address}</p>
+              <p><MapPin size={14} /> {office.pincode ? `PIN code: ${office.pincode}` : 'PIN code not available'}</p>
+              <p><Phone size={14} /> <a href={`tel:${office.mobile ?? PHONE}`}>{office.mobile ?? '+91 7411 708 958'}</a></p>
               <p><Clock3 size={14} /> Monday–Saturday, 10am–6pm</p>
-              <div className="contact-links"><a href={office.map} target="_blank" rel="noreferrer">Get directions <ArrowUpRight size={12} /></a><a href={`tel:${PHONE}`}>Call +91 7411 708 958</a></div>
+              <div className="contact-links">
+                {office.map && <a href={office.map} target="_blank" rel="noreferrer">Get directions <ArrowUpRight size={12} /></a>}
+                <a href={`tel:${office.mobile ?? PHONE}`}>Call {office.mobile ?? '+91 7411 708 958'}</a>
+              </div>
             </article>)}
           </div>
           {filteredOffices.length === 0 && <div className="branch-result" role="status">No listed office matches that search. Contact the team for help locating a nearby branch.</div>}
