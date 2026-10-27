@@ -3022,12 +3022,17 @@ main {
 /* ==========================================================================
    CONTACT PAGE & BRANCH SEARCH
    ========================================================================== */
-.branch-search-heading .section-label {
-  margin-bottom: 12px;
+.branch-search-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
+.branch-search-heading .section-label,
 .branch-search-heading h2 {
-  margin-bottom: 20px;
+  margin: 0;
 }
 
 .branch-search {
