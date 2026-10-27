@@ -852,7 +852,7 @@ main {
   object-fit: contain;
 }
 
-@media (min-width: 1920px) {
+@media (min-width: 1800px) {
   .customer-logo-group img {
     height: 70px;
     max-width: 210px;
