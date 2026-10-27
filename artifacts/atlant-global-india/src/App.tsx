@@ -154,9 +154,12 @@ function ScrollReveal() {
     const mobileViewport = window.matchMedia(
       '(max-width: 767px), (max-height: 500px) and (pointer: coarse)',
     );
+    const desktopViewport = window.matchMedia('(min-width: 1025px)');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const desktopTargetSelector =
       '.section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-status-card, .detail-card, .track-side-info, .job-card, .career-form-card, .hero-content, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result';
+    const enhancedDesktopTargetSelector =
+      '.section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-status-card, .detail-card, .track-side-info, .job-card, .career-form-card, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result, .about-value, .partner-feature-card, .process-step, .home-facts > div, .fact-row > .fact, .hero-content > .eyebrow, .hero-content > h1, .hero-content > p, .hero-content > .hero-actions, .hero-content > .hero-note, .hero-tracking-wrap';
     const mobileTargetSelector = [
       '.section',
       '.quick-card',
@@ -208,17 +211,39 @@ function ScrollReveal() {
     let observer: IntersectionObserver | undefined;
     let contentObserver: MutationObserver | undefined;
     let revealTargets: HTMLElement[] = [];
+    const pendingRevealFrames = new Map<Element, number>();
     let activeMobileMode: boolean | undefined;
+    let activeDesktopMode: boolean | undefined;
     let activeReducedMotion: boolean | undefined;
+    let scrollDirection: 'up' | 'down' = 'down';
+    let previousScrollY = window.scrollY;
+
+    const updateScrollDirection = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY !== previousScrollY) {
+        scrollDirection = currentScrollY < previousScrollY ? 'up' : 'down';
+        previousScrollY = currentScrollY;
+      }
+    };
 
     const clearReveals = () => {
       observer?.disconnect();
       observer = undefined;
       contentObserver?.disconnect();
       contentObserver = undefined;
+      pendingRevealFrames.forEach((frame) => window.cancelAnimationFrame(frame));
+      pendingRevealFrames.clear();
       document.documentElement.classList.remove('home-mobile-reveal');
       revealTargets.forEach((target) => {
-        target.classList.remove('reveal-on-scroll', 'reveal-from-left', 'reveal-from-right', 'reveal-zoom', 'is-visible');
+        target.classList.remove(
+          'reveal-on-scroll',
+          'reveal-from-left',
+          'reveal-from-right',
+          'reveal-zoom',
+          'desktop-scroll-reveal',
+          'desktop-reveal-from-above',
+          'is-visible',
+        );
         target.style.removeProperty('transition-delay');
       });
       revealTargets = [];
@@ -228,20 +253,34 @@ function ScrollReveal() {
       if (
         !force &&
         activeMobileMode === mobileViewport.matches &&
+        activeDesktopMode === (!mobileViewport.matches && desktopViewport.matches) &&
         activeReducedMotion === reducedMotion.matches
       ) {
         return;
       }
       clearReveals();
       activeMobileMode = mobileViewport.matches;
+      activeDesktopMode = !activeMobileMode && desktopViewport.matches;
       activeReducedMotion = reducedMotion.matches;
+      if (activeDesktopMode) {
+        window.addEventListener('scroll', updateScrollDirection, { passive: true });
+        previousScrollY = window.scrollY;
+      } else {
+        window.removeEventListener('scroll', updateScrollDirection);
+      }
       if (activeMobileMode && location === '/') {
         document.documentElement.classList.add('home-mobile-reveal');
       }
       if (activeReducedMotion) return;
 
       revealTargets = Array.from(
-        document.querySelectorAll<HTMLElement>(activeMobileMode ? mobileTargetSelector : desktopTargetSelector),
+        document.querySelectorAll<HTMLElement>(
+          activeMobileMode
+            ? mobileTargetSelector
+            : activeDesktopMode
+              ? enhancedDesktopTargetSelector
+              : desktopTargetSelector,
+        ),
       );
       if (activeMobileMode) {
         const visuals = Array.from(document.querySelectorAll<HTMLElement>(visualSelector));
@@ -263,22 +302,39 @@ function ScrollReveal() {
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
-              if (!activeMobileMode) observer?.unobserve(entry.target);
-            } else if (activeMobileMode) {
+              if (activeDesktopMode) {
+                entry.target.classList.toggle('desktop-reveal-from-above', scrollDirection === 'up');
+                const pendingFrame = pendingRevealFrames.get(entry.target);
+                if (pendingFrame !== undefined) window.cancelAnimationFrame(pendingFrame);
+                const frame = window.requestAnimationFrame(() => {
+                  pendingRevealFrames.delete(entry.target);
+                  if (entry.target.isConnected) entry.target.classList.add('is-visible');
+                });
+                pendingRevealFrames.set(entry.target, frame);
+              } else {
+                entry.target.classList.add('is-visible');
+              }
+              if (!activeMobileMode && !activeDesktopMode) observer?.unobserve(entry.target);
+            } else if (activeMobileMode || activeDesktopMode) {
+              const pendingFrame = pendingRevealFrames.get(entry.target);
+              if (pendingFrame !== undefined) {
+                window.cancelAnimationFrame(pendingFrame);
+                pendingRevealFrames.delete(entry.target);
+              }
               entry.target.classList.remove('is-visible');
             }
           });
         },
         {
-          threshold: activeMobileMode ? 0.04 : 0.12,
-          rootMargin: activeMobileMode ? '0px 0px -32px 0px' : '0px 0px -20px 0px',
+          threshold: activeMobileMode ? 0.04 : activeDesktopMode ? 0.08 : 0.12,
+          rootMargin: activeMobileMode ? '0px 0px -32px 0px' : activeDesktopMode ? '0px 0px -24px 0px' : '0px 0px -20px 0px',
         },
       );
 
       const observeTarget = (target: HTMLElement) => {
-        if (target.classList.contains('reveal-on-scroll')) return;
-        target.classList.add('reveal-on-scroll');
+        const revealClass = activeDesktopMode ? 'desktop-scroll-reveal' : 'reveal-on-scroll';
+        if (target.classList.contains(revealClass)) return;
+        target.classList.add(revealClass);
         if (activeMobileMode && target.matches(serviceCardSelector)) {
           const cardIndex = Array.from(document.querySelectorAll(serviceCardSelector)).indexOf(target);
           target.classList.add(cardIndex % 2 === 0 ? 'reveal-from-left' : 'reveal-from-right');
@@ -289,7 +345,10 @@ function ScrollReveal() {
             : revealTargets.filter((item) => item.matches(visualSelector)).length;
           target.classList.add(visualIndex % 2 === 0 ? 'reveal-from-left' : 'reveal-from-right');
         }
-        if (target.classList.contains('hero-content') || target.classList.contains('page-heading')) {
+        if (
+          target.classList.contains('page-heading') ||
+          (!activeDesktopMode && target.classList.contains('hero-content'))
+        ) {
           target.style.transitionDelay = '80ms';
         }
         revealTargets.push(target);
@@ -297,16 +356,21 @@ function ScrollReveal() {
       };
 
       revealTargets = [];
-      document.querySelectorAll<HTMLElement>(activeMobileMode ? mobileTargetSelector : desktopTargetSelector)
+      const targetSelector = activeMobileMode
+        ? mobileTargetSelector
+        : activeDesktopMode
+          ? enhancedDesktopTargetSelector
+          : desktopTargetSelector;
+      document.querySelectorAll<HTMLElement>(targetSelector)
         .forEach(observeTarget);
 
-      if (activeMobileMode && typeof MutationObserver !== 'undefined') {
+      if ((activeMobileMode || activeDesktopMode) && typeof MutationObserver !== 'undefined') {
         contentObserver = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
             mutation.addedNodes.forEach((node) => {
               if (!(node instanceof HTMLElement)) return;
-              if (node.matches(mobileTargetSelector)) observeTarget(node);
-              node.querySelectorAll<HTMLElement>(mobileTargetSelector).forEach(observeTarget);
+              if (node.matches(targetSelector)) observeTarget(node);
+              node.querySelectorAll<HTMLElement>(targetSelector).forEach(observeTarget);
             });
           });
         });
@@ -320,6 +384,11 @@ function ScrollReveal() {
       mobileViewport.addEventListener('change', handleViewportChange);
     } else {
       mobileViewport.addListener(handleViewportChange);
+    }
+    if (typeof desktopViewport.addEventListener === 'function') {
+      desktopViewport.addEventListener('change', handleViewportChange);
+    } else {
+      desktopViewport.addListener(handleViewportChange);
     }
     if (typeof reducedMotion.addEventListener === 'function') {
       reducedMotion.addEventListener('change', handleViewportChange);
@@ -335,6 +404,11 @@ function ScrollReveal() {
       } else {
         mobileViewport.removeListener(handleViewportChange);
       }
+      if (typeof desktopViewport.removeEventListener === 'function') {
+        desktopViewport.removeEventListener('change', handleViewportChange);
+      } else {
+        desktopViewport.removeListener(handleViewportChange);
+      }
       if (typeof reducedMotion.removeEventListener === 'function') {
         reducedMotion.removeEventListener('change', handleViewportChange);
       } else {
@@ -342,6 +416,7 @@ function ScrollReveal() {
       }
       window.removeEventListener('resize', handleViewportChange);
       window.removeEventListener('orientationchange', handleViewportChange);
+      window.removeEventListener('scroll', updateScrollDirection);
       clearReveals();
     };
   }, [location]);

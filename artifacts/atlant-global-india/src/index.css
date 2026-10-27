@@ -4242,6 +4242,116 @@ main {
   }
 }
 
+@media (min-width: 1025px) {
+  .desktop-scroll-reveal {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition:
+      opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .desktop-scroll-reveal.desktop-reveal-from-above:not(.is-visible) {
+    transform: translate3d(0, -20px, 0);
+  }
+
+  .desktop-scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .hero-content > .eyebrow.desktop-scroll-reveal {
+    transition-delay: 40ms;
+  }
+
+  .hero-content > h1.desktop-scroll-reveal {
+    transition-delay: 110ms;
+  }
+
+  .hero-content > p.desktop-scroll-reveal {
+    transition-delay: 180ms;
+  }
+
+  .hero-content > .hero-actions.desktop-scroll-reveal {
+    transition-delay: 250ms;
+  }
+
+  .hero-content > .hero-note.desktop-scroll-reveal {
+    transition-delay: 320ms;
+  }
+
+  .hero-tracking-wrap.desktop-scroll-reveal {
+    transition-delay: 180ms;
+  }
+
+  .quick-grid > .desktop-scroll-reveal:nth-child(2),
+  .service-grid > .desktop-scroll-reveal:nth-child(2),
+  .trust-grid > .desktop-scroll-reveal:nth-child(2),
+  .about-values > .desktop-scroll-reveal:nth-child(2),
+  .partner-feature-grid > .desktop-scroll-reveal:nth-child(2),
+  .process-grid > .desktop-scroll-reveal:nth-child(2),
+  .home-facts > .desktop-scroll-reveal:nth-child(2),
+  .fact-row > .desktop-scroll-reveal:nth-child(2) {
+    transition-delay: 80ms;
+  }
+
+  .quick-grid > .desktop-scroll-reveal:nth-child(3),
+  .service-grid > .desktop-scroll-reveal:nth-child(3),
+  .trust-grid > .desktop-scroll-reveal:nth-child(3),
+  .about-values > .desktop-scroll-reveal:nth-child(3),
+  .partner-feature-grid > .desktop-scroll-reveal:nth-child(3),
+  .process-grid > .desktop-scroll-reveal:nth-child(3),
+  .home-facts > .desktop-scroll-reveal:nth-child(3),
+  .fact-row > .desktop-scroll-reveal:nth-child(3) {
+    transition-delay: 160ms;
+  }
+
+  .quick-grid > .desktop-scroll-reveal:nth-child(4),
+  .service-grid > .desktop-scroll-reveal:nth-child(4),
+  .trust-grid > .desktop-scroll-reveal:nth-child(4),
+  .process-grid > .desktop-scroll-reveal:nth-child(4) {
+    transition-delay: 220ms;
+  }
+
+  .service-grid > .desktop-scroll-reveal:nth-child(5) {
+    transition-delay: 280ms;
+  }
+}
+
+@media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+  .nav-links a,
+  .btn,
+  .quick-card,
+  .service-card,
+  .resource-card,
+  .partner-feature-card {
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transition-duration: 0.32s;
+  }
+
+  .quick-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .quick-icon,
+  .service-body h3 svg,
+  .partner-feature-card svg,
+  .nav-links a svg {
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .quick-card:hover .quick-icon,
+  .service-card:hover .service-body h3 svg,
+  .partner-feature-card:hover svg,
+  .nav-links a:hover svg {
+    transform: translateY(-2px);
+  }
+
+  .nav-links a:hover svg {
+    transform: translate(2px, -1px);
+  }
+}
+
 /* Reduced Motion for Accessibility */
 @media (prefers-reduced-motion: reduce) {
   .nav-menu {
