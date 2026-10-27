@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type MouseEvent } from 'react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import {
   ArrowRight,
@@ -29,6 +29,7 @@ import {
 
 const EMAIL = 'connect@atlantglobalindia.com';
 const PHONE = '+917411708958';
+const HOME_REPLAY_EVENT = 'agi:replay-home-entrance';
 
 const pageMeta: Record<string, { title: string; description: string }> = {
   '/': {
@@ -159,7 +160,7 @@ function ScrollReveal() {
     const desktopTargetSelector =
       '.section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-status-card, .detail-card, .track-side-info, .job-card, .career-form-card, .hero-content, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result';
     const enhancedDesktopTargetSelector =
-      '.section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-status-card, .detail-card, .track-side-info, .job-card, .career-form-card, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result, .about-value, .partner-feature-card, .process-step, .home-facts > div, .fact-row > .fact, .footer-brand, .footer-col, .footer-bottom, .hero-content > .eyebrow, .hero-content > h1, .hero-content > p, .hero-content > .hero-actions, .hero-content > .hero-note, .hero-tracking-wrap';
+      'main > section, .section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-page-hero, .tracking-status-panel, .tracking-status-card, .tracking-status-topline, .tracking-page-heading, .tracking-search-card, .tracking-feedback, .tracking-journey-card, .tracking-timeline > li, .tracking-details-card, .tracking-history, .tracking-history-event, .detail-card, .track-side-info, .job-card, .career-form-card, .hero-content, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result, .about-value, .partner-feature-card, .process-step, .home-facts > div, .fact-row > .fact, .footer-brand, .footer-col, .footer-bottom, .hero-photo, .hero-content > .eyebrow, .hero-content > h1, .hero-content > p, .hero-content > .hero-actions, .hero-content > .hero-note, .hero-tracking-wrap';
     const mobileTargetSelector = [
       '.section',
       '.quick-card',
@@ -217,6 +218,23 @@ function ScrollReveal() {
     let activeReducedMotion: boolean | undefined;
     let scrollDirection: 'up' | 'down' = 'down';
     let previousScrollY = window.scrollY;
+    const replayFromBelow = new Set<Element>();
+
+    const restartHomeEntrance = (target: Element) => {
+      if (!(target instanceof HTMLElement)) return;
+      target.classList.remove('desktop-home-replay');
+      void target.offsetHeight;
+      target.classList.add('desktop-home-replay');
+    };
+
+    const finishHomeEntrance = (event: AnimationEvent) => {
+      if (
+        event.animationName === 'desktop-home-entrance' &&
+        event.target instanceof HTMLElement
+      ) {
+        event.target.classList.remove('desktop-home-replay');
+      }
+    };
 
     const updateScrollDirection = () => {
       const currentScrollY = window.scrollY;
@@ -233,6 +251,7 @@ function ScrollReveal() {
       contentObserver = undefined;
       pendingRevealFrames.forEach((frame) => window.cancelAnimationFrame(frame));
       pendingRevealFrames.clear();
+      replayFromBelow.clear();
       document.documentElement.classList.remove('home-mobile-reveal');
       revealTargets.forEach((target) => {
         target.classList.remove(
@@ -305,8 +324,17 @@ function ScrollReveal() {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               if (activeDesktopMode) {
-                entry.target.classList.toggle('desktop-reveal-from-above', scrollDirection === 'up');
+                const replayingHero = replayFromBelow.delete(entry.target);
+                entry.target.classList.toggle(
+                  'desktop-reveal-from-above',
+                  !replayingHero && scrollDirection === 'up',
+                );
                 entry.target.classList.remove('desktop-reveal-exit-up', 'desktop-reveal-exit-down');
+                if (replayingHero) {
+                  entry.target.classList.add('is-visible');
+                  restartHomeEntrance(entry.target);
+                  return;
+                }
                 const pendingFrame = pendingRevealFrames.get(entry.target);
                 if (pendingFrame !== undefined) window.cancelAnimationFrame(pendingFrame);
                 const frame = window.requestAnimationFrame(() => {
@@ -333,8 +361,8 @@ function ScrollReveal() {
           });
         },
         {
-          threshold: activeMobileMode ? 0.04 : activeDesktopMode ? 0.08 : 0.12,
-          rootMargin: activeMobileMode ? '0px 0px -32px 0px' : activeDesktopMode ? '0px 0px -24px 0px' : '0px 0px -20px 0px',
+          threshold: activeMobileMode ? 0.04 : activeDesktopMode ? 0 : 0.12,
+          rootMargin: activeMobileMode ? '0px 0px -32px 0px' : activeDesktopMode ? '0px 0px -12px 0px' : '0px 0px -20px 0px',
         },
       );
 
@@ -385,7 +413,43 @@ function ScrollReveal() {
       }
     };
 
+    const replayHomeEntrance = () => {
+      if (
+        location.split(/[?#]/)[0].replace(/\/+$/, '') !== '' ||
+        !activeDesktopMode ||
+        activeReducedMotion ||
+        !observer
+      ) {
+        return;
+      }
+
+      const heroTargets = revealTargets.filter((target) =>
+        target.matches(
+          '.hero-photo, .hero-content > .eyebrow, .hero-content > h1, .hero-content > p, .hero-content > .hero-actions, .hero-content > .hero-note, .hero-tracking-wrap',
+        ),
+      );
+      scrollDirection = 'down';
+      previousScrollY = window.scrollY;
+      heroTargets.forEach((target) => {
+        const pendingFrame = pendingRevealFrames.get(target);
+        if (pendingFrame !== undefined) {
+          window.cancelAnimationFrame(pendingFrame);
+          pendingRevealFrames.delete(target);
+        }
+        target.classList.remove('desktop-reveal-from-above', 'desktop-reveal-exit-up', 'desktop-reveal-exit-down');
+        const bounds = target.getBoundingClientRect();
+        if (bounds.bottom > 0 && bounds.top < window.innerHeight) {
+          replayFromBelow.delete(target);
+          restartHomeEntrance(target);
+        } else {
+          replayFromBelow.add(target);
+        }
+      });
+    };
+
     setupReveals();
+    window.addEventListener(HOME_REPLAY_EVENT, replayHomeEntrance);
+    document.addEventListener('animationend', finishHomeEntrance);
     const handleViewportChange = () => setupReveals();
     if (typeof mobileViewport.addEventListener === 'function') {
       mobileViewport.addEventListener('change', handleViewportChange);
@@ -424,6 +488,8 @@ function ScrollReveal() {
       window.removeEventListener('resize', handleViewportChange);
       window.removeEventListener('orientationchange', handleViewportChange);
       window.removeEventListener('scroll', updateScrollDirection);
+      window.removeEventListener(HOME_REPLAY_EVENT, replayHomeEntrance);
+      document.removeEventListener('animationend', finishHomeEntrance);
       clearReveals();
     };
   }, [location]);
@@ -459,6 +525,17 @@ function SiteHeader() {
     return currentPath.startsWith(path);
   };
 
+  const handleHomeLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    closeMenu();
+    const currentPath = location.split(/[?#]/)[0].replace(/\/+$/, '') || '/';
+    if (currentPath !== '/') return;
+
+    event.preventDefault();
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reducedMotion ? 'instant' : 'smooth' });
+    window.dispatchEvent(new Event(HOME_REPLAY_EVENT));
+  };
+
   return (
     <>
       <div className="topbar">
@@ -470,7 +547,7 @@ function SiteHeader() {
       </div>
       <header className="header">
         <nav className="nav" aria-label="Main navigation">
-          <Link className="brand" href="/" onClick={closeMenu} aria-label="Atlant Global India home">
+          <Link className="brand" href="/" onClick={handleHomeLogoClick} aria-label="Atlant Global India home">
             <img className="brand-logo" src={`${import.meta.env.BASE_URL}images/AGI%20PNG%20Black.png`} alt="Atlant Global India logo" />
           </Link>
           <button

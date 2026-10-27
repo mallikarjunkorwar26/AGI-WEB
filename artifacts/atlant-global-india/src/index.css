@@ -4247,8 +4247,8 @@ main {
     opacity: 0;
     transform: translate3d(0, 24px, 0);
     transition:
-      opacity 0.78s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity 1.28s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1.28s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .desktop-scroll-reveal.desktop-reveal-from-above:not(.is-visible),
@@ -4265,89 +4265,170 @@ main {
     transform: translate3d(0, 0, 0);
   }
 
+  .desktop-scroll-reveal.desktop-home-replay {
+    animation: desktop-home-entrance 1.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes desktop-home-entrance {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 24px, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .hero-photo.desktop-home-replay {
+    animation-duration: 1.65s;
+  }
+
+  .hero-content > h1.desktop-home-replay {
+    animation-delay: 100ms;
+  }
+
+  .hero-content > p.desktop-home-replay {
+    animation-delay: 200ms;
+  }
+
+  .hero-content > .hero-actions.desktop-home-replay,
+  .hero-content > .hero-note.desktop-home-replay {
+    animation-delay: 300ms;
+  }
+
+  .hero-tracking-wrap.desktop-home-replay {
+    animation-delay: 150ms;
+  }
+
+  .desktop-scroll-reveal.quick-card,
+  .desktop-scroll-reveal.service-card,
+  .desktop-scroll-reveal.resource-card,
+  .desktop-scroll-reveal.partner-feature-card {
+    transition:
+      opacity 1.28s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1.28s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   .hero-content > .eyebrow.desktop-scroll-reveal {
-    transition-delay: 40ms;
+    transition-duration: 1.5s;
+    transition-delay: 0ms;
   }
 
   .hero-content > h1.desktop-scroll-reveal {
-    transition-delay: 110ms;
+    transition-duration: 1.5s;
+    transition-delay: 100ms;
   }
 
   .hero-content > p.desktop-scroll-reveal {
-    transition-delay: 180ms;
+    transition-duration: 1.5s;
+    transition-delay: 200ms;
   }
 
   .hero-content > .hero-actions.desktop-scroll-reveal {
-    transition-delay: 250ms;
+    transition-duration: 1.5s;
+    transition-delay: 300ms;
   }
 
   .hero-content > .hero-note.desktop-scroll-reveal {
-    transition-delay: 320ms;
+    transition-duration: 1.5s;
+    transition-delay: 300ms;
+  }
+
+  .hero-photo.desktop-scroll-reveal {
+    transition-duration: 1.65s;
+    transition-delay: 0ms;
   }
 
   .hero-tracking-wrap.desktop-scroll-reveal {
-    transition-delay: 180ms;
+    transition-duration: 1.5s;
+    transition-delay: 150ms;
   }
 
   .quick-grid > .desktop-scroll-reveal:nth-child(2),
   .service-grid > .desktop-scroll-reveal:nth-child(2),
   .trust-grid > .desktop-scroll-reveal:nth-child(2),
   .about-values > .desktop-scroll-reveal:nth-child(2),
+  .partner-grid > .desktop-scroll-reveal:nth-child(2),
   .partner-feature-grid > .desktop-scroll-reveal:nth-child(2),
+  .partner-audience-grid > .desktop-scroll-reveal:nth-child(2),
   .process-grid > .desktop-scroll-reveal:nth-child(2),
+  .career-list > .desktop-scroll-reveal:nth-child(2),
+  .tracking-timeline > .desktop-scroll-reveal:nth-child(2),
+  .tracking-history-list > .desktop-scroll-reveal:nth-child(2),
   .home-facts > .desktop-scroll-reveal:nth-child(2),
   .fact-row > .desktop-scroll-reveal:nth-child(2) {
-    transition-delay: 80ms;
+    transition-delay: 100ms;
   }
 
   .quick-grid > .desktop-scroll-reveal:nth-child(3),
   .service-grid > .desktop-scroll-reveal:nth-child(3),
   .trust-grid > .desktop-scroll-reveal:nth-child(3),
   .about-values > .desktop-scroll-reveal:nth-child(3),
+  .partner-grid > .desktop-scroll-reveal:nth-child(3),
   .partner-feature-grid > .desktop-scroll-reveal:nth-child(3),
+  .partner-audience-grid > .desktop-scroll-reveal:nth-child(3),
   .process-grid > .desktop-scroll-reveal:nth-child(3),
+  .career-list > .desktop-scroll-reveal:nth-child(3),
+  .tracking-timeline > .desktop-scroll-reveal:nth-child(3),
+  .tracking-history-list > .desktop-scroll-reveal:nth-child(3),
   .home-facts > .desktop-scroll-reveal:nth-child(3),
   .fact-row > .desktop-scroll-reveal:nth-child(3) {
-    transition-delay: 160ms;
+    transition-delay: 200ms;
   }
 
   .quick-grid > .desktop-scroll-reveal:nth-child(4),
   .service-grid > .desktop-scroll-reveal:nth-child(4),
   .trust-grid > .desktop-scroll-reveal:nth-child(4),
+  .partner-grid > .desktop-scroll-reveal:nth-child(4),
+  .partner-audience-grid > .desktop-scroll-reveal:nth-child(4),
   .process-grid > .desktop-scroll-reveal:nth-child(4) {
-    transition-delay: 220ms;
+    transition-delay: 300ms;
   }
 
   .service-grid > .desktop-scroll-reveal:nth-child(5) {
-    transition-delay: 280ms;
+    transition-delay: 400ms;
+  }
+
+  .partner-grid > .desktop-scroll-reveal:nth-child(5),
+  .tracking-timeline > .desktop-scroll-reveal:nth-child(4),
+  .tracking-history-list > .desktop-scroll-reveal:nth-child(4) {
+    transition-delay: 400ms;
   }
 
   .footer-col.desktop-scroll-reveal:nth-of-type(2) {
-    transition-delay: 80ms;
+    transition-delay: 100ms;
   }
 
   .footer-col.desktop-scroll-reveal:nth-of-type(3) {
-    transition-delay: 160ms;
+    transition-delay: 200ms;
   }
 
   .footer-col.desktop-scroll-reveal:nth-of-type(4) {
-    transition-delay: 220ms;
+    transition-delay: 300ms;
   }
 
   .footer-bottom.desktop-scroll-reveal {
-    transition-delay: 120ms;
+    transition-delay: 150ms;
   }
 }
 
 @media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
   .nav-links a,
-  .btn,
-  .quick-card,
-  .service-card,
-  .resource-card,
-  .partner-feature-card {
+  .btn {
     transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-    transition-duration: 0.32s;
+    transition-duration: 0.42s;
+  }
+
+  .quick-card:not(.desktop-scroll-reveal),
+  .service-card:not(.desktop-scroll-reveal),
+  .resource-card:not(.desktop-scroll-reveal),
+  .partner-feature-card:not(.desktop-scroll-reveal) {
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transition-duration: 0.42s;
   }
 
   .quick-card:hover {
@@ -4358,7 +4439,7 @@ main {
   .service-body h3 svg,
   .partner-feature-card svg,
   .nav-links a svg {
-    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .quick-card:hover .quick-icon,
