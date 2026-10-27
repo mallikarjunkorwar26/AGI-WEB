@@ -159,7 +159,7 @@ function ScrollReveal() {
     const desktopTargetSelector =
       '.section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-status-card, .detail-card, .track-side-info, .job-card, .career-form-card, .hero-content, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result';
     const enhancedDesktopTargetSelector =
-      '.section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-status-card, .detail-card, .track-side-info, .job-card, .career-form-card, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result, .about-value, .partner-feature-card, .process-step, .home-facts > div, .fact-row > .fact, .hero-content > .eyebrow, .hero-content > h1, .hero-content > p, .hero-content > .hero-actions, .hero-content > .hero-note, .hero-tracking-wrap';
+      '.section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-status-card, .detail-card, .track-side-info, .job-card, .career-form-card, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result, .about-value, .partner-feature-card, .process-step, .home-facts > div, .fact-row > .fact, .footer-brand, .footer-col, .footer-bottom, .hero-content > .eyebrow, .hero-content > h1, .hero-content > p, .hero-content > .hero-actions, .hero-content > .hero-note, .hero-tracking-wrap';
     const mobileTargetSelector = [
       '.section',
       '.quick-card',
@@ -242,6 +242,8 @@ function ScrollReveal() {
           'reveal-zoom',
           'desktop-scroll-reveal',
           'desktop-reveal-from-above',
+          'desktop-reveal-exit-up',
+          'desktop-reveal-exit-down',
           'is-visible',
         );
         target.style.removeProperty('transition-delay');
@@ -304,6 +306,7 @@ function ScrollReveal() {
             if (entry.isIntersecting) {
               if (activeDesktopMode) {
                 entry.target.classList.toggle('desktop-reveal-from-above', scrollDirection === 'up');
+                entry.target.classList.remove('desktop-reveal-exit-up', 'desktop-reveal-exit-down');
                 const pendingFrame = pendingRevealFrames.get(entry.target);
                 if (pendingFrame !== undefined) window.cancelAnimationFrame(pendingFrame);
                 const frame = window.requestAnimationFrame(() => {
@@ -322,6 +325,10 @@ function ScrollReveal() {
                 pendingRevealFrames.delete(entry.target);
               }
               entry.target.classList.remove('is-visible');
+              if (activeDesktopMode) {
+                entry.target.classList.toggle('desktop-reveal-exit-up', scrollDirection === 'down');
+                entry.target.classList.toggle('desktop-reveal-exit-down', scrollDirection === 'up');
+              }
             }
           });
         },

@@ -4245,14 +4245,19 @@ main {
 @media (min-width: 1025px) {
   .desktop-scroll-reveal {
     opacity: 0;
-    transform: translate3d(0, 20px, 0);
+    transform: translate3d(0, 24px, 0);
     transition:
-      opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity 0.78s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.78s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .desktop-scroll-reveal.desktop-reveal-from-above:not(.is-visible) {
-    transform: translate3d(0, -20px, 0);
+  .desktop-scroll-reveal.desktop-reveal-from-above:not(.is-visible),
+  .desktop-scroll-reveal.desktop-reveal-exit-up:not(.is-visible) {
+    transform: translate3d(0, -24px, 0);
+  }
+
+  .desktop-scroll-reveal.desktop-reveal-exit-down:not(.is-visible) {
+    transform: translate3d(0, 24px, 0);
   }
 
   .desktop-scroll-reveal.is-visible {
@@ -4315,6 +4320,22 @@ main {
 
   .service-grid > .desktop-scroll-reveal:nth-child(5) {
     transition-delay: 280ms;
+  }
+
+  .footer-col.desktop-scroll-reveal:nth-of-type(2) {
+    transition-delay: 80ms;
+  }
+
+  .footer-col.desktop-scroll-reveal:nth-of-type(3) {
+    transition-delay: 160ms;
+  }
+
+  .footer-col.desktop-scroll-reveal:nth-of-type(4) {
+    transition-delay: 220ms;
+  }
+
+  .footer-bottom.desktop-scroll-reveal {
+    transition-delay: 120ms;
   }
 }
 
