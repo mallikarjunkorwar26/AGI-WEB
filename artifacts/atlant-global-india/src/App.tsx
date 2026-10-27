@@ -361,7 +361,7 @@ function ScrollReveal() {
           });
         },
         {
-          threshold: activeMobileMode ? 0.04 : activeDesktopMode ? 0 : 0.12,
+          threshold: activeMobileMode || activeDesktopMode ? 0 : 0.12,
           rootMargin: activeMobileMode ? '0px 0px -32px 0px' : activeDesktopMode ? '0px 0px -12px 0px' : '0px 0px -20px 0px',
         },
       );
