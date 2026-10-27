@@ -846,9 +846,9 @@ main {
 }
 
 .customer-logo-group img {
-  height: 46px;
+  height: 56px;
   width: auto;
-  max-width: 160px;
+  max-width: 180px;
   object-fit: contain;
 }
 
