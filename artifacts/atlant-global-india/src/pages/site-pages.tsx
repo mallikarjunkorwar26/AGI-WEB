@@ -154,6 +154,8 @@ const services = [
   {
     title: 'Domestic',
     image: 'Domestic.png',
+    optimizedImage: 'Domestic.avif',
+    optimizedImageType: 'image/avif',
     text: 'Courier and cargo services for shipments moving across India.',
     icon: PackageCheck,
     features: ['Courier', 'Cargo', 'Domestic destinations'],
@@ -161,6 +163,8 @@ const services = [
   {
     title: 'Pro Premium',
     image: 'ProPremium.png',
+    optimizedImage: 'ProPremium.avif',
+    optimizedImageType: 'image/avif',
     text: 'A time-sensitive service option for important documents and consignments.',
     icon: FileText,
     features: ['AM–PM delivery', 'Visa applications', 'Legal and important documents'],
@@ -168,6 +172,8 @@ const services = [
   {
     title: 'Priority Class',
     image: 'Priorityclass.png',
+    optimizedImage: 'Priorityclass.avif',
+    optimizedImageType: 'image/avif',
     text: 'Express courier and cargo services for business requirements.',
     icon: Truck,
     features: ['Business shipments', 'Express delivery', 'Cargo'],
@@ -175,6 +181,8 @@ const services = [
   {
     title: 'International',
     image: 'Internation.png',
+    optimizedImage: 'Internation.avif',
+    optimizedImageType: 'image/avif',
     text: 'International courier and cargo connectivity through The Professional Couriers network and applicable partners.',
     icon: Globe2,
     features: ['Courier', 'Cargo', 'International destinations'],
@@ -182,6 +190,8 @@ const services = [
   {
     title: 'Warehousing',
     image: 'Wharehousing.png',
+    optimizedImage: 'Wharehousing.webp',
+    optimizedImageType: 'image/webp',
     text: 'Storage, handling and distribution support at the Kudlu Gate facility.',
     icon: Warehouse,
     features: ['Kudlu Gate hub', 'Storage', 'Handling and distribution'],
@@ -364,14 +374,18 @@ export function HomePage() {
   return (
     <>
       <section className="hero">
-        <img
-          className="hero-photo"
-          src={`${import.meta.env.BASE_URL}images/Operation_Hub.png`}
-          alt=""
-          aria-hidden="true"
-          fetchPriority="high"
-          decoding="async"
-        />
+        <picture className="hero-photo-picture">
+          <source srcSet={`${import.meta.env.BASE_URL}images/Wharehousing.webp`} type="image/webp" />
+          <img
+            className="hero-photo"
+            src={`${import.meta.env.BASE_URL}images/Operation_Hub.png`}
+            alt=""
+            aria-hidden="true"
+            fetchPriority="high"
+            decoding="async"
+            loading="eager"
+          />
+        </picture>
         <div className="container hero-layout">
           <div className="hero-content">
             <div className="eyebrow">Local knowledge. Wider reach.</div>
@@ -422,22 +436,22 @@ export function HomePage() {
         <div className="customer-marquee" aria-label="Customer logos">
           <div className="customer-marquee-track">
             <div className="customer-logo-group">
-              <img src={`${import.meta.env.BASE_URL}images/Essl.jpg`} alt="ESSL" />
-              <img src={`${import.meta.env.BASE_URL}images/Pharmed.png`} alt="Pharmed" />
-              <img src={`${import.meta.env.BASE_URL}images/varsity_education_management_logo.jpg`} alt="Varsity Education Management" />
-              <img src={`${import.meta.env.BASE_URL}images/Canon.png`} alt="Canon" />
-              <img src={`${import.meta.env.BASE_URL}images/FIncare.png`} alt="Fincare Small Finance Bank" />
-              <img src={`${import.meta.env.BASE_URL}images/Havells_Logo.svg.webp`} alt="Havells" />
-              <img src={`${import.meta.env.BASE_URL}images/hdfc-bank-ltd-phone-banking--new-delhi-delhi-banks-1a8wyfwsty.avif`} alt="HDFC Bank" />
+              <img src={`${import.meta.env.BASE_URL}images/Essl.jpg`} alt="ESSL" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/Pharmed.png`} alt="Pharmed" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/varsity_education_management_logo.jpg`} alt="Varsity Education Management" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/Canon.png`} alt="Canon" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/FIncare.png`} alt="Fincare Small Finance Bank" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/Havells_Logo.svg.webp`} alt="Havells" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/hdfc-bank-ltd-phone-banking--new-delhi-delhi-banks-1a8wyfwsty.avif`} alt="HDFC Bank" loading="lazy" decoding="async" />
             </div>
             <div className="customer-logo-group" aria-hidden="true">
-              <img src={`${import.meta.env.BASE_URL}images/Essl.jpg`} alt="" />
-              <img src={`${import.meta.env.BASE_URL}images/Pharmed.png`} alt="" />
-              <img src={`${import.meta.env.BASE_URL}images/varsity_education_management_logo.jpg`} alt="" />
-              <img src={`${import.meta.env.BASE_URL}images/Canon.png`} alt="" />
-              <img src={`${import.meta.env.BASE_URL}images/FIncare.png`} alt="" />
-              <img src={`${import.meta.env.BASE_URL}images/Havells_Logo.svg.webp`} alt="" />
-              <img src={`${import.meta.env.BASE_URL}images/hdfc-bank-ltd-phone-banking--new-delhi-delhi-banks-1a8wyfwsty.avif`} alt="" />
+              <img src={`${import.meta.env.BASE_URL}images/Essl.jpg`} alt="" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/Pharmed.png`} alt="" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/varsity_education_management_logo.jpg`} alt="" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/Canon.png`} alt="" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/FIncare.png`} alt="" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/Havells_Logo.svg.webp`} alt="" loading="lazy" decoding="async" />
+              <img src={`${import.meta.env.BASE_URL}images/hdfc-bank-ltd-phone-banking--new-delhi-delhi-banks-1a8wyfwsty.avif`} alt="" loading="lazy" decoding="async" />
             </div>
           </div>
         </div>
@@ -453,7 +467,10 @@ export function HomePage() {
       <section className="section">
         <div className="container intro-grid">
           <div className="intro-photo-wrap">
-            <img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.png`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" />
+            <picture className="intro-photo-picture">
+              <source srcSet={`${import.meta.env.BASE_URL}images/Wharehousing.webp`} type="image/webp" />
+              <img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.png`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" decoding="async" />
+            </picture>
             <div className="photo-caption">Operations hub · Kudlu Gate, Bengaluru.</div>
           </div>
           <div className="intro-copy">
@@ -504,7 +521,10 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
   return (
     <article className="service-card">
       <div className="service-photo service-visual" aria-hidden="true">
-        <img src={`${import.meta.env.BASE_URL}images/${service.image}`} alt="" />
+        <picture>
+          <source srcSet={`${import.meta.env.BASE_URL}images/${service.optimizedImage}`} type={service.optimizedImageType} />
+          <img src={`${import.meta.env.BASE_URL}images/${service.image}`} alt="" loading="lazy" decoding="async" />
+        </picture>
       </div>
       <div className="service-body">
         <h3><Icon size={17} aria-hidden="true" /> {service.title}</h3>
@@ -2060,7 +2080,7 @@ export function AboutPage() {
       <PageHeading eyebrow="About Atlant Global India" title="Experience that moves business." intro="Atlant Global India (Inc) was established on July 2, 1990 by Mr. Suresh Surendranath and operates under The Professional Couriers." />
       <section className="section section-sm" id="infrastructure">
         <div className="container intro-grid">
-          <div className="intro-photo-wrap"><img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.png`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" /></div>
+          <div className="intro-photo-wrap"><picture className="intro-photo-picture"><source srcSet={`${import.meta.env.BASE_URL}images/Wharehousing.webp`} type="image/webp" /><img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.png`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" decoding="async" /></picture></div>
           <div className="intro-copy">
             <div className="section-label">Local operations</div>
             <h2>A Bengaluru base with a wider network.</h2>
@@ -2076,7 +2096,7 @@ export function AboutPage() {
       </section>
       <section className="section network-band">
         <div className="container network-grid">
-          <div className="network-visual"><img className="network-map-image" src={`${import.meta.env.BASE_URL}images/BangloreSouth%20East.png`} alt="Map highlighting Bengaluru South and Bengaluru East" loading="lazy" /></div>
+          <div className="network-visual"><img className="network-map-image" src={`${import.meta.env.BASE_URL}images/BangloreSouth%20East.png`} alt="Map highlighting Bengaluru South and Bengaluru East" loading="lazy" decoding="async" /></div>
           <div><div className="section-label">Network</div><h2>Rooted in Bengaluru.<br />Connected beyond it.</h2><p className="section-lead">Through The Professional Couriers network, Atlant Global India supports domestic and international courier and cargo requirements. Its local service area is Bengaluru South and East.</p><Link className="btn btn-navy" href="/contact">Contact the company <ArrowRight size={14} /></Link></div>
         </div>
       </section>
@@ -2084,7 +2104,7 @@ export function AboutPage() {
         <div className="container">
           <div className="section-label">Leadership</div><h2>Led with experience.</h2>
           <div className="leadership">
-            <img className="portrait-image" src={`${import.meta.env.BASE_URL}images/CEO-compressed-1-e1562394173820-180x220.jpg`} alt="Mr. Suresh Surendranath Nair, Chief Executive Officer" loading="lazy" />
+            <img className="portrait-image" src={`${import.meta.env.BASE_URL}images/CEO-compressed-1-e1562394173820-180x220.jpg`} alt="Mr. Suresh Surendranath Nair, Chief Executive Officer" loading="lazy" decoding="async" />
             <div>
               <h3>Mr. Suresh Surendranath Nair</h3>
               <div className="role">Chief Executive Officer</div>

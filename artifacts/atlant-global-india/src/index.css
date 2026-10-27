@@ -620,6 +620,11 @@ main {
   background: linear-gradient(135deg, #090c12 0%, #121824 55%, #1a2230 100%);
 }
 
+.hero-photo-picture {
+  position: absolute;
+  inset: 0;
+}
+
 .hero-photo {
   position: absolute;
   inset: 0;
@@ -976,6 +981,13 @@ main {
   object-position: center;
   filter: drop-shadow(0 2px 4px rgb(15 23 42 / 18%));
   transition: transform 0.25s ease;
+}
+
+.service-visual picture,
+.intro-photo-picture {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .service-card:hover .service-visual img {
