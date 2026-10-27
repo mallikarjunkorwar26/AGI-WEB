@@ -1,338 +1,578 @@
 [
   {
-    "name": "Corporate Office",
-    "address": "#136, 7th Cross, 29th Main Road, Lake Road, BTM 2nd Stage, Bengaluru, Karnataka 560076",
-    "pincode": "560076",
-    "mobile": null,
-    "keywords": "btm lake road corporate office south bengaluru 560076",
-    "map": "https://maps.app.goo.gl/PrDEJi5HG4fnZYEo6"
+    "code": "AGD",
+    "area": "ADUGODI",
+    "franchisee": "Mr. PAVAN KUMAR",
+    "landline": "25714505",
+    "mobile": "9379274019",
+    "address": "27/2, 1st Floor, Hosur Main Road, Adugodi, Bangalore 560 030",
+    "map_link": "https://maps.app.goo.gl/jvtHmuHf1seo3KYX6"
   },
   {
-    "name": "Operations Office · Kudlu Gate",
-    "address": "VJPQ+H74, 51/2, Chikka Begur Gate, Lakshmi Layout Main Rd, Hosur, Bengaluru, Karnataka 560068",
-    "pincode": "560068",
-    "mobile": null,
-    "keywords": "kudlu gate operations office chikka begur gate lakshmi layout main road hosur bengaluru 560068",
-    "map": "https://maps.app.goo.gl/bXvW6bkRdBFCmKDL9"
+    "code": "AGV",
+    "area": "AGARA VILLAGE",
+    "franchisee": "Mr. VINAY",
+    "landline": "48520279",
+    "mobile": "9379274010",
+    "address": "#451/74, 1st Floor, 24th Main, Opp. Muthoottu Mini Financiers, Agara Main Road, HSR Layout, Sector 1, Bangalore 560102",
+    "map_link": "https://maps.app.goo.gl/NdEmvws5z7tGMDQZ7"
   },
   {
-    "address": "27/2, 1st Floor, Hosur Main Road, Adugodi, Bangalore",
-    "pincode": "560030",
-    "mobile": "9379274019"
+    "code": "APR",
+    "area": "AIRPORT ROAD",
+    "franchisee": "Mr. RAJASHEKAR G",
+    "landline": "25226568",
+    "mobile": "6366895732",
+    "address": "No. 9, Basement, SNS Arcade, Konena Agrahara, HAL Post, Bangalore – 560 017",
+    "map_link": "https://maps.app.goo.gl/tqr8JT3nbUFFFX5c8"
   },
   {
-    "address": "#451/74, 1st Floor, 24th Main, Opp. Muthoottu Mini Financiers, Agara Main Road, HSR Layout, Sector 1, Bangalore",
-    "pincode": "560102",
-    "mobile": "9379274010"
+    "code": "ARE",
+    "area": "AREKERE",
+    "franchisee": "Mr. PARTHIBAN",
+    "landline": "48520274",
+    "mobile": "9379274096",
+    "address": "# 16/44-1, 1st Floor, 'Anugraha Building, Singh Layout, Arekere Village, Opp. Paramount Apartments, Bangalore – 560 076",
+    "map_link": "https://maps.app.goo.gl/sRWKmL1B3JLBX8Ev5"
   },
   {
-    "address": "No. 9, Basement, SNS Arcade, Konena Agrahara, HAL Post, Bangalore",
-    "pincode": "560017",
-    "mobile": "6366895732"
-  },
-  {
-    "address": "# 16/44-1, 1st Floor, 'Anugraha Building, Singh Layout, Arekere Village, Opp. Paramount Apartments, Bangalore",
-    "pincode": "560076",
-    "mobile": "9379274096"
-  },
-  {
+    "code": "ATB",
+    "area": "ATTIBELE",
+    "franchisee": "Mr. RAVI KUMAR B",
+    "landline": "27820086",
+    "mobile": "9379274021",
     "address": "No. 1 & 10, Balagaranahalli Village, Attibele Hobli, Anekal Taluk, Bangalore District",
-    "pincode": null,
-    "mobile": "9379274021"
+    "map_link": "https://maps.app.goo.gl/ZuL4VQ9yN5AQarzy5"
   },
   {
-    "address": "# 417, 9th Main, 24th Cross, Next to Bata Showroom, 1st Floor, Near BDA Complex, Banashankari 2nd Stage, Bangalore",
-    "pincode": "560070",
-    "mobile": "9379274024"
+    "code": "B2",
+    "area": "BANASHANKARI 2ND STAGE",
+    "franchisee": "Mr.MOHAN KUMAR K.C",
+    "landline": "45145535",
+    "mobile": "9379274024",
+    "address": "# 417, 9th Main, 24th Cross, Next to Bata Showroom, 1st Floor, Near BDA Complex, Banashankari 2nd Stage, Bangalore - 560 070",
+    "map_link": "https://maps.app.goo.gl/Db74NPXYXu4Vh2FG7"
   },
   {
-    "address": "# 1489/9, 22nd Main Road, 2nd Block, PES College Road, Banashankari 1st Stage, Bangalore",
-    "pincode": "560050",
-    "mobile": "9379274025"
+    "code": "B3",
+    "area": "BANASHANKARI 3RD STAGE",
+    "franchisee": "Mr. KUMAR A.N",
+    "landline": "26608524",
+    "mobile": "9379274025",
+    "address": "# 1489/9, 22nd Main Road, 2nd Block, PES College Road, Banashankari 1st Stage, Bangalore – 560 050",
+    "map_link": null
   },
   {
-    "address": "No. 1/2&3 Shop No.5, Ground Floor, 1st Cross, Maheshwaramma Temple Street, Bommanahalli, Begur Main Road, Bangalore",
-    "pincode": "560068",
-    "mobile": "9379274028"
+    "code": "BGR",
+    "area": "BEGUR",
+    "franchisee": "Mr. GANESH M",
+    "landline": "41219287",
+    "mobile": "9379274028",
+    "address": "No.. 1/2&3 Shop No.5, Ground Floor, 1st Cross, Maheshwaramma Temple Street, Bommanahalli, Begur Main Road, Bangalore-560068",
+    "map_link": "https://maps.app.goo.gl/nxY5kMkh788Sv6q77"
   },
   {
-    "address": "# 112/1, 1st Floor, Srinivasa Complex, Mangammana Palya Main Road, Bommanahalli, Bangalore",
-    "pincode": "560068",
-    "mobile": "9379274094"
+    "code": "BHI",
+    "area": "BOMMANAHALLI",
+    "franchisee": "Mr. HARI HARAN",
+    "landline": "25725280",
+    "mobile": "9379274094",
+    "address": "# 112/1, 1st Floor, Srinivasa Complex, Mangammana Palya Main Road, Bommanahalli, Bangalore – 560 068",
+    "map_link": "https://maps.app.goo.gl/bFeoHexYLUhntqCQ9"
   },
   {
-    "address": "H. Ramaswamy Reddy Building, Yerandahalli Hennagra Post, Bommasandra Industrial Area, Anekal Taluk, Bangalore",
-    "pincode": "560099",
-    "mobile": "9379274011"
+    "code": "BJL",
+    "area": "BOMMASANDRA JIGNI L RD.",
+    "franchisee": "Mr. Manjunath",
+    "landline": "8110425072",
+    "mobile": "9379274011",
+    "address": "H. Ramaswamy Reddy Building, Yerandahalli Hennagra Post, Bommasandra Industrial Area, Anekal Taluk, Bangalore – 560 099",
+    "map_link": "https://maps.app.goo.gl/ZuL4VQ9yN5AQarzy5"
   },
   {
-    "address": "# 351, Bilekahalli Main Road, 1st Floor, Opp. Pai Electronics, Bannerghatta Road, Bangalore",
-    "pincode": "560076",
-    "mobile": "9379274029"
+    "code": "BKH",
+    "area": "BILEKHA HALLI",
+    "franchisee": "Mr.PRASHANTH S",
+    "landline": "41748873",
+    "mobile": "9379274029",
+    "address": "# 351, Bilekahalli Main Road, 1st Floor, Opp. Pai Electronics, Bannerghatta Road, Bangalore 560 076",
+    "map_link": "https://maps.app.goo.gl/LCLmR74t74URfd796"
   },
   {
-    "address": "# 9/47, Leelavathi Mansion, Ambalipura Village, Sarjapur Road, Anekal Taluk, Bellandur, Bangalore",
-    "pincode": "560034",
-    "mobile": "9379274027"
+    "code": "BLD",
+    "area": "BELLANDUR",
+    "franchisee": "Mr. ARUN KUMAR",
+    "landline": "25744450",
+    "mobile": "9379274027",
+    "address": "# 9/47, Leelavathi Mansion, Ambalipura Village, Sarjapur Road, Anekal Taluk, Bellandur, Bangalore–560 034",
+    "map_link": "https://maps.app.goo.gl/Db74NPXYXu4Vh2FG7"
   },
   {
-    "address": "# 122, Shop No. 3, 1st Floor, Sarjapur Main Road, Doddakannehalli, Carmelram Post, Bangalore",
-    "pincode": "560035",
-    "mobile": "9379274073"
+    "code": "KKH",
+    "area": "BELLANDUR GATE",
+    "franchisee": "Mr. Rajendra",
+    "landline": "28439664",
+    "mobile": "9379274073",
+    "address": "# 122, Shop No. 3, 1st Floor, Sarjapur Main Road, Doddakannehalli, Carmelram Post, Bangalore – 560 035",
+    "map_link": "https://maps.app.goo.gl/GwzXtj3EDKuyEqxZ8"
   },
   {
-    "address": "# 25, Mahalakshmi Complex, Shankar Park Road, Shankarapuram, Bulltemple Road, Bangalore",
-    "pincode": "560004",
-    "mobile": "9379274031"
+    "code": "BLT",
+    "area": "BULL TEMPLE RD",
+    "franchisee": "Mr.KESHAV B",
+    "landline": "8035507693",
+    "mobile": "9379274031",
+    "address": "# 25, Mahalakshmi Complex, Shankar Park Road, Shankarapuram, Bulltemple Road, Bangalore – 560 004",
+    "map_link": "https://maps.app.goo.gl/GwzXtj3EDKuyEqxZ8"
   },
   {
-    "address": "# No. 2, Ground Floor, 2nd Main Road, 9th Cross, Indiranagar, 1st Stage, Bangalore",
-    "pincode": "560038",
-    "mobile": "9379274044"
+    "code": "BMG",
+    "area": "BINMANGALA",
+    "franchisee": "Mr. SHIVAMURTHY KT",
+    "landline": "48142106",
+    "mobile": "9379274044",
+    "address": "# No. 2, Ground Floor, 2nd Main Road, 9th Cross, Indiranagar, 1st Stage, Bangalore – 560 038",
+    "map_link": "https://maps.app.goo.gl/MYxADqETYGR9hw747"
   },
   {
-    "address": "# 116, 3rd Cross, Vidya Nagar, Opp. SKF, Bommasandra, Bangalore",
-    "pincode": "560099",
-    "mobile": "9379274030"
+    "code": "BSD",
+    "area": "BOMMASANDRA",
+    "franchisee": "Mr. SURESH R",
+    "landline": "27833774",
+    "mobile": "9379274030",
+    "address": "# 116, 3rd Cross, Vidya Nagar, Opp. SKF, Bommasandra, Bangalore – 560 099",
+    "map_link": "https://maps.app.goo.gl/kgaTUsgT22tPUZLx5"
   },
   {
-    "address": "No. 30, 1st Floor, RMS Colony, Opp. Bhattarahalli Bus Stop, Old Madras Road, Bangalore",
-    "pincode": "560049",
-    "mobile": "6366895724"
+    "code": "BTH",
+    "area": "BATTARAHALLI",
+    "franchisee": "Mr.MANOJ",
+    "landline": "8951791420",
+    "mobile": "6366895724",
+    "address": "No. 30, 1st Floor, RMS Colony, Opp. Bhattarahalli Bus Stop, Old Madras Road, Bangalore – 560 049",
+    "map_link": "https://maps.app.goo.gl/BffAKV5VGGKkGhZ57"
   },
   {
-    "address": "No. 206-A, Ground Floor, 6th Main, 15th Cross, N.S. Palya, BTM 2nd Stage, Bangalore",
-    "pincode": "560076",
-    "mobile": "9379274084"
+    "code": "BTM",
+    "area": "BTM LAYOUT",
+    "franchisee": "Mr. KRISHNA MURTHY J",
+    "landline": "41263877",
+    "mobile": "9379274084",
+    "address": "No. 206-A, Ground Floor, 6th Main, 15th Cross, N.S. Palya, BTM 2nd Stage, Bangalore 560 076",
+    "map_link": "https://maps.app.goo.gl/62ahNo8Q6g1yNvyP8"
   },
   {
-    "address": "# 118, (F-1), Pamadi Chambers, DVG Road, Basavanagudi, Bangalore",
-    "pincode": "560004",
-    "mobile": "9379274026"
+    "code": "BVG",
+    "area": "BASAVANAGUDI",
+    "franchisee": "Mr.RAMESH H C",
+    "landline": "41707039",
+    "mobile": "9379274026",
+    "address": "# 118, (F-1), Pamadi Chambers, DVG Road, Basavanagudi, Bangalore – 560 004",
+    "map_link": "https://maps.app.goo.gl/MsPrGmZLeEMSUVyQ7"
   },
   {
-    "address": "No. 165/2 (1421/1), Near NASCO Restaurant, Opp. BSNL Exchange Office, Near Canara Bank, Begur, Bangalore",
-    "pincode": "560068",
-    "mobile": "9379274013"
+    "code": "CBG",
+    "area": "CHIKKA BEGUR",
+    "franchisee": "Mr.GOPI",
+    "landline": "43003951",
+    "mobile": "9379274013",
+    "address": "No. 165/2 (1421/1), Near NASCO Restaurant, Opp. BSNL Exchange Office, Near Canara Bank, Begur, Bangalore – 560 068",
+    "map_link": "https://maps.app.goo.gl/qQPB9ggQs212fs3a9"
   },
   {
-    "address": "# 269, 3rd Main, 2nd Cross, Sai Baba Mandir Road, Ulsoor, Cambridge Layout, Bangalore",
-    "pincode": "560008",
-    "mobile": "9379274033"
+    "code": "CBL",
+    "area": "CAMBRIDGE LAYOUT",
+    "franchisee": "Mr.SIVANARAYANA V",
+    "landline": "41664593",
+    "mobile": "9379274033",
+    "address": "# 269, 3rd Main, 2nd Cross, Sai Baba Mandir Road, Ulsoor, Cambridge Layout, Bangalore – 560 008",
+    "map_link": "https://maps.app.goo.gl/Db74NPXYXu4Vh2FG7"
   },
   {
-    "address": "No. 20, Krishnanagar Layout, Hosur Road, Bangalore",
-    "pincode": "560029",
-    "mobile": "9379274034"
+    "code": "CPO",
+    "area": "CHECK POST OFFICE",
+    "franchisee": "Mr. ADARSH M.N",
+    "landline": "41600463",
+    "mobile": "9379274034",
+    "address": "No. 20, Krishnanagar Layout, Hosur Road, Bangalore-560029",
+    "map_link": "https://maps.app.goo.gl/qQPB9ggQs212fs3a9"
   },
   {
-    "address": "BBMP No. 38, R.K. Sridhar Complex, 1st Floor, Nagawarapalya Main Road, Next to Muthyalamma Temple, C.V. Raman Nagar, Bangalore",
-    "pincode": "560093",
-    "mobile": "6366895728"
+    "code": "CRN",
+    "area": "C.V. RAMAN NAGAR",
+    "franchisee": "Mr. KRISHNA",
+    "landline": "42185245",
+    "mobile": "6366895728",
+    "address": "BBMP No. 38, R.K. Sridhar Complex, 1st Floor, Nagawarapalya Main Road, Next to Muthyalamma Temple, C.V. Raman Nagar, Bangalore – 560 093",
+    "map_link": "https://maps.app.goo.gl/Hbc4QCPnzkpis1xP7"
   },
   {
-    "address": "No. 105/1, Ground Floor, Govinda Reddy Building, Near Govt. School, Post Office Road, Near Vinayaka Temple, Bangalore",
-    "pincode": "560037",
-    "mobile": "6366895729"
+    "code": "DDK",
+    "area": "DODDANAKUNDI",
+    "franchisee": "Mr. GOKUL",
+    "landline": "8951791426",
+    "mobile": "6366895729",
+    "address": "No. 105/1, Ground Floor, Govinda Reddy Building, Near Govt. School, Post Office Road, Near Vinayaka Temple, Bangalore – 560 037",
+    "map_link": "https://maps.app.goo.gl/Hbc4QCPnzkpis1xP7"
   },
   {
-    "address": "No. 663, 2nd Main Road, Domlur Layout, Bangalore",
-    "pincode": "560071",
-    "mobile": "9353029800"
+    "code": "DML",
+    "area": "DOMLUR",
+    "franchisee": "MUNIRAJU M",
+    "landline": "41626844",
+    "mobile": "9353029800",
+    "address": "No. 663, 2nd Main Road, Domlur Layout, Bangalore 560 071",
+    "map_link": "https://maps.app.goo.gl/BDBAbyWeGT4izEkJ6"
   },
   {
-    "address": "No. 74, Opp. Fathima School, Behind Tin Factory, Udayanagar, Doorvaninagar Post, Old Madras Road, Bangalore",
-    "pincode": "560016",
-    "mobile": "6366895727"
+    "code": "DRV",
+    "area": "DOORVANI NAGAR",
+    "franchisee": "Mr. KRISHNA",
+    "landline": "8951791423",
+    "mobile": "6366895727",
+    "address": "No. 74, Opp. Fathima School, Behind Tin Factory, Udayanagar, Doorvaninagar Post, Old Madras Road, Bangalore – 560 016",
+    "map_link": "https://maps.app.goo.gl/m6ewbx5h24nEKKps5"
   },
   {
-    "address": "No. #129/3B, Near Infosys Gate-6, Konappana Agrahara, Hosur Road, Electronicity Post, Bangalore",
-    "pincode": "560100",
-    "mobile": "9379274038"
+    "code": "ECT",
+    "area": "ELECTRONIC CITY",
+    "franchisee": "Mr. KANTHRAJ V C",
+    "landline": "28521481",
+    "mobile": "9379274038",
+    "address": "No. #129/3B, Near Infosys Gate-6, Konappana Agrahara, Hosur Road, Electronicity Post, Bangalore – 560 100",
+    "map_link": "https://maps.app.goo.gl/95agAKGfaoT826hN8"
   },
   {
-    "address": "# 40/1, Ground Floor, New No. 12, Opp. Rapsri Engg. Ltd., Subramanyapura Main Road, Gowdanapalya, Bangalore",
-    "pincode": "560061",
-    "mobile": "9379274041"
+    "code": "GNP",
+    "area": "GOWDANA PALYA",
+    "franchisee": "Mr.VENKATESH MURTHY .J",
+    "landline": "26390277",
+    "mobile": "9379274041",
+    "address": "# 40/1, Ground Floor, New No. 12, Opp. Rapsri Engg. Ltd., Subramanyapura Main Road, Gowdanapalya, Bangalore–560 061",
+    "map_link": "https://maps.app.goo.gl/VvyHedRxBYF6RDNh6"
   },
   {
-    "address": "#481/2, 1st floor, 50ft road, 3rd Stage Girinagar Avalahalli, Bangalore (Old: # 476, 9th Cross, Avalahalli BDA Park, Girinagar, Bangalore)",
-    "pincode": "560085",
-    "mobile": "9379274039"
+    "code": "GRN",
+    "area": "GIRINAGAR",
+    "franchisee": "Mr. G. MURALI S",
+    "landline": "26727311",
+    "mobile": "9379274039",
+    "address": "#481/2, 1st floor, 50ft road, 3rd Stage Girinagar Avalahalli, Bangalore – 560085 (Old : # 476, 9th Cross, Avalahalli BDA Park, Girinagar, Bangalore – 560 085)",
+    "map_link": "https://maps.app.goo.gl/ZuL4VQ9yN5AQarzy5"
   },
   {
-    "address": "NO 706, Bannerghatta Rd, near Decathlon, Kalena Agrahara, Bengaluru, Kothnur, Karnataka",
-    "pincode": "560076",
-    "mobile": "9379274040"
+    "code": "GTR",
+    "area": "GOTTIGERE",
+    "franchisee": "Mr. NAVEEN KUMAR B",
+    "landline": "43702430",
+    "mobile": "9379274040",
+    "address": "NO 706, 560076, Bannerghatta Rd, near Decathlon, Kalena Agrahara, Bengaluru, Kothnur, Karnataka 560076",
+    "map_link": "https://maps.app.goo.gl/jDEVifUWDmTgPT9F6"
   },
   {
-    "address": "No. 6/6, 1st Floor, Jayaram Reddy Building, Next to Meghana Hospital, Near Hoody Bus Stop, Whitefield Road, Hoody, Bangalore",
-    "pincode": "560048",
-    "mobile": "6366895734"
+    "code": "HOD",
+    "area": "HOODI",
+    "franchisee": "Mr. SHABEER AHAMED",
+    "landline": "41236857",
+    "mobile": "6366895734",
+    "address": "No. 6/6, 1st Floor, Jayaram Reddy Building, Next to Meghana Hospital, Near Hoody Bus Stop, Whitefield Road, Hoody, Bangalore – 560 048",
+    "map_link": "https://maps.app.goo.gl/JHU7JgBXvdJYoBNT8"
   },
   {
-    "address": "K R Road, Opp. TAPCMS, Sattar Complex, Near Canara Bank, Hosakote",
-    "pincode": "562114",
-    "mobile": "6366895723"
+    "code": "HSK",
+    "area": "HOSAKOTE",
+    "franchisee": "Mr.DAYANAND",
+    "landline": "7204085313",
+    "mobile": "6366895723",
+    "address": "K R Road, Opp. TAPCMS, Sattar Complex, Near Canara Bank, Hosakote – 562 114",
+    "map_link": "https://maps.app.goo.gl/JHU7JgBXvdJYoBNT8"
   },
   {
-    "address": "No. 219, 9th Main, HSR Layout, 6th Sector, Bangalore",
-    "pincode": "560102",
-    "mobile": "9379274042"
+    "code": "HSL",
+    "area": "HSR LAYOUT",
+    "franchisee": "Mr. LOKESH K J",
+    "landline": "41263243",
+    "mobile": "9379274042",
+    "address": "No. 219, 9th Main, HSR Layout, 6th Sector, Bangalore – 560 102",
+    "map_link": "https://maps.app.goo.gl/JqTGwfk8fFzMFdH67"
   },
   {
-    "address": "# 5/2, 1st Floor, Krishna Temple Road, Old Binnamangala, Indiranagar, Bangalore",
-    "pincode": "560038",
-    "mobile": "9379274043"
+    "code": "INR",
+    "area": "INDIRANAGAR",
+    "franchisee": "Mr. CHANDRASHEKAR G",
+    "landline": "25251214",
+    "mobile": "9379274043",
+    "address": "# 5/2, 1st Floor, Krishna Temple Road, Old Binnamangala, Indiranagar, Bangalore – 560 038",
+    "map_link": "https://maps.app.goo.gl/WDZVR3XdPQscdyDb6"
   },
   {
-    "address": "No. 127, 1st Floor, Arun Complex, ITPL Back Gate, Patandur Agrahara, Whitefield Post, ITPL, Bangalore",
-    "pincode": "560066",
-    "mobile": "6366895735"
+    "code": "ITP",
+    "area": "ITPL",
+    "franchisee": "Mr. SRINIVAS",
+    "landline": "42185226",
+    "mobile": "6366895735",
+    "address": "No. 127, 1st Floor, Arun Complex, ITPL Back Gate, Patandur Agrahara, Whitefield Post, ITPL, Bangalore – 560 066",
+    "map_link": "https://maps.app.goo.gl/PPMcs1zKZV6SBEps8"
   },
   {
-    "address": "No. 3, Basement, 14/1 (Old No. 27), Anand Chambers, Elephant Rock Road, Near South End Circle, Jayanagar 3rd Block, Bangalore",
-    "pincode": "560011",
-    "mobile": "9379274064"
+    "code": "J3B",
+    "area": "JAYANAGAR 3RD BLOCK",
+    "franchisee": "Mr. HEMANTH KUMAR B S",
+    "landline": "26656847",
+    "mobile": "9379274064",
+    "address": "No. 3, Basement, 14/1 (Old No. 27), Anand Chambers, Elephant Rock Road, Near South End Circle, Jayanagar 3rd Block, Bangalore – 560 011",
+    "map_link": "https://maps.app.goo.gl/pACVCZF8YnvSUYXf8"
   },
   {
-    "address": "# 43, Shapur Plaza, Basement, 27th Cross, Opp. Nilgiris, Jayanagar 4th Block, Bangalore",
-    "pincode": "560011",
-    "mobile": "9379274048"
+    "code": "J4B",
+    "area": "JAYANAGAR 4TH BLOCK",
+    "franchisee": "Mr. MAHESH H.L",
+    "landline": "48908489",
+    "mobile": "9379274048",
+    "address": "# 43, Shapur Plaza, Basement, 27th Cross, Opp. Nilgiris, Jayanagar 4th Block, Bangalore – 560 011",
+    "map_link": "https://maps.app.goo.gl/m4Tgyrq9Tdpk51TGA"
   },
   {
-    "address": "# 572, Basement, 11th Main Road, 38th Cross, Jayanagar 5th Block, Bangalore",
-    "pincode": "560041",
-    "mobile": "9379274049"
+    "code": "J5B",
+    "area": "JAYANAGAR 5TH BLOCK",
+    "franchisee": "Mr. ANAND KUMAR K",
+    "landline": "41719325",
+    "mobile": "9379274049",
+    "address": "# 572, Basement, 11th Main Road, 38th Cross, Jayanagar 5th Block, Bangalore – 560 041",
+    "map_link": "https://maps.app.goo.gl/kGH4SABXoUyeqPu5A"
   },
   {
-    "address": "Old No. 1500, Roopa Avenue, South End 'B' Road, Ground Floor, Jayanagar 9th Block, Bangalore",
-    "pincode": "560069",
-    "mobile": "9379274050"
+    "code": "J9B",
+    "area": "JAYANAGAR 9TH BLOCK",
+    "franchisee": "Mr. HANUMANTHA RAJU",
+    "landline": "8035916293",
+    "mobile": "9379274050",
+    "address": "Old No. 1500, Roopa Avenue, South End 'B' Road, Ground Floor, Jayanagar 9th Block, Bangalore – 560069",
+    "map_link": "https://maps.app.goo.gl/m4Tgyrq9Tdpk51TGA"
   },
   {
-    "address": "# 8, Bye-pass Road, 2nd Phase, Jigani Indl. Area, Bangalore",
-    "pincode": "562106",
-    "mobile": "9379274051"
+    "code": "JGN",
+    "area": "JIGANI",
+    "franchisee": "Mr. PRATHAP",
+    "landline": "48507272",
+    "mobile": "9379274051",
+    "address": "# 8, Bye-pass Road, 2nd Phase, Jigani Indl. Area, Bangalore – 562 106",
+    "map_link": "https://maps.app.goo.gl/U223eoP9RaRqWFwE8"
   },
   {
-    "address": "No. 1316/C, 9th Cross, Opp. Tirumalagiri Venkateshwaraswamy Temple, J.P. Nagar, 2nd Phase, Bangalore",
-    "pincode": "560078",
-    "mobile": "9538889199"
+    "code": "JPN",
+    "area": "JPN NAGAR 2ND PHASE",
+    "franchisee": "Mr. ARUN KUMAR A.M",
+    "landline": "26581931",
+    "mobile": "9538889199",
+    "address": "No.1316/C, 9th Cross, Opp. Tirumalagiri Venkateshwaraswamy Temple, J.P. Nagar, 2nd Phase, Bangalore – 560 078",
+    "map_link": "https://maps.app.goo.gl/pACVCZF8YnvSUYXf8"
   },
   {
-    "address": "# 159, 19th Main, 6th Block, Koramangala, Bangalore",
-    "pincode": "560095",
-    "mobile": "9379274056"
+    "code": "K2B",
+    "area": "KORAMANGALA 2ND BLOCK",
+    "franchisee": "Mr. ADARSH M.N",
+    "landline": "48142014",
+    "mobile": "9379274056",
+    "address": "# 159, 19th Main, 6th Block, Koramangala, Bangalore – 560 095",
+    "map_link": null
   },
   {
-    "address": "No. B-28, Raheja Arcade, Koramangala, Bangalore",
-    "pincode": "560095",
-    "mobile": "9538889203"
+    "code": "K5B",
+    "area": "KORAMANGALA 5TH BLOCK",
+    "franchisee": "Mr. ADARSH M.N",
+    "landline": "40966656",
+    "mobile": "9538889203",
+    "address": "No.B-28, Raheja Arcade, Koramangala, Bangalore - 560 095",
+    "map_link": "https://maps.app.goo.gl/sRWKmL1B3JLBX8Ev5"
   },
   {
-    "address": "Shop no. 13, Balappa Reddy Complex, 2nd Cross, Kodihalli Main Road, Hal Airport Road, Bangalore",
-    "pincode": "560008",
-    "mobile": "9379274052"
+    "code": "KDH",
+    "area": "KODIHALLI",
+    "franchisee": "Mr. RAJASHEKAR G",
+    "landline": "48141998",
+    "mobile": "9379274052",
+    "address": "Shop no; 13, Balappa Reddy Complex, 2nd Cross, Kodihalli Main Road, Hal Airport Road, Bangalore – 560008",
+    "map_link": "https://maps.app.goo.gl/BDBAbyWeGT4izEkJ6"
   },
   {
-    "address": "No. 115/3, 1st Floor, Sai Adithya Arcade, ITPL Road, Near Brookfield Mall, Kundalahalli Gate, Bangalore",
-    "pincode": "560037",
-    "mobile": "6366895731"
+    "code": "KHG",
+    "area": "KUNDALAHALLI GATE",
+    "franchisee": "Mr. Renuka",
+    "landline": "41527355",
+    "mobile": "6366895731",
+    "address": "No. 115/3, 1st Floor, Sai Adithya Arcade, ITPL Road, Near Brookfield Mall, Kundalahalli Gate, Bangalore – 560 037",
+    "map_link": "https://maps.app.goo.gl/U223eoP9RaRqWFwE8"
   },
   {
-    "address": "# 26/1, Jattappa Compound, Behind Garden Bar, Yelachenahalli, Bangalore",
-    "pincode": "560062",
-    "mobile": "7411708981"
+    "code": "KRD",
+    "area": "KANAKAPURA ROAD",
+    "franchisee": "Mr. MANJUNATH K S",
+    "landline": "48666329",
+    "mobile": "7411708981",
+    "address": "# 26/1, Jattappa Compound, Behind Garden Bar, Yelachenahalli, Bangalore – 560 062",
+    "map_link": "https://maps.app.goo.gl/u3mF9JvYENaUxGFp8"
   },
   {
-    "address": "No. 19, 'Niveshan', 1st Floor, Old Madras Road, K.R. Puram, Opp. TVS Showroom, Bangalore",
-    "pincode": "560036",
-    "mobile": "6366895725"
+    "code": "KRP",
+    "area": "KRISHNARAJAPURAM",
+    "franchisee": "Mr. SURENDER REDDY",
+    "landline": "8951791422",
+    "mobile": "6366895725",
+    "address": "No. 19, 'Niveshan', 1st Floor, Old Madras Road, K.R. Puram, Opp. TVS Showroom, Bangalore – 560 036",
+    "map_link": "https://maps.app.goo.gl/rzJCEpqiYwgeP5rx9"
   },
   {
-    "address": "# 1, Cellar Premises, No. 256, 1st Cross, Banashankari 3rd Stage, 2nd Block, Bangalore",
-    "pincode": "560085",
-    "mobile": "9379274053"
+    "code": "KTP",
+    "area": "KATRIGUPPE",
+    "franchisee": "Mr. RAMESH G",
+    "landline": "8079686006",
+    "mobile": "9379274053",
+    "address": "# 1, Cellar Premises, No. 256, 1st Cross, Banashankari 3rd Stage, 2nd Block, Bangalore – 560 085",
+    "map_link": "https://maps.app.goo.gl/Hj2QfVxhxY6j88oy8"
   },
   {
-    "address": "# 46/2, Ground Floor, Mathrushree Complex, Gareebavipalya, Opp. Food Bazaar, Hosur Road, Kudlu Gate, Bangalore",
-    "pincode": "560068",
-    "mobile": "9379274057"
+    "code": "KUD",
+    "area": "KUDLU GATE",
+    "franchisee": "Mr. RAGHU",
+    "landline": "48666338",
+    "mobile": "9379274057",
+    "address": "# 46/2, Ground Floor, Mathrushree Complex, Gareebavipalya, Opp. Food Bazaar, Hosur Road, Kudlu Gate, Bangalore – 560 068",
+    "map_link": "https://maps.app.goo.gl/MjL55cPEJh4LrqVX6"
   },
   {
-    "address": "# 25, Muni Basappa Building, 1st Floor, Opp. Nandini Hotel, Lalbagh Fort Road, Bangalore",
-    "pincode": "560004",
-    "mobile": "9538889193"
+    "code": "LBF",
+    "area": "LALBAGH FORT ROAD",
+    "franchisee": "Mr. PRAKASH K J",
+    "landline": "41410089",
+    "mobile": "9538889193",
+    "address": "# 25, Muni Basappa Building, 1st Floor, Opp. Nandini Hotel, Lalbagh Fort Road, Bangalore – 560 004",
+    "map_link": "https://maps.app.goo.gl/Hj2QfVxhxY6j88oy8"
   },
   {
-    "address": "No. 18 & 28, Ground Floor, Next to State Bank of India, ITI Industrial Area, Mahadevapura Post, Bangalore",
-    "pincode": "560048",
-    "mobile": "6366895737"
+    "code": "MHP",
+    "area": "MAHADEVAPURA",
+    "franchisee": "Mr. SHABEER AHAMED",
+    "landline": "48530215",
+    "mobile": "6366895737",
+    "address": "No. 18 & 28, Ground Floor, Next to State Bank of India, ITI Industrial Area, Mahadevapura Post, Bangalore – 560 048",
+    "map_link": "https://maps.app.goo.gl/SzuCu5AgEjFFkyhy9"
   },
   {
-    "address": "43/37, Sujatha Reddy Building, H.A. Sanitary Board, Next to Thulasi Theatre, 2nd Cross, Marathahalli, Varthur Hobli, Bangalore",
-    "pincode": "560037",
-    "mobile": "6366895730"
+    "code": "MTL",
+    "area": "MARATHAHALLI",
+    "franchisee": "MR. ANAND",
+    "landline": "41236918",
+    "mobile": "6366895730",
+    "address": "43/37, Sujatha Reddy Building, H.A. Sanitary Board, Next to Thulasi Theatre, 2nd Cross, Marathahalli, Varthur Hobli, Bangalore 560 037",
+    "map_link": "https://maps.app.goo.gl/Xsi64RT7MNzHJFs46"
   },
   {
-    "address": "# 145/B, Priyadarshini Petrol Bunk Complex, Near Narayana Hrudayalaya Hospital, Hosur Road, Bommasandra Industrial Area, Bangalore",
-    "pincode": "560099",
-    "mobile": "9379274061"
+    "code": "NHB",
+    "area": "NARAYANA HRUDAYALAYA",
+    "franchisee": "Mr. RAVI SHANKAR C S",
+    "landline": "27831029",
+    "mobile": "9379274061",
+    "address": "# 145/B, Priyadarshini Petrol Bunk Complex, Near Narayana Hrudayalaya Hospital, Hosur Road, Bommasandra Industrial Area, Bangalore – 560 099",
+    "map_link": "https://maps.app.goo.gl/wkeVhWi5PXbbPeoX8"
   },
   {
-    "address": "No. 11, 5th Cross, Manjunath Nagar, Opp Bosch company, Bangalore",
-    "pincode": "560100",
-    "mobile": "9379274016"
+    "code": "NNP",
+    "area": "NAGANATHPURA",
+    "franchisee": "MR. ANIL KUMAR",
+    "landline": "48520272",
+    "mobile": "9379274016",
+    "address": "No.11, 5th Cross, Manjunath Nagar, Opp Bosch company, Bangalore. 560100",
+    "map_link": "https://maps.app.goo.gl/Xsi64RT7MNzHJFs46"
   },
   {
-    "address": "# 661/543, Opp. Meenakshi Iron & Steel, BEML Main Road, New Thippasandra, Bangalore",
-    "pincode": "560075",
-    "mobile": "9538889197"
+    "code": "NTS",
+    "area": "NEW THIPPASANDRA",
+    "franchisee": "Mr. RAMESH Y",
+    "landline": "49894107",
+    "mobile": "9538889197",
+    "address": "# 661/543, Opp. Meenakshi Iron & Steel, BEML Main Road, New Thippasandra, Bangalore – 560 075",
+    "map_link": "https://maps.app.goo.gl/FvNr1Mv9FHYBDqx16"
   },
   {
-    "address": "1st Floor, Abbanna Complex, Near SIGMA Techpark, Whitefield Main Road, Ramagundanahalli, Bangalore",
-    "pincode": "560066",
-    "mobile": "6366895733"
+    "code": "RGA",
+    "area": "RAMAGUNDANAHALLI",
+    "franchisee": "Mr. RAVI",
+    "landline": "41232774",
+    "mobile": "6366895733",
+    "address": "1st Floor, Abbanna Complex, Near SIGMA Techpark, Whitefield Main Road, Ramagundanahalli, Bangalore – 560 066",
+    "map_link": "https://maps.app.goo.gl/qqeusHmLmM7mt5ur8"
   },
   {
-    "address": "No. 13, Ramamurthynagar Main Road, Ramamurthynagar, Opp. Post Office, Bangalore",
-    "pincode": "560016",
-    "mobile": "6366895726"
+    "code": "RMT",
+    "area": "RAMAMURTHY NAGAR",
+    "franchisee": "Mr. GOKUL",
+    "landline": "42185235",
+    "mobile": "6366895726",
+    "address": "No. 13, Ramamurthynagar Main Road, Ramamurthynagar, Opp. Post Office, Bangalore – 560 016",
+    "map_link": "https://maps.app.goo.gl/ZuL4VQ9yN5AQarzy5"
   },
   {
-    "address": "# 51/2, Sarakki Gate, Kanakapura Main road, J.P. Nagar 1st Phase, J.P.Nagar, Bangalore",
-    "pincode": "560078",
-    "mobile": "7022602991"
+    "code": "SRK",
+    "area": "SARAKKI",
+    "franchisee": "Mr. SANJEV KUMAR",
+    "landline": "41391080",
+    "mobile": "7022602991",
+    "address": "# 51/2, Sarakki Gate, Kanakapura Main road, J.P. Nagar 1st Phase, J.P.Nagar, Bangalore – 560 078",
+    "map_link": "https://maps.app.goo.gl/MYxADqETYGR9hw747"
   },
   {
-    "address": "# 16/47-1C, 11th Main Road, 33rd Cross, 4th 'T' Block, Jayanagar, Bangalore",
-    "pincode": "560011",
-    "mobile": "9379274065"
+    "code": "TLK",
+    "area": "TILAKNAGAR",
+    "franchisee": "Mr. SHARATH",
+    "landline": "41512154",
+    "mobile": "9379274065",
+    "address": "# 16/47-1C, 11th Main Road, 33rd Cross, 4th 'T' Block, Jayanagar, Bangalore – 560 011",
+    "map_link": null
   },
   {
-    "address": "# 34/1, A2, 1st Floor, Munraj Reddy Complex, Behind City Sagar Hotel, Opp. Masjid, Electronic City, Hosur Main Road, Bangalore",
-    "pincode": "560100",
-    "mobile": "9379274066"
+    "code": "VSD",
+    "area": "VEERASANDRA",
+    "franchisee": "Mr. RAJESH",
+    "landline": "41559552",
+    "mobile": "9379274066",
+    "address": "# 34/1, A2, 1st Floor, Munraj Reddy Complex, Behind City SagarHotel, Opp. Masjid, Electronic City, Hosur Main Road, Bangalore – 560 100",
+    "map_link": "https://maps.app.goo.gl/RRWKrvY6WeMxhj8k8"
   },
   {
-    "address": "# 19, FF-1, \"Subramanya\", Katriguppe Main Road, Vivekananda Nagar, BSK 3rd Stage, Bangalore",
-    "pincode": "560085",
-    "mobile": "9538889190"
+    "code": "VVN",
+    "area": "VIDYAPEETA VIVEKANANDA NA",
+    "franchisee": "Mr. YOGESH P.B.",
+    "landline": "41109504",
+    "mobile": "9538889190",
+    "address": "# 19, FF-1, “Subramanya”, Katriguppe Main Road, Vivekananda Nagar, BSK 3rd Stage, Bangalore – 560 085",
+    "map_link": "https://maps.app.goo.gl/u3mF9JvYENaUxGFp8"
   },
   {
-    "address": "No. 272, 1st Floor, Shop No. 5, Whitefield Hoskote Main Road, Belthur, Kadugodi Post, Bangalore",
-    "pincode": "560067",
-    "mobile": "6366895736"
+    "code": "WFD",
+    "area": "WHITEFIELD",
+    "franchisee": "Mr. VINODH KUMAR",
+    "landline": "7795689599",
+    "mobile": "6366895736",
+    "address": "No. 272, 1st Floor, Shop No. 5, Whitefield Hoskote Main Road, Belthur, Kadugodi Post, Bangalore 560 067",
+    "map_link": "https://maps.app.goo.gl/Xsi64RT7MNzHJFs46"
   },
   {
-    "address": "49/1, 8th Main, 11th Cross, Cellar Room, Wilson Garden, Bangalore",
-    "pincode": "560027",
-    "mobile": "9379274067"
+    "code": "WGD",
+    "area": "WILSON GARDEN",
+    "franchisee": "Mr. GOVIND RAJ S",
+    "landline": "22229442",
+    "mobile": "9379274067",
+    "address": "49/1, 8th Main, 11th Cross, Cellar Room, Wilson Garden, Bangalore 560027",
+    "map_link": "https://maps.app.goo.gl/Xsi64RT7MNzHJFs46"
   },
   {
-    "address": "Shop no 22, First floor, VQM2+J2 RK Complex, Sarjapur - Marathahalli Rd, opposite to Canara Bank, Dommasandra, Bengaluru, Karnataka",
-    "pincode": "562125",
-    "mobile": "8147607496"
+    "code": "SJA",
+    "area": "SARJAPURA",
+    "franchisee": "Mr. Mani",
+    "landline": null,
+    "mobile": "8147607496",
+    "address": "Shop no 22, First floor, VQM2+J2 RK Complex, Sarjapur - Marathahalli Rd, opposite to Canara Bank, Dommasandra, Bengaluru, Karnataka 562125",
+    "map_link": "https://maps.app.goo.gl/Xsi64RT7MNzHJFs46"
   }
 ]
