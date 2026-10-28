@@ -35,7 +35,7 @@ const pageMeta: Record<string, { title: string; description: string }> = {
   '/': {
     title: 'Courier & Cargo Services in Bengaluru | Atlant Global India',
     description:
-      'Atlant Global India serves Bengaluru South and East with courier, cargo and warehousing services. Established in 1990, operating under The Professional Couriers.',
+      'Courier, cargo and warehousing services for Bengaluru South and East, with access to domestic and international destinations through The Professional Couriers.',
   },
   '/services': {
     title: 'Courier, Cargo & Warehousing Services | Atlant Global India',
@@ -45,12 +45,12 @@ const pageMeta: Record<string, { title: string; description: string }> = {
   '/quote': {
     title: 'Request a Shipping Quote | Atlant Global India',
     description:
-      'Request a customized quote for courier, cargo or warehousing services from Atlant Global India in Bengaluru.',
+      'Share your route and shipment details to enquire about courier, cargo or warehousing services from Atlant Global India in Bengaluru.',
   },
   '/tracking': {
     title: 'Shipment Tracking | Atlant Global India',
     description:
-      'Enter your AWB or CNOTE number on this page to review the latest shipment status without leaving the Atlant Global India website.',
+      'Enter your AWB, POD or consignment number to check the latest shipment status on the Atlant Global India website.',
   },
   '/opportunities': {
     title: 'Opportunities at Atlant Global India | Careers & Business',
@@ -60,7 +60,7 @@ const pageMeta: Record<string, { title: string; description: string }> = {
   '/business': {
     title: 'Business Partnership Opportunities | Atlant Global India',
     description:
-      'Explore franchise and channel partner opportunities with Atlant Global India and build your courier and logistics business.',
+      'Learn about franchise and channel partner enquiries with Atlant Global India and share details about your business and proposed location.',
   },
   '/about': {
     title: 'About Atlant Global India | Courier & Cargo since 1990',
@@ -70,12 +70,12 @@ const pageMeta: Record<string, { title: string; description: string }> = {
   '/resources': {
     title: 'Shipping FAQs & Resources in Bengaluru | Atlant Global India',
     description:
-      'Find practical service information, verified FAQs and a volumetric weight estimator from Atlant Global India. Confirm shipment terms with the team.',
+      'Browse shipping FAQs, practical preparation notes and a volumetric weight estimator. Confirm service details and shipment terms with the team.',
   },
   '/careers': {
     title: 'Careers & Opportunities | Atlant Global India',
     description:
-      'Explore career opportunities and open positions at Atlant Global India.',
+      'Browse current openings at Atlant Global India, filter by role and location, or send your resume for future opportunities.',
   },
   '/contact': {
     title: 'Contact & Offices in Bengaluru | Atlant Global India',

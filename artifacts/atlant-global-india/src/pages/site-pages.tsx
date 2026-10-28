@@ -389,8 +389,8 @@ export function HomePage() {
         <div className="container hero-layout">
           <div className="hero-content">
             <div className="eyebrow">Local knowledge. Wider reach.</div>
-            <h1>Move more.<br />Deliver further.</h1>
-            <p>Your one-stop solution for courier and cargo requirements. Reliable logistics for people and businesses in Bengaluru and destinations across India and beyond.</p>
+            <h1>Courier and cargo<br />that move you forward.</h1>
+            <p>From Bengaluru South and East to destinations across India and beyond, find courier, cargo and warehousing services for personal and business shipments.</p>
             <div className="hero-actions">
               <Link className="btn btn-primary" href="/services#quote">Get a quote <ArrowRight size={15} /></Link>
               <Link className="btn btn-outline" href="/services">Explore services</Link>
@@ -458,10 +458,10 @@ export function HomePage() {
       </section>
       <section className="actions-band" aria-label="Quick actions">
         <div className="container quick-grid">
-          <div className="quick-card"><PackageCheck className="quick-icon" size={21} /><strong>Track a shipment</strong><p>Continue to the official tracking service.</p><Link href="/tracking">Track now <ArrowRight size={12} /></Link></div>
-          <div className="quick-card"><FileText className="quick-icon" size={21} /><strong>Get a quote</strong><p>Tell us about your courier or cargo requirement.</p><Link href="/services#quote">Start an enquiry <ArrowRight size={12} /></Link></div>
-          <div className="quick-card"><Truck className="quick-icon" size={21} /><strong>Arrange a pickup</strong><p>Pickup is available through nearby branches.</p><Link href="/contact">Contact a branch <ArrowRight size={12} /></Link></div>
-          <div className="quick-card"><Building2 className="quick-icon" size={21} /><strong>Business solutions</strong><p>Discuss regular, bulk or time-sensitive shipping.</p><Link href="/business">Explore options <ArrowRight size={12} /></Link></div>
+          <div className="quick-card"><PackageCheck className="quick-icon" size={21} /><strong>Track a shipment</strong><p>Check the latest status using your consignment number.</p><Link href="/tracking">Track a shipment <ArrowRight size={12} /></Link></div>
+          <div className="quick-card"><FileText className="quick-icon" size={21} /><strong>Get a quote</strong><p>Share your route and shipment details with our team.</p><Link href="/services#quote">Request a quote <ArrowRight size={12} /></Link></div>
+          <div className="quick-card"><Truck className="quick-icon" size={21} /><strong>Arrange a pickup</strong><p>Ask a nearby branch about pickup options in your area.</p><Link href="/contact">Find contact details <ArrowRight size={12} /></Link></div>
+          <div className="quick-card"><Building2 className="quick-icon" size={21} /><strong>Business shipping</strong><p>Discuss recurring, bulk or time-sensitive shipments.</p><Link href="/business">Explore business options <ArrowRight size={12} /></Link></div>
         </div>
       </section>
       <section className="section">
@@ -476,8 +476,8 @@ export function HomePage() {
           <div className="intro-copy">
             <div className="section-label">About Atlant Global India</div>
             <h2>Experience that moves business.</h2>
-            <p>Established on July 2, 1990 by Mr. Suresh Surendranath, Atlant Global India (Inc) operates under The Professional Couriers and serves Bengaluru South and East.</p>
-            <p>With 65 branches, a distribution hub at Kudlu Gate and a wider courier network, the company supports domestic and international requirements.</p>
+            <p>Established on July 2, 1990, Atlant Global India (Inc) operates under The Professional Couriers and serves Bengaluru South and East.</p>
+            <p>Its Bengaluru network and Kudlu Gate operations hub support courier, cargo and warehousing requirements, with wider domestic and international connectivity.</p>
             <div className="fact-row"><div className="fact"><strong>1990</strong><span>Established</span></div><div className="fact"><strong>65</strong><span>Branches</span></div><div className="fact"><strong>5,000+</strong><span>Clients</span></div></div>
             <Link className="btn btn-navy" href="/about">Discover the company <ArrowRight size={14} /></Link>
           </div>
@@ -485,8 +485,8 @@ export function HomePage() {
       </section>
       <section className="section section-sm">
         <div className="container">
-          <div className="section-label">Service range</div><h2>Logistics services, made clear.</h2>
-          <p className="section-lead">From domestic courier and cargo to international services and warehousing.</p>
+          <div className="section-label">Service range</div><h2>Services for the way you ship.</h2>
+          <p className="section-lead">Explore domestic courier and cargo, time-sensitive options, international services and warehousing.</p>
           <div className="service-grid home-service-grid">
             {services.slice(0, 3).map((service) => <ServiceCard key={service.title} service={service} />)}
           </div>
@@ -508,8 +508,8 @@ export function HomePage() {
       </section>
       <section className="section section-sm">
         <div className="container home-route-cta">
-          <div><div className="section-label">Need a hand?</div><h2>Let’s talk about your shipment.</h2></div>
-          <div className="hero-actions"><Link className="btn btn-primary" href="/services#quote">Request a quote <ArrowRight size={14} /></Link><Link className="btn btn-outline" href="/contact">Contact our team</Link></div>
+          <div><div className="section-label">Here to help</div><h2>Let’s find the right next step.</h2></div>
+          <div className="hero-actions"><Link className="btn btn-primary" href="/services#quote">Tell us about your shipment <ArrowRight size={14} /></Link><Link className="btn btn-outline" href="/contact">Contact the team</Link></div>
         </div>
       </section>
     </>
@@ -539,7 +539,7 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
 export function ServicesPage() {
   return (
     <>
-      <PageHeading eyebrow="Our services" title="Courier, cargo & warehousing." intro="A connected service range for individuals and businesses. Contact our team to confirm service details and availability for your shipment." />
+      <PageHeading eyebrow="Our services" title="Courier, cargo & warehousing." intro="Compare services for personal and business shipments. Contact our team to confirm availability, rates and delivery options for your route." />
       <section className="section section-sm">
         <div className="container">
           <div className="service-grid">
@@ -551,8 +551,8 @@ export function ServicesPage() {
         <div className="container quote-grid">
           <div className="quote-aside">
             <div className="section-label">Request a quote</div>
-            <h2>Get a personalized shipping quote.</h2>
-            <p>Tell us about your consignment — whether it is an urgent document, commercial cargo, or regular logistics support. Our team will provide rate estimates and delivery schedules.</p>
+            <h2>Tell us what you need to ship.</h2>
+            <p>Share your pickup and delivery locations, shipment type and any timing or handling requirements. Our team can discuss applicable services and rates with you.</p>
             <div className="quote-contact-points">
               <p><strong>Prefer to speak with us?</strong><br />
                 <a href={`tel:${PHONE}`}>+91 7411 708 958</a><br />
@@ -578,13 +578,13 @@ export function ServicesPage() {
 export function QuotePage() {
   return (
     <>
-      <PageHeading eyebrow="Get a quote" title="Request a shipping quote." intro="Provide your pickup, delivery and shipment specifications. Our logistics specialists will prepare custom rates for your domestic or international consignments." />
+      <PageHeading eyebrow="Get a quote" title="Request a shipping quote." intro="Share your pickup and delivery locations, shipment type and any available specifications. Our team will review your enquiry and discuss suitable service options." />
       <section className="section section-sm quote-section">
         <div className="container quote-grid">
           <div className="quote-aside">
             <div className="section-label">Quick turnaround</div>
-            <h2>Fast, reliable quote estimates.</h2>
-            <p>We serve Bengaluru South & East with 65 branches and full connectivity across India and overseas through The Professional Couriers network.</p>
+            <h2>Start with your shipment details.</h2>
+            <p>We serve Bengaluru South and East, with domestic and international connectivity through The Professional Couriers network. Share your route and requirements so the team can guide you.</p>
             <div className="quote-contact-points">
               <p><strong>Direct contact</strong><br />
                 <a href={`tel:${PHONE}`}>+91 7411 708 958</a><br />
@@ -725,7 +725,7 @@ export function TrackingPage() {
           <div className="tracking-page-heading">
             <span className="tracking-page-eyebrow">Shipment visibility</span>
             <h1>Track Your Shipment</h1>
-            <p>Your shipment journey, just a click away.</p>
+            <p>Enter the number from your booking receipt to view the latest available shipment updates.</p>
           </div>
 
           <form className="tracking-search-card" onSubmit={submit}>
@@ -1311,7 +1311,7 @@ export function CareersPage() {
       <PageHeading
         eyebrow="Careers"
         title="Careers at Atlant Global India"
-        intro="Explore opportunities to grow your career with Atlant Global India and The Professional Couriers."
+        intro="Browse current roles, use the filters to find a suitable opening, or share your resume for future opportunities."
       />
 
       <section className="section section-sm career-search-section">
@@ -1653,7 +1653,7 @@ export function OpportunitiesPage() {
       <PageHeading
         eyebrow="Opportunities"
         title="Opportunities at Atlant Global India"
-        intro="Explore opportunities to build your career or grow your business with Atlant Global India."
+        intro="Choose the path that fits your next move: explore current roles or enquire about a courier and logistics partnership."
       />
 
       <section className="section section-sm opportunities-page">
@@ -1661,16 +1661,16 @@ export function OpportunitiesPage() {
           <Link href="/careers" className="opportunity-card opportunity-card-career">
             <div className="opportunity-card-inner">
               <span className="opportunity-tag">Career Opportunities</span>
-              <h2>Build Your Career With Us</h2>
-              <p>Explore current job opportunities and discover your next professional challenge with Atlant Global India.</p>
+              <h2>Find your next role.</h2>
+              <p>Browse current openings, filter by role and location, and apply for a position that matches your experience.</p>
               <div className="opportunity-cta-row">
                 <span>Explore Careers</span>
                 <ArrowRight size={15} />
               </div>
               <div className="opportunity-meta-row">
                 <span>Jobs</span>
-                <span>Professional Growth</span>
-                <span>Open Positions</span>
+                <span>Career opportunities</span>
+                <span>Current openings</span>
               </div>
             </div>
           </Link>
@@ -1678,8 +1678,8 @@ export function OpportunitiesPage() {
           <Link href="/business" className="opportunity-card opportunity-card-business">
             <div className="opportunity-card-inner">
               <span className="opportunity-tag">Business Opportunities</span>
-              <h2>Build Your Courier &amp; Logistics Business</h2>
-              <p>Explore Franchise and Channel Partner opportunities and build your presence in the courier and logistics industry with Atlant Global India.</p>
+              <h2>Explore a business partnership.</h2>
+              <p>Share your business background and proposed location to enquire about franchise and channel partner opportunities.</p>
               <div className="opportunity-cta-row">
                 <span>Become a Business Partner</span>
                 <ArrowRight size={15} />
@@ -1687,7 +1687,7 @@ export function OpportunitiesPage() {
               <div className="opportunity-meta-row">
                 <span>Franchise</span>
                 <span>Channel Partner</span>
-                <span>Business Opportunity</span>
+                <span>Partnership enquiry</span>
               </div>
             </div>
           </Link>
@@ -1969,16 +1969,16 @@ export function BusinessPage() {
     <>
       <PageHeading
         eyebrow="Business opportunities"
-        title="Start Your Courier &amp; Logistics Business"
-        intro="Explore opportunities to become a Franchise or Channel Partner and build your presence in the courier and logistics industry with the support of Atlant Global India."
+        title="Explore a courier and logistics partnership"
+        intro="Tell us about your business, experience and proposed operating location to enquire about franchise or channel partner opportunities."
       />
 
       <section className="section section-sm business-partner-hero">
         <div className="container partner-hero-grid">
           <div className="partner-hero-copy">
             <div className="section-label">Business opportunity</div>
-            <h2>Start Your Courier &amp; Logistics Business with Atlant Global India</h2>
-            <p>Explore opportunities to become a Franchise or Channel Partner and build your presence in the courier and logistics industry with the support of Atlant Global India.</p>
+            <h2>Build your local logistics business.</h2>
+            <p>Considering a franchise or channel partnership? Share your business background and proposed location so our team can review your enquiry.</p>
             <div className="hero-actions">
               <a href="#partnership-enquiry" className="btn btn-primary">Explore Partnership</a>
             </div>
@@ -1994,7 +1994,7 @@ export function BusinessPage() {
       <section className="section why-partner-section">
         <div className="container">
           <div className="section-label">Why partner with us</div>
-          <h2>Why Partner With Atlant Global India?</h2>
+          <h2>What to expect from a partnership enquiry</h2>
           <div className="partner-feature-grid">
             <article className="partner-feature-card"><Building2 size={18} /><h3>Established Network</h3><p>Connect with an established courier and logistics network.</p></article>
             <article className="partner-feature-card"><PackageCheck size={18} /><h3>Operational Support</h3><p>Receive relevant support for courier and logistics operations.</p></article>
@@ -2009,7 +2009,7 @@ export function BusinessPage() {
       <section className="section section-sm partnership-process">
         <div className="container">
           <div className="section-label">How the partnership works</div>
-          <h2>How the Partnership Works</h2>
+          <h2>From enquiry to evaluation</h2>
           <div className="process-grid">
             <div className="process-step"><span>01</span><h3>Submit Your Enquiry</h3><p>Provide your personal, business and location details.</p></div>
             <div className="process-step"><span>02</span><h3>Application Review</h3><p>Our team reviews your information.</p></div>
@@ -2022,7 +2022,7 @@ export function BusinessPage() {
       <section className="section who-can-partner-section">
         <div className="container">
           <div className="section-label">Who can become a partner</div>
-          <h2>Who Can Become a Partner?</h2>
+          <h2>Who can enquire?</h2>
           <div className="partner-audience-grid">
             <span>Entrepreneurs</span>
             <span>Existing business owners</span>
@@ -2038,8 +2038,8 @@ export function BusinessPage() {
         <div className="container partner-enquiry-box">
           <div className="partner-enquiry-copy">
             <div className="section-label">Partnership enquiry</div>
-            <h2>Start a Strategic Conversation</h2>
-            <p>Share your details and our team will review your enquiry for the right partnership opportunity.</p>
+            <h2>Start a partnership enquiry</h2>
+            <p>Share your details and our team will review your enquiry and follow up about the next steps.</p>
             <div className="partner-enquiry-points">
               <div><Check size={16} /><span>Business and location information</span></div>
               <div><Check size={16} /><span>Operational and GST details</span></div>
@@ -2077,15 +2077,15 @@ export function AboutPage() {
   ];
   return (
     <>
-      <PageHeading eyebrow="About Atlant Global India" title="Experience that moves business." intro="Atlant Global India (Inc) was established on July 2, 1990 by Mr. Suresh Surendranath and operates under The Professional Couriers." />
+      <PageHeading eyebrow="About Atlant Global India" title="Local roots. A wider network." intro="Established on July 2, 1990 by Mr. Suresh Surendranath, Atlant Global India (Inc) operates under The Professional Couriers and serves Bengaluru South and East." />
       <section className="section section-sm" id="infrastructure">
         <div className="container intro-grid">
           <div className="intro-photo-wrap"><picture className="intro-photo-picture"><source srcSet={`${import.meta.env.BASE_URL}images/Wharehousing.webp`} type="image/webp" /><img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.png`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" decoding="async" /></picture></div>
           <div className="intro-copy">
             <div className="section-label">Local operations</div>
-            <h2>A Bengaluru base with a wider network.</h2>
-            <p>The company serves Bengaluru South and East through a network of 65 branches, with a distribution hub at Kudlu Gate, Hosur Road.</p>
-            <p>Its listed services include Domestic, Pro Premium, Priority Class, International and Warehousing for individuals and businesses.</p>
+            <h2>Serving Bengaluru, connected beyond.</h2>
+            <p>Atlant Global India serves Bengaluru South and East through its local branch network, with a distribution hub at Kudlu Gate, Hosur Road.</p>
+            <p>Services include Domestic, Pro Premium, Priority Class, International and Warehousing for individuals and businesses.</p>
             <div className="fact-row"><div className="fact"><strong>1990</strong><span>Established</span></div><div className="fact"><strong>65</strong><span>Branches</span></div><div className="fact"><strong>5,000+</strong><span>Clients</span></div></div>
             <Link className="btn btn-navy" href="/services">Explore services <ArrowRight size={14} /></Link>
           </div>
@@ -2097,12 +2097,12 @@ export function AboutPage() {
       <section className="section network-band">
         <div className="container network-grid">
           <div className="network-visual"><img className="network-map-image" src={`${import.meta.env.BASE_URL}images/BangloreSouth%20East.png`} alt="Map highlighting Bengaluru South and Bengaluru East" loading="lazy" decoding="async" /></div>
-          <div><div className="section-label">Network</div><h2>Rooted in Bengaluru.<br />Connected beyond it.</h2><p className="section-lead">Through The Professional Couriers network, Atlant Global India supports domestic and international courier and cargo requirements. Its local service area is Bengaluru South and East.</p><Link className="btn btn-navy" href="/contact">Contact the company <ArrowRight size={14} /></Link></div>
+          <div><div className="section-label">Network</div><h2>Rooted in Bengaluru.<br />Connected beyond it.</h2><p className="section-lead">Through The Professional Couriers network, Atlant Global India supports domestic and international courier and cargo requirements while focusing local service on Bengaluru South and East.</p><Link className="btn btn-navy" href="/contact">Find an office <ArrowRight size={14} /></Link></div>
         </div>
       </section>
       <section className="section section-sm" id="leadership">
         <div className="container">
-          <div className="section-label">Leadership</div><h2>Led with experience.</h2>
+          <div className="section-label">Leadership</div><h2>Experience behind the business.</h2>
           <div className="leadership">
             <img className="portrait-image" src={`${import.meta.env.BASE_URL}images/CEO-compressed-1-e1562394173820-180x220.jpg`} alt="Mr. Suresh Surendranath Nair, Chief Executive Officer" loading="lazy" decoding="async" />
             <div>
@@ -2384,11 +2384,11 @@ export function ResourcesPage() {
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   return (
     <>
-      <PageHeading eyebrow="Resources" title="Helpful answers for shipping." intro="Find practical information about the local network and services, plus a volumetric weight estimate. Confirm applicable service terms with Atlant Global India." />
+      <PageHeading eyebrow="Resources" title="Helpful answers for shipping." intro="Browse answers to common questions, practical shipment notes and a volumetric weight estimate. Contact the team to confirm service availability and applicable terms." />
       <section className="section section-sm">
         <div className="container resource-grid">
           <div>
-            <div className="section-label">Frequently asked</div><h2>Clear answers.</h2>
+            <div className="section-label">Frequently asked questions</div><h2>Plan with confidence.</h2>
             <div className="faq-list">
               {faqs.map((faq, index) => <div className="faq-item" key={faq.q}>
                 <button className="faq-question" aria-expanded={activeFaq === index} onClick={() => setActiveFaq(activeFaq === index ? null : index)} data-testid={`button-faq-${index}`}>{faq.q}<ChevronDown size={16} /></button>
@@ -2402,7 +2402,7 @@ export function ResourcesPage() {
       </section>
       <section className="section">
         <div className="container">
-          <div className="section-label">Shipping notes</div><h2>Plan the next conversation.</h2>
+          <div className="section-label">Shipping notes</div><h2>Know what to ask before you ship.</h2>
           <div className="resources-cards">
             <article className="resource-card"><span className="resource-cat">Shipping basics</span><h3>Preparing a consignment</h3><p>Confirm packaging, service availability and shipment details with a nearby branch.</p><a href={`mailto:${EMAIL}?subject=${encodeURIComponent('Packaging and shipment preparation question')}`}>Ask the team <ArrowRight size={12} /></a></article>
             <article className="resource-card"><span className="resource-cat">Business shipping</span><h3>Planning recurring shipments</h3><p>Share locations, shipment type and expected frequency in a business enquiry.</p><Link href="/business">Start a business enquiry <ArrowRight size={12} /></Link></article>
@@ -2496,7 +2496,7 @@ export function ContactPage() {
 
   return (
     <>
-      <PageHeading eyebrow="Contact & branches" title="Here when you need us." intro="Get in touch with Atlant Global India in Bengaluru. The company serves Bengaluru South and East through 65 branches; the verified office details below are searchable." />
+      <PageHeading eyebrow="Contact & branches" title="Find an office or get in touch." intro="Contact Atlant Global India for service and pickup enquiries in Bengaluru South and East. Search the listed offices by area or PIN code, or reach the team by phone or email." />
       <section className="section section-sm">
         <div className="container">
           <div className="branch-search-heading">
