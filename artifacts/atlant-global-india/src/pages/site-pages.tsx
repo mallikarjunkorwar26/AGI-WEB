@@ -204,12 +204,72 @@ const faqs = [
     a: 'Atlant Global India serves Bengaluru South and East through its local branch network.',
   },
   {
-    q: 'Can I arrange a pickup?',
-    a: 'Pickup is available through nearby branches. Contact the team to confirm arrangements for your location.',
+    q: 'How can I schedule a pickup for heavy or bulk shipments?',
+    a: 'For heavy, large or bulk consignments, contact your nearest branch to confirm pickup arrangements, service availability and applicable charges.',
   },
   {
-    q: 'How do I check a consignment?',
-    a: 'Enter the AWB or CNOTE number on the tracking page to view the latest shipment status directly on this website.',
+    q: 'Can the pickup agent refuse to collect my shipment?',
+    a: 'Yes. The pickup agent may refuse a shipment if it contains prohibited or restricted items or does not meet applicable shipping requirements.',
+  },
+  {
+    q: 'Can I change my pickup address?',
+    a: 'To change your pickup address, cancel the existing pickup request and place a new request with the updated address.',
+  },
+  {
+    q: 'How should I pack my shipment?',
+    a: 'Customers are responsible for packing their shipments, as packing services are not provided. Fragile items must be packed securely to reduce the risk of damage during transit.',
+  },
+  {
+    q: 'What should I do if my shipment is damaged or items are missing?',
+    a: 'Please report any damage or shortage to the booking branch within 24 hours of delivery. The branch will guide you through the next steps as per the applicable process.',
+  },
+  {
+    q: 'Why might my shipment not be delivered?',
+    a: (
+      <>
+        <p>A shipment may not be delivered for reasons such as:</p>
+        <ul>
+          <li>Incorrect or incomplete delivery address</li>
+          <li>Incorrect contact number</li>
+          <li>The recipient refusing to accept the shipment</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    q: 'Will I receive delivery updates?',
+    a: (
+      <p>
+        For Pro Premium bookings, delivery updates are provided through SMS, subject to the service terms.
+        For regular bookings, check your shipment status through our{' '}
+        <Link href="/tracking">Shipment Tracking Portal</Link>.
+      </p>
+    ),
+  },
+  {
+    q: 'Which items cannot be shipped?',
+    a: (
+      <>
+        <p>Items prohibited by law or restricted by applicable courier, airline or transport regulations cannot be accepted. These may include:</p>
+        <ul>
+          <li>Currency and bearer negotiable instruments</li>
+          <li>Precious stones, jewellery and similar valuables, where restricted</li>
+          <li>Explosives, firearms and ammunition</li>
+          <li>Flammable, toxic, infectious or corrosive substances</li>
+          <li>Radioactive materials and certain magnetic materials</li>
+          <li>Illegal drugs and prohibited substances</li>
+          <li>Pornographic material prohibited by law</li>
+          <li>Certain chemicals, powders, gases and dangerous goods</li>
+          <li>Machinery or equipment containing oil, fuel, grease or batteries, where restricted</li>
+          <li>Items prohibited under applicable Indian law or airline regulations</li>
+        </ul>
+        <p>Please contact your nearest branch before booking any item that may be restricted. Acceptance depends on the item, destination and applicable shipping regulations.</p>
+      </>
+    ),
+  },
+  {
+    q: 'Can I send a TV, painting or other fragile item?',
+    a: 'Certain fragile items may be accepted if they meet the applicable packaging requirements. Suitable transit insurance may also be required. Contact your nearest branch before booking to confirm acceptance, packaging and insurance requirements.',
   },
   {
     q: 'What services are available?',
@@ -2067,48 +2127,34 @@ export function BusinessPage() {
 }
 
 export function AboutPage() {
-  const qualities = [
-    ['Experience', 'Established on July 2, 1990 by Mr. Suresh Surendranath.'],
-    ['Network', '65 branches serving Bengaluru South and East.'],
-    ['Infrastructure', 'Distribution hub at Kudlu Gate, Hosur Road.'],
-    ['Fleet', 'Own containerized fleet with GPS tracking.'],
-    ['Visibility', 'MIS shipment status updates.'],
-    ['Security', 'CCTV at warehouse and branches.'],
-  ];
   return (
     <>
-      <PageHeading eyebrow="About Atlant Global India" title="Local roots. A wider network." intro="Established on July 2, 1990 by Mr. Suresh Surendranath, Atlant Global India (Inc) operates under The Professional Couriers and serves Bengaluru South and East." />
+      <section className="page-heading section">
+        <div className="container">
+          <div className="section-label">Our Company</div>
+          <h1>Your Trusted Partner for Courier and Cargo Services</h1>
+        </div>
+      </section>
       <section className="section section-sm" id="infrastructure">
         <div className="container intro-grid">
           <div className="intro-photo-wrap"><picture className="intro-photo-picture"><source srcSet={`${import.meta.env.BASE_URL}images/Wharehousing.webp`} type="image/webp" /><img className="intro-photo" src={`${import.meta.env.BASE_URL}images/Operation_Hub.png`} alt="Atlant Global India operations hub at Kudlu Gate, Bengaluru" loading="lazy" decoding="async" /></picture></div>
           <div className="intro-copy">
-            <div className="section-label">Local operations</div>
-            <h2>Serving Bengaluru, connected beyond.</h2>
-            <p>Atlant Global India serves Bengaluru South and East through its local branch network, with a distribution hub at Kudlu Gate, Hosur Road.</p>
-            <p>Services include Domestic, Pro Premium, Priority Class, International and Warehousing for individuals and businesses.</p>
-            <div className="fact-row"><div className="fact"><strong>1990</strong><span>Established</span></div><div className="fact"><strong>65</strong><span>Branches</span></div><div className="fact"><strong>5,000+</strong><span>Clients</span></div></div>
-            <Link className="btn btn-navy" href="/services">Explore services <ArrowRight size={14} /></Link>
+            <p>Established on 2 July 1990 by Mr. Suresh Surendranath Nair, Atlant Global India Inc. provides domestic and international courier and cargo solutions under The Professional Couriers brand.</p>
+            <p>We serve Bangalore South and East through a network of 65 branches across key locations. With a focus on reliable service, efficient operations and customer satisfaction, we help businesses manage their shipping and logistics requirements.</p>
+            <p>Our distribution hub at Kudlu Gate, Hosur Road, Bangalore, handles approximately 1.5 lakh documents and 650 tonnes of non-document shipments per month. Our fleet of GPS-tracked, containerized vehicles supports shipment movement between distribution hubs across South India.</p>
+            <p>Serving more than 5,000 customers, we continue to strengthen our infrastructure, improve connectivity and expand our operational capabilities to meet changing customer needs.</p>
           </div>
-        </div>
-        <div className="container about-values">
-          {qualities.map(([title, text], index) => <article className="about-value" key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}
-        </div>
-      </section>
-      <section className="section network-band">
-        <div className="container network-grid">
-          <div className="network-visual"><img className="network-map-image" src={`${import.meta.env.BASE_URL}images/BangloreSouth%20East.png`} alt="Map highlighting Bengaluru South and Bengaluru East" loading="lazy" decoding="async" /></div>
-          <div><div className="section-label">Network</div><h2>Rooted in Bengaluru.<br />Connected beyond it.</h2><p className="section-lead">Through The Professional Couriers network, Atlant Global India supports domestic and international courier and cargo requirements while focusing local service on Bengaluru South and East.</p><Link className="btn btn-navy" href="/contact">Find an office <ArrowRight size={14} /></Link></div>
         </div>
       </section>
       <section className="section section-sm" id="leadership">
         <div className="container">
-          <div className="section-label">Leadership</div><h2>Experience behind the business.</h2>
+          <h2>Meet Our CEO</h2>
           <div className="leadership">
             <img className="portrait-image" src={`${import.meta.env.BASE_URL}images/CEO-compressed-1-e1562394173820-180x220.jpg`} alt="Mr. Suresh Surendranath Nair, Chief Executive Officer" loading="lazy" decoding="async" />
             <div>
-              <h3>Mr. Suresh Surendranath Nair</h3>
-              <div className="role">Chief Executive Officer</div>
-              <p>Mr. Suresh Surendranath founded Atlant Global India in 1990 and continues to lead the company with a long-standing commitment to customer trust, service quality, and reliable logistics operations.</p>
+              <h3>Suresh Surendranath Nair</h3>
+              <div className="role">CEO</div>
+              <p>“With over three decades of experience in the courier and cargo industry, Atlant Global India Inc. continues to adapt to changing business needs and industry developments. By modernizing our infrastructure and improving our operational capabilities, we remain committed to providing reliable services and meeting our customers’ evolving expectations.”</p>
             </div>
           </div>
         </div>
