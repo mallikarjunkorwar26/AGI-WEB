@@ -571,17 +571,13 @@ function SiteHeader() {
             <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
               <Link href="/" className={isActive('/') ? 'active' : ''} aria-current={isActive('/') ? 'page' : undefined} onClick={closeMenu}>Home</Link>
               <Link href="/services" className={isActive('/services') ? 'active' : ''} aria-current={isActive('/services') ? 'page' : undefined} onClick={closeMenu}>Services</Link>
+              <Link href="/about" className={isActive('/about') ? 'active' : ''} aria-current={isActive('/about') ? 'page' : undefined} onClick={closeMenu}>About Us</Link>
+              <Link href="/business" className={isActive('/business') ? 'active' : ''} aria-current={isActive('/business') ? 'page' : undefined} onClick={closeMenu}>Franchise</Link>
+              <Link href="/quote" className={isActive('/quote') ? 'active' : ''} aria-current={isActive('/quote') ? 'page' : undefined} onClick={closeMenu}>Quote</Link>
               <Link href="/tracking" className={isActive('/tracking') ? 'active' : ''} aria-current={isActive('/tracking') ? 'page' : undefined} onClick={closeMenu}>Tracking</Link>
-              <Link href="/opportunities" className={isActive('/opportunities') ? 'active' : ''} aria-current={isActive('/opportunities') ? 'page' : undefined} onClick={closeMenu}>Opportunities</Link>
-              <Link href="/business" className={isActive('/business') ? 'active' : ''} aria-current={isActive('/business') ? 'page' : undefined} onClick={closeMenu}>Business</Link>
-              <Link href="/about" className={isActive('/about') ? 'active' : ''} aria-current={isActive('/about') ? 'page' : undefined} onClick={closeMenu}>About</Link>
-              <Link href="/resources" className={isActive('/resources') ? 'active' : ''} aria-current={isActive('/resources') ? 'page' : undefined} onClick={closeMenu}>Resources</Link>
-              <Link href="/careers" className={isActive('/careers') ? 'active' : ''} aria-current={isActive('/careers') ? 'page' : undefined} onClick={closeMenu}>Careers</Link>
-              <Link href="/contact" className={isActive('/contact') ? 'active' : ''} aria-current={isActive('/contact') ? 'page' : undefined} onClick={closeMenu}>Contact</Link>
-            </div>
-            <div className="nav-cta">
-              <Link className="btn btn-outline" href="/tracking" onClick={closeMenu}>Track</Link>
-              <Link className="btn btn-primary" href="/services#quote" onClick={closeMenu}>Get a quote <ArrowRight size={14} /></Link>
+              <Link href="/careers" className={isActive('/careers') ? 'active' : ''} aria-current={isActive('/careers') ? 'page' : undefined} onClick={closeMenu}>Jobs</Link>
+              <Link href="/resources" className={isActive('/resources') ? 'active' : ''} aria-current={isActive('/resources') ? 'page' : undefined} onClick={closeMenu}>FAQs</Link>
+              <Link href="/contact" className={isActive('/contact') ? 'active' : ''} aria-current={isActive('/contact') ? 'page' : undefined} onClick={closeMenu}>Contact Us</Link>
             </div>
           </div>
         </nav>
