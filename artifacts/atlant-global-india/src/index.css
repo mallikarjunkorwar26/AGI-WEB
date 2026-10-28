@@ -3914,6 +3914,7 @@ main {
   .nav-menu {
     position: fixed;
     top: 0;
+    left: auto;
     right: 0;
     bottom: 0;
     display: flex;
