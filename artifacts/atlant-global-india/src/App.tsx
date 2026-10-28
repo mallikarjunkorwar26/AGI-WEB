@@ -579,6 +579,10 @@ function SiteHeader() {
               <Link href="/resources" className={isActive('/resources') ? 'active' : ''} aria-current={isActive('/resources') ? 'page' : undefined} onClick={closeMenu}>FAQs</Link>
               <Link href="/contact" className={isActive('/contact') ? 'active' : ''} aria-current={isActive('/contact') ? 'page' : undefined} onClick={closeMenu}>Contact Us</Link>
             </div>
+            <div className="nav-cta">
+              <Link className="btn btn-outline" href="/tracking" onClick={closeMenu}>Track</Link>
+              <Link className="btn btn-primary" href="/quote" onClick={closeMenu}>Get a quote <ArrowRight size={14} /></Link>
+            </div>
           </div>
         </nav>
       </header>

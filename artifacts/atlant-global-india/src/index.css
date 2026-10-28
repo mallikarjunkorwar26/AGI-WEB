@@ -3668,12 +3668,13 @@ main {
   .menu-toggle {
     display: inline-flex;
   }
-  .nav-links {
+  .nav-menu {
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
     display: flex;
+    flex-direction: column;
     max-height: 0;
     overflow: hidden;
     visibility: hidden;
@@ -3683,28 +3684,50 @@ main {
     background: #ffffff;
     border-bottom: 1px solid var(--color-border);
     box-shadow: 0 12px 30px rgba(11, 15, 23, 0.08);
-    padding: 0 24px;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
+    padding: 0;
     z-index: 50;
   }
-  .nav-links.open {
+  .nav-menu.open {
     max-height: calc(100dvh - 90px);
     overflow-y: auto;
     visibility: visible;
     opacity: 1;
     transform: translateY(0);
-    padding: 16px 24px 24px;
   }
-  .nav-links a {
+  .nav-menu .nav-links,
+  .nav-menu .nav-links.open {
+    position: static;
+    display: flex;
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 16px 24px 0;
+  }
+  .nav-menu .nav-links a {
     padding: 12px 0;
     font-size: 14px;
     border-bottom: 1px solid var(--color-border-subtle);
     border-radius: 0;
   }
-  .nav-cta {
-    display: none;
+  .nav-menu .nav-cta {
+    display: flex;
+    align-self: stretch;
+    justify-self: stretch;
+    padding: 14px 24px 24px;
+    margin-top: 8px;
+    border-top: 1px solid var(--color-border);
+  }
+  .nav-menu .nav-cta .btn {
+    flex: 1;
   }
 }
 
@@ -3904,6 +3927,7 @@ main {
     z-index: 10001;
   }
   .nav-menu.open {
+    max-height: none;
     visibility: visible;
     pointer-events: auto;
     opacity: 1;
