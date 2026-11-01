@@ -340,7 +340,7 @@ main {
 .nav-links {
   display: flex;
   min-width: 0;
-  gap: 6px;
+  gap: 12px;
   align-items: center;
   justify-self: center;
   justify-content: center;
