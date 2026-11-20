@@ -62,22 +62,22 @@ const careerBenefits: Array<{ icon: LucideIcon; title: string; description: stri
 
 const cultureMoments: Array<{ image: string; alt: string; label: string; title: string; copy: string }> = [
   {
-    image: "images/T3A0179-1024x683.jpg",
-    alt: "Colleagues working together in a parcel operations hub",
+    image: "images/Carrers_images/antonio-janeski-CHVTt0aGbx0-unsplash.avif",
+    alt: "Colleagues working together in a professional workplace",
     label: "One connected team",
     title: "Every handoff matters.",
     copy: "Our work is built on people coordinating across teams, branches and customer touchpoints.",
   },
   {
-    image: "images/Operation_Hub.png",
-    alt: "A busy logistics hub prepared for coordinated parcel movement",
+    image: "images/Carrers_images/ian-schneider-TamMbr4okv4-unsplash.avif",
+    alt: "A modern workplace supporting collaborative work",
     label: "Work that moves",
     title: "See your impact in action.",
     copy: "From customer conversations to operations, the work we do helps businesses and communities stay connected.",
   },
   {
-    image: "images/Wharehousing.webp",
-    alt: "Warehousing operations supporting a wider logistics network",
+    image: "images/Carrers_images/sasun-bughdaryan-eMPW598T64s-unsplash.avif",
+    alt: "Team members sharing ideas and building skills together",
     label: "Learn by doing",
     title: "Build capability every day.",
     copy: "We value curiosity, knowledge sharing and the discipline to keep improving how we serve.",
@@ -249,8 +249,8 @@ export function CareersPage() {
           </div>
           <div className="careers-hero-visual">
             <img
-              src={`${import.meta.env.BASE_URL}images/T3A0179-1024x683.jpg`}
-              alt="Colleagues coordinating work in an Atlant Global India operations hub"
+              src={`${import.meta.env.BASE_URL}images/Carrers_images/campaign-creators-gMsnXqILjp4-unsplash.avif`}
+              alt="Colleagues collaborating in a professional workplace"
             />
             <div className="careers-hero-image-shade" />
             <div className="careers-hero-photo-caption">
