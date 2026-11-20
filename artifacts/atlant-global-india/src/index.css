@@ -3468,6 +3468,16 @@ main {
   color: #ffffff;
 }
 
+.footer,
+.footer *,
+.footer::before,
+.footer::after,
+.footer *::before,
+.footer *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
 /* Mobile Quick Actions Bar */
 .mobile-actions {
   display: none;
@@ -4425,26 +4435,6 @@ main {
     transition-delay: 320ms;
   }
 
-  .footer-brand.reveal-on-scroll {
-    transition-delay: 40ms;
-  }
-
-  .footer-col.reveal-on-scroll:nth-of-type(2) {
-    transition-delay: 120ms;
-  }
-
-  .footer-col.reveal-on-scroll:nth-of-type(3) {
-    transition-delay: 200ms;
-  }
-
-  .footer-col.reveal-on-scroll:nth-of-type(4) {
-    transition-delay: 280ms;
-  }
-
-  .footer-bottom.reveal-on-scroll {
-    transition-delay: 340ms;
-  }
-
   :root.home-mobile-reveal {
     --mobile-reveal-duration: 1.15s;
   }
@@ -4635,21 +4625,6 @@ main {
     transition-delay: 400ms;
   }
 
-  .footer-col.desktop-scroll-reveal:nth-of-type(2) {
-    transition-delay: 100ms;
-  }
-
-  .footer-col.desktop-scroll-reveal:nth-of-type(3) {
-    transition-delay: 200ms;
-  }
-
-  .footer-col.desktop-scroll-reveal:nth-of-type(4) {
-    transition-delay: 300ms;
-  }
-
-  .footer-bottom.desktop-scroll-reveal {
-    transition-delay: 150ms;
-  }
 }
 
 @media (min-width: 1025px) and (hover: hover) and (pointer: fine) {

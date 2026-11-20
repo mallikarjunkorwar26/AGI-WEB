@@ -160,7 +160,7 @@ function ScrollReveal() {
     const desktopTargetSelector =
       '.section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-status-card, .detail-card, .track-side-info, .job-card, .career-form-card, .hero-content, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result';
     const enhancedDesktopTargetSelector =
-      'main > section, .section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-page-hero, .tracking-status-panel, .tracking-status-card, .tracking-status-topline, .tracking-page-heading, .tracking-search-card, .tracking-feedback, .tracking-journey-card, .tracking-timeline > li, .tracking-details-card, .tracking-history, .tracking-history-event, .detail-card, .track-side-info, .job-card, .career-form-card, .hero-content, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result, .about-value, .partner-feature-card, .process-step, .home-facts > div, .fact-row > .fact, .footer-brand, .footer-col, .footer-bottom, .hero-photo, .hero-content > .eyebrow, .hero-content > h1, .hero-content > p, .hero-content > .hero-actions, .hero-content > .hero-note, .hero-tracking-wrap';
+      'main > section, .section, .quick-card, .service-card, .trust-item, .contact-card, .quote-form, .tracking-panel, .tracking-page-hero, .tracking-status-panel, .tracking-status-card, .tracking-status-topline, .tracking-page-heading, .tracking-search-card, .tracking-feedback, .tracking-journey-card, .tracking-timeline > li, .tracking-details-card, .tracking-history, .tracking-history-event, .detail-card, .track-side-info, .job-card, .career-form-card, .hero-content, .intro-photo-wrap, .intro-copy, .business-image-wrap, .network-visual, .leadership, .resource-card, .page-heading, .tracking-result, .about-value, .partner-feature-card, .process-step, .home-facts > div, .fact-row > .fact, .hero-photo, .hero-content > .eyebrow, .hero-content > h1, .hero-content > p, .hero-content > .hero-actions, .hero-content > .hero-note, .hero-tracking-wrap';
     const mobileTargetSelector = [
       '.section',
       '.quick-card',
@@ -196,16 +196,12 @@ function ScrollReveal() {
       '.about-value',
       '.partner-feature-card',
       '.process-step',
-      '.footer',
       'main h1',
       'main h2',
       'main h3',
       'main p',
       'main .section-label',
       'main .btn',
-      '.footer-brand',
-      '.footer-col',
-      '.footer-bottom',
     ].join(', ');
     const visualSelector = '.intro-photo-wrap, .business-image-wrap, .network-visual, .service-visual';
     const serviceCardSelector = '.service-card';
