@@ -1732,6 +1732,27 @@ main {
   box-shadow: 0 0 0 4px var(--brand-rose);
 }
 
+.tracking-stage.is-current .tracking-stage-icon::after {
+  position: absolute;
+  inset: -4px;
+  border: 2px solid var(--brand-crimson);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+  animation: tracking-current-pulse 1.8s ease-out infinite;
+}
+
+@keyframes tracking-current-pulse {
+  from {
+    opacity: 0.75;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
 .tracking-stage-icon-inner {
   position: relative;
   display: grid;
@@ -4688,6 +4709,9 @@ main {
     animation: none;
   }
   .tracking-stage-active-icon::before {
+    animation: none;
+  }
+  .tracking-stage.is-current .tracking-stage-icon::after {
     animation: none;
   }
 }
