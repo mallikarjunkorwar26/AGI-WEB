@@ -10,6 +10,7 @@ import {
 } from "@workspace/db";
 import { logger } from "../lib/logger";
 import healthRouter from "./health";
+import careersRouter from "./careers";
 
 const router: IRouter = Router();
 
@@ -50,6 +51,7 @@ async function persistRecord(collection: keyof typeof memoryStore, row: Record<s
 }
 
 router.use(healthRouter);
+router.use(careersRouter);
 
 router.get("/db-health", async (_req, res) => {
   if (!db) {

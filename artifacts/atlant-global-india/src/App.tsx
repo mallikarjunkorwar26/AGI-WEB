@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { Link, Route, Router as WouterRouter, Switch, useLocation } from 'wouter';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6';
+import { CareersAdminPage } from '@/pages/careers-admin-page';
 import {
   AboutPage,
   BusinessPage,
@@ -73,9 +74,13 @@ const pageMeta: Record<string, { title: string; description: string }> = {
       'Browse shipping FAQs, practical preparation notes and a volumetric weight estimator. Confirm service details and shipment terms with the team.',
   },
   '/careers': {
-    title: 'Careers & Opportunities | Atlant Global India',
+    title: 'Careers at Atlant Global India | Build Your Future',
     description:
-      'Browse current openings at Atlant Global India, filter by role and location, or send your resume for future opportunities.',
+      'Discover our people, culture and current career opportunities at Atlant Global India.',
+  },
+  '/admin/careers': {
+    title: 'Careers Administration | Atlant Global India',
+    description: 'Restricted careers administration portal.',
   },
   '/contact': {
     title: 'Contact & Offices in Bengaluru | Atlant Global India',
@@ -687,6 +692,7 @@ function SiteRoutes() {
           <Route path="/about" component={AboutPage} />
           <Route path="/resources" component={ResourcesPage} />
           <Route path="/careers" component={CareersPage} />
+          <Route path="/admin/careers" component={CareersAdminPage} />
           <Route path="/contact" component={ContactPage} />
           <Route component={NotFoundPage} />
         </Switch>
@@ -698,19 +704,20 @@ function SiteRoutes() {
 function RouterApp() {
   const [location] = useLocation();
   const [assistOpen, setAssistOpen] = useState(false);
+  const isCareersAdmin = location === '/admin/careers';
 
   return (
     <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <div className="site-wrap">
         <ScrollProgress />
         <ScrollReveal />
-        <SiteHeader />
+        {!isCareersAdmin && <SiteHeader />}
         <ErrorBoundary resetKey={location}>
           <SiteRoutes />
         </ErrorBoundary>
-        <SiteFooter />
+        {!isCareersAdmin && <SiteFooter />}
       </div>
-      {assistOpen && (
+      {!isCareersAdmin && assistOpen && (
         <section className="agi-chat-panel" aria-label="AGI Assist chat" aria-live="polite">
           <header className="agi-chat-header">
             <span className="agi-chat-avatar"><MessageCircle size={20} /></span>
@@ -724,10 +731,12 @@ function RouterApp() {
           <div className="agi-chat-footer">Messaging will be available soon.</div>
         </section>
       )}
-      <button className="agi-assist-launcher" type="button" onClick={() => setAssistOpen((open) => !open)} aria-expanded={assistOpen} aria-label={assistOpen ? 'Close AGI Assist' : 'Open AGI Assist'}>
-        {assistOpen ? <X size={20} aria-hidden="true" /> : <MessageCircle size={20} aria-hidden="true" />}
-        <span>AGI Assist</span>
-      </button>
+      {!isCareersAdmin && (
+        <button className="agi-assist-launcher" type="button" onClick={() => setAssistOpen((open) => !open)} aria-expanded={assistOpen} aria-label={assistOpen ? 'Close AGI Assist' : 'Open AGI Assist'}>
+          {assistOpen ? <X size={20} aria-hidden="true" /> : <MessageCircle size={20} aria-hidden="true" />}
+          <span>AGI Assist</span>
+        </button>
+      )}
     </WouterRouter>
   );
 }

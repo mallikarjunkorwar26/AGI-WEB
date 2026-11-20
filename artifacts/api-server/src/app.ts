@@ -12,7 +12,7 @@ const simpleRateLimiter = (req: Request, res: Response, next: NextFunction) => {
 
   const windowMs = 60_000;
   const route = req.originalUrl.split("?")[0].replace(/\/+$/, "") || "/";
-  const limit = route === "/api/tracking" ? 10 : 30;
+  const limit = route === "/api/tracking" ? 10 : route === "/api/careers/applications" ? 5 : 30;
   const key = `${req.ip ?? req.socket.remoteAddress ?? "unknown"}:${route}`;
   const now = Date.now();
   const rateState = globalThis as typeof globalThis & {
@@ -98,7 +98,7 @@ app.use((req, res, next) => {
 
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
-app.use(["/api/contact", "/api/quotes", "/api/newsletter", "/api/tracking"], simpleRateLimiter);
+app.use(["/api/contact", "/api/quotes", "/api/newsletter", "/api/tracking", "/api/careers/applications"], simpleRateLimiter);
 app.use("/api", router);
 app.use("/api", (_req, res) => res.status(404).json({ ok: false, message: "API route not found." }));
 

@@ -1,5 +1,7 @@
 import {
   boolean,
+  customType,
+  index,
   integer,
   pgEnum,
   pgTable,
@@ -10,6 +12,10 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
+
+const resumeBytea = customType<{ data: Buffer; driverData: Buffer }>({
+  dataType: () => "bytea",
+});
 
 export const userRoleEnum = pgEnum("user_role", ["admin", "staff", "customer"]);
 export const leadStatusEnum = pgEnum("lead_status", ["new", "contacted", "qualified", "converted", "closed"]);
@@ -110,6 +116,45 @@ export const activityLogsTable = pgTable("activity_logs", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const careersJobsTable = pgTable("careers_jobs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: text("title").notNull(),
+  department: text("department").notNull(),
+  location: text("location").notNull(),
+  employmentType: text("employment_type").notNull(),
+  experienceRequired: text("experience_required").notNull(),
+  summary: text("summary").notNull(),
+  description: text("description").notNull(),
+  requiredSkills: text("required_skills").array().notNull().default([]),
+  published: boolean("published").notNull().default(false),
+  filled: boolean("filled").notNull().default(false),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_careers_jobs_visibility").on(table.published, table.filled),
+]);
+
+export const careerApplicationsTable = pgTable("career_applications", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  jobId: uuid("job_id").references(() => careersJobsTable.id, { onDelete: "set null" }),
+  jobTitle: text("job_title").notNull(),
+  fullName: text("full_name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone").notNull(),
+  experience: text("experience").notNull(),
+  coverLetter: text("cover_letter"),
+  resumeOriginalName: text("resume_original_name").notNull(),
+  resumeMimeType: text("resume_mime_type").notNull(),
+  resumeData: resumeBytea("resume_data").notNull(),
+  status: text("status").notNull().default("new"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("idx_career_applications_created_at").on(table.createdAt),
+  index("idx_career_applications_job_id").on(table.jobId),
+  index("idx_career_applications_status").on(table.status),
+]);
+
 export const insertUserSchema = createInsertSchema(usersTable).omit({
   id: true,
   createdAt: true,
@@ -157,6 +202,18 @@ export const insertActivityLogSchema = createInsertSchema(activityLogsTable).omi
   createdAt: true,
 });
 
+export const insertCareersJobSchema = createInsertSchema(careersJobsTable).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertCareerApplicationSchema = createInsertSchema(careerApplicationsTable).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export type User = z.infer<typeof insertUserSchema>;
 export type ContactLead = z.infer<typeof insertContactLeadSchema>;
 export type QuoteRequest = z.infer<typeof insertQuoteRequestSchema>;
@@ -165,3 +222,5 @@ export type Service = z.infer<typeof insertServiceSchema>;
 export type NewsletterSubscriber = z.infer<typeof insertNewsletterSubscriberSchema>;
 export type TrackingSearch = z.infer<typeof insertTrackingSearchSchema>;
 export type ActivityLog = z.infer<typeof insertActivityLogSchema>;
+export type CareersJob = z.infer<typeof insertCareersJobSchema>;
+export type CareerApplication = z.infer<typeof insertCareerApplicationSchema>;

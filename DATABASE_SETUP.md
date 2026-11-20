@@ -42,6 +42,7 @@ The required values are:
 - `DATABASE_URL`
 - `JWT_SECRET`
 - `API_SECRET`
+- `CAREERS_ADMIN_TOKEN`
 - `SMTP_*`
 - `CORS_ORIGIN`
 
@@ -53,6 +54,7 @@ DATABASE_URL=postgresql://postgres:your_password@localhost:5432/atlant_global_in
 CORS_ORIGIN=http://localhost:19167,http://localhost:5173
 JWT_SECRET=replace_with_a_secure_random_string
 API_SECRET=replace_with_a_secure_random_string
+CAREERS_ADMIN_TOKEN=replace_with_a_long_random_secret
 ```
 
 ## 4. Run database migrations
@@ -63,6 +65,12 @@ From the workspace root:
 pnpm --dir Atlantis-Global-India-Website/lib/db exec drizzle-kit migrate --config ./drizzle.config.ts
 ```
 
+Careers uses a private resume store in PostgreSQL. Apply its migration to the configured database:
+
+```bash
+psql "$DATABASE_URL" -f lib/db/migrations/003_add_careers.sql
+```
+
 If the database is empty, this creates the website tables for:
 - users
 - contact_leads
@@ -70,6 +78,8 @@ If the database is empty, this creates the website tables for:
 - website_enquiries
 - newsletter_subscribers
 - tracking_searches
+- careers_jobs
+- career_applications
 
 ## 5. Start the backend API
 
@@ -97,6 +107,10 @@ The server exposes:
 - `POST /api/quotes`
 - `POST /api/newsletter`
 - `POST /api/tracking`
+- `GET /api/careers/jobs`
+- `POST /api/careers/applications`
+
+The protected careers administrator is available at `/admin/careers`. Set a long, unique `CAREERS_ADMIN_TOKEN` on the API server and enter it on that page to create, edit, publish, fill, or delete openings, review applications, update application status, and download resumes. Resume files are limited to 5 MB and stored in PostgreSQL; they are downloadable only through the authenticated administrator endpoint.
 
 ## 6. Connect the frontend to the API
 
